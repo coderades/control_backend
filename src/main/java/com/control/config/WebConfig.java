@@ -1,7 +1,6 @@
 package com.control.config;
 
 import org.slf4j.MDC;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,7 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.control.listner.SessionListner;
 import com.control.repository.RoleRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +27,7 @@ public class WebConfig {
 	}
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {		
 		http.httpBasic().and().authorizeRequests().and().csrf().disable();
 
 		roleRepository.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {
@@ -81,13 +79,6 @@ public class WebConfig {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	public ServletListenerRegistrationBean<SessionListner> adminInfoListener() {
-		ServletListenerRegistrationBean<SessionListner> listenerRegBean = new ServletListenerRegistrationBean<>();
-		listenerRegBean.setListener(new SessionListner());
-		return listenerRegBean;
 	}
 
 }

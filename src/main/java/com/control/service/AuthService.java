@@ -28,20 +28,20 @@ public class AuthService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		final var userAuth = userRepository.findByUserName(username);
+		final var entity = userRepository.findByUserName(username);
 
 		MDC.put("sessionId", RequestContextHolder.currentRequestAttributes().getSessionId());
 
-		if (userAuth == null) {
+		if (entity == null) {
 			log.warn("Login: Fail from userName {}", username);
 		} else {
-			log.info("Login: OK from userName {} linked to userId {}", username, userAuth.getUserId());
+			log.info("Login: OK from userName {} linked to userId {}", username, entity.getUserId());
 		}
 
 		return Optional
-				.ofNullable(new User(userAuth.getUsername(), userAuth.getPassword(), userAuth.isEnabled(),
-						userAuth.isAccountNonExpired(), userAuth.isAccountNonExpired(), userAuth.isAccountNonLocked(),
-						userAuth.getAuthorities()))
+				.ofNullable(new User(entity.getUsername(), entity.getPassword(), entity.isEnabled(),
+						entity.isAccountNonExpired(), entity.isAccountNonExpired(), entity.isAccountNonLocked(),
+						entity.getAuthorities()))
 				.orElseThrow(() -> new UsernameNotFoundException(
 						new StringBuilder().append("Login: fail from username ").append(username).toString()));
 	}

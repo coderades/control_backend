@@ -8,9 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -40,18 +37,12 @@ public class Application implements Serializable {
 	private Boolean applicationIsEnabled;
 
 	@Column(name = "application_name", length = 50, nullable = false, unique = true)
-	@Size(min = 2, max = 50)
-	@NotBlank(message = "It cannot be empty")
 	private String applicationName;
 
 	@Column(name = "application_email", length = 50, nullable = true)
-	@Size(min = 8, max = 50)
-	@Email(message = "Incorrect format")
 	private String applicationEmail;
 
 	@Column(name = "application_secret", columnDefinition = "uuid", nullable = false, unique = true)
-	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
 	private String applicationSecret;
 
 	@Column(name = "application_created", nullable = false, insertable = true, updatable = false)

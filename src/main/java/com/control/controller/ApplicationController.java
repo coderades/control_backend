@@ -35,45 +35,45 @@ public class ApplicationController {
 	public ResponseEntity<?> findAll(Pageable pageable) {
 		log.info("Pagination: {}", pageable);
 
-		final var application = applicationService.findAll(pageable);
-		return application.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(application);
+		final var entity = applicationService.findAll(pageable);
+		return entity.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/{application_id}")
 	public ResponseEntity<?> findById(@PathVariable("application_id") String application_id) {
 		log.info("Parameter: applicationId={}", application_id);
 
-		final var application = applicationService.findById(application_id);
-		return application == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(application);
+		final var entity = applicationService.findById(application_id);
+		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/findByName/{application_name}")
 	public ResponseEntity<?> findByName(@PathVariable("application_name") String application_name) {
 		log.info("Parameter: applicationName={}", application_name);
 
-		final var application = applicationService.findByName(application_name);
-		return application == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(application);
+		final var entity = applicationService.findByName(application_name);
+		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/findByNameContaining/{application_name}")
 	public ResponseEntity<?> findByNameIgnoreCaseContaining(@PathVariable("application_name") String application_name) {
 		log.info("Parameter: applicationName={}", application_name);
 
-		final var application = applicationService.findByNameContaining(application_name);
-		return application.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(application);
+		final var entity = applicationService.findByNameContaining(application_name);
+		return entity.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
-	@GetMapping("/findByEmail/{application_email}")
+	@GetMapping("/findByEmailContaining/{application_email}")
 	public ResponseEntity<?> findByEmail(@PathVariable("application_email") String application_email) {
 		log.info("Parameter: applicationEmail={}", application_email);
 
-		final var application = applicationService.findByEmail(application_email);
-		return application == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(application);
+		final var entity = applicationService.findByEmailContaining(application_email);
+		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/find/{find}")
@@ -81,9 +81,9 @@ public class ApplicationController {
 			@PathVariable("find") String find) {
 		log.info("Parameter: find={}", find);
 
-		final var application = applicationService.find(find);
-		return application.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(application);
+		final var entity = applicationService.find(find);
+		return entity.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@PostMapping

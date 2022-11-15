@@ -26,73 +26,73 @@ public class ApplicationService {
 	}
 
 	public Page<?> findAll(Pageable pageable) {
-		final var application = applicationRepository.findAll(pageable);
+		final var entity = applicationRepository.findAll(pageable);
 
-		log.info("Elements: {}, Object: {}", application.getSize(), application.getContent());
+		log.info("Elements: {}, Object: {}", entity.getSize(), entity.getContent());
 
-		return application;
+		return entity;
 	}
 
 	public Application findById(String applicationId) {
-		final var application = applicationRepository.findById(applicationId);
+		final var entity = applicationRepository.findById(applicationId);
 
-		log.info("Object: {}", application);
+		log.info("Object: {}", entity);
 
-		return application.isPresent() ? application.get() : null;
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	public Application findByName(String applicationName) {
-		final var application = applicationRepository.findByApplicationName(applicationName);
+		final var entity = applicationRepository.findByApplicationName(applicationName);
 
-		log.info("Object: {}", application);
+		log.info("Object: {}", entity);
 
-		return application == null ? null : application;
+		return entity == null ? null : entity;
 	}
 
 	public List<?> findByNameContaining(String applicationName) {
-		final var application = applicationRepository.findByApplicationNameIgnoreCaseContaining(applicationName);
+		final var entity = applicationRepository.findByApplicationNameIgnoreCaseContaining(applicationName);
 
-		log.info("Elements: {}, Object: {}", application.size(), application);
+		log.info("Elements: {}, Object: {}", entity.size(), entity);
 
-		return application == null ? null : application;
+		return entity == null ? null : entity;
 	}
 
-	public Application findByEmail(String applicationEmail) {
-		final var application = applicationRepository.findByApplicationEmail(applicationEmail);
+	public List<?> findByEmailContaining(String applicationEmail) {
+		final var entity = applicationRepository.findByApplicationEmailIgnoreCaseContaining(applicationEmail);
 
-		log.info("Object: {}", application);
+		log.info("Object: {}", entity);
 
-		return application.isPresent() ? application.get() : null;
+		return entity == null ? null : entity;
 	}
 
 	public List<?> find(String find) {
-		final var application = applicationRepository
+		final var entity = applicationRepository
 				.findByApplicationNameIgnoreCaseContainingOrApplicationEmailIgnoreCaseContaining(find, find);
 
-		log.info("Elements: {}, Object: {}", application.size(), application);
+		log.info("Elements: {}, Object: {}", entity.size(), entity);
 
-		return application == null ? null : application;
+		return entity == null ? null : entity;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public String save(ApplicationInsertDTO applicationInsertDTO) {
-		final var application = new Application();
+		final var entity = new Application();
 
-		BeanUtils.copyProperties(applicationInsertDTO, application);
-		
-		applicationRepository.save(application);
-		log.info("Return: applicationId={}", application.getApplicationId());
+		BeanUtils.copyProperties(applicationInsertDTO, entity);
 
-		return application.getApplicationId();
+		applicationRepository.save(entity);
+		log.info("Return: applicationId={}", entity.getApplicationId());
+
+		return entity.getApplicationId();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void save(ApplicationUpdateDTO applicationUpdateDTO) {
-		final var application = new Application();
+		final var entity = new Application();
 
-		BeanUtils.copyProperties(applicationUpdateDTO, application);
-		
-		applicationRepository.save(application);
+		BeanUtils.copyProperties(applicationUpdateDTO, entity);
+
+		applicationRepository.save(entity);
 		log.info("Status: OK");
 	}
 

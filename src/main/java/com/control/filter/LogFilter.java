@@ -24,7 +24,6 @@ public class LogFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 
 			log.info("Response: {}", response.getContentType());
-
 		} catch (Exception e) {
 			log.error(e.toString());
 		} finally {

@@ -28,85 +28,85 @@ public class UserService {
 	}
 
 	public Page<?> findAll(Pageable pageable) {
-		final var user = userRepository.findAll(pageable);
+		final var entity = userRepository.findAll(pageable);
 
-		log.info("Elements: {}, Object: {}", user.getSize(), user.getContent());
+		log.info("Elements: {}, Object: {}", entity.getSize(), entity.getContent());
 
-		return user;
+		return entity;
 	}
 
 	public User findById(String userId) {
-		final var user = userRepository.findById(userId);
+		final var entity = userRepository.findById(userId);
 
-		log.info("Object: {}", user);
+		log.info("Object: {}", entity);
 
-		return user.isPresent() ? user.get() : null;
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	public User findByName(String userName) {
-		final var user = userRepository.findByUserName(userName);
+		final var entity = userRepository.findByUserName(userName);
 
-		log.info("Object: {}", user);
+		log.info("Object: {}", entity);
 
-		return user == null ? null : user;
+		return entity == null ? null : entity;
 	}
 
 	public List<?> findByNameContaining(String userName) {
-		final var user = userRepository.findByUserNameIgnoreCaseContaining(userName);
+		final var entity = userRepository.findByUserNameIgnoreCaseContaining(userName);
 
-		log.info("Elements: {}, Object: {}", user.size(), user);
+		log.info("Elements: {}, Object: {}", entity.size(), entity);
 
-		return user == null ? null : user;
+		return entity == null ? null : entity;
 	}
 
 	public User findByEmail(String userEmail) {
-		final var user = userRepository.findByUserEmail(userEmail);
+		final var entity = userRepository.findByUserEmail(userEmail);
 
-		log.info("Object: {}", user);
+		log.info("Object: {}", entity);
 
-		return user.isPresent() ? user.get() : null;
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	public List<?> find(String find) {
-		final var user = userRepository.findByUserNameIgnoreCaseContainingOrUserEmailIgnoreCaseContaining(find, find);
+		final var entity = userRepository.findByUserNameIgnoreCaseContainingOrUserEmailIgnoreCaseContaining(find, find);
 
-		log.info("Elements: {}, Object: {}", user.size(), user);
+		log.info("Elements: {}, Object: {}", entity.size(), entity);
 
-		return user == null ? null : user;
+		return entity == null ? null : entity;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public String save(UserInsertDTO userInsertDTO) {
-		final var user = new User();
+		final var entity = new User();
 
-		BeanUtils.copyProperties(userInsertDTO, user);
-		user.setUserPassword(new BCryptPasswordEncoder().encode(user.getUserPassword()));
+		BeanUtils.copyProperties(userInsertDTO, entity);
+		entity.setUserPassword(new BCryptPasswordEncoder().encode(entity.getUserPassword()));
 
-		userRepository.save(user);
-		log.info("Return: userId={}", user.getUserId());
+		userRepository.save(entity);
+		log.info("Return: userId={}", entity.getUserId());
 
-		return user.getUserId();
+		return entity.getUserId();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void save(UserUpdateDTO userUpdateDTO) {
-		final var user = new User();
+		final var entity = new User();
 
-		BeanUtils.copyProperties(userUpdateDTO, user);
-		user.setUserPassword(userRepository.findByUserPassword(userUpdateDTO.getUserId()));
+		BeanUtils.copyProperties(userUpdateDTO, entity);
+		entity.setUserPassword(userRepository.findByUserPassword(userUpdateDTO.getUserId()));
 
-		userRepository.save(user);
+		userRepository.save(entity);
 		log.info("Status: OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void savePassword(UserPasswordUpdateDTO userPasswordUpdateDTO) {
-		final var user = new User();
+		final var entity = new User();
 
-		BeanUtils.copyProperties(userPasswordUpdateDTO, user);
-		user.setUserPassword(new BCryptPasswordEncoder().encode(user.getUserPassword()));
+		BeanUtils.copyProperties(userPasswordUpdateDTO, entity);
+		entity.setUserPassword(new BCryptPasswordEncoder().encode(entity.getUserPassword()));
 
-		userRepository.saveUserPassword(user.getUserId(), user.getPassword());
+		userRepository.saveUserPassword(entity.getUserId(), entity.getPassword());
 		log.info("Status: OK");
 	}
 

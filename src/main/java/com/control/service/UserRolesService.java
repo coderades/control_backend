@@ -25,52 +25,52 @@ public class UserRolesService {
 	}
 
 	public Page<?> findAll(Pageable pageable) {
-		final var role = roleRepository.findAll(pageable);
+		final var entity = roleRepository.findAll(pageable);
 
-		log.info("Elements: {}, Object: {}", role.getSize(), role.getContent());
+		log.info("Elements: {}, Object: {}", entity.getSize(), entity.getContent());
 
-		return role;
+		return entity;
 	}
 
 	public Role findById(String roleId) {
-		final var role = roleRepository.findById(roleId);
+		final var entity = roleRepository.findById(roleId);
 
-		log.info("Object: {}", role);
+		log.info("Object: {}", entity);
 
-		return role.isPresent() ? role.get() : null;
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	public Role findByName(String roleName) {
-		final var role = roleRepository.findByRoleName(roleName);
+		final var entity = roleRepository.findByRoleName(roleName);
 
-		log.info("Object: {}", role);
+		log.info("Object: {}", entity);
 
-		return role == null ? null : role;
+		return entity == null ? null : entity;
 	}
 
 	public List<?> findByNameContaining(String roleName) {
-		final var role = roleRepository.findByRoleNameIgnoreCaseContaining(roleName);
+		final var entity = roleRepository.findByRoleNameIgnoreCaseContaining(roleName);
 
-		log.info("Elements: {}, Object: {}", role.size(), role);
+		log.info("Elements: {}, Object: {}", entity.size(), entity);
 
-		return role.size() == 0 ? null : role;
+		return entity.size() == 0 ? null : entity;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public String save(RoleInsertDTO roleInsertDTO) {
-		final var role = new Role();
+		final var entity = new Role();
 
-		roleRepository.save(role);
-		log.info("Return: roleId={}", role.getRoleId());
+		roleRepository.save(entity);
+		log.info("Return: roleId={}", entity.getRoleId());
 
-		return role.getRoleId();
+		return entity.getRoleId();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void save(RoleUpdateDTO roleUpdateDTO) {
-		final var role = new Role();
+		final var entity = new Role();
 
-		roleRepository.save(role);
+		roleRepository.save(entity);
 		log.info("Status: OK");
 	}
 

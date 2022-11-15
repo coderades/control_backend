@@ -35,36 +35,36 @@ public class RoleController {
 	public ResponseEntity<?> findAll(Pageable pageable) {
 		log.info("Pagination: {}", pageable);
 
-		final var role = roleService.findAll(pageable);
-		return role.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(role);
+		final var entity = roleService.findAll(pageable);
+		return entity.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/{role_id}")
 	public ResponseEntity<?> findById(@PathVariable("role_id") String role_id) {
 		log.info("Parameter: roleId={}", role_id);
 
-		final var role = roleService.findById(role_id);
-		return role == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(role);
+		final var entity = roleService.findById(role_id);
+		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/findByName/{role_name}")
 	public ResponseEntity<?> findByName(@PathVariable("role_name") String role_name) {
 		log.info("Parameter: roleName={}", role_name);
 
-		final var role = roleService.findByName(role_name);
-		return role == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(role);
+		final var entity = roleService.findByName(role_name);
+		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/findByNameContaining/{role_name}")
 	public ResponseEntity<?> findByNameIgnoreCaseContaining(@PathVariable("role_name") String role_name) {
 		log.info("Parameter: roleName={}", role_name);
 
-		final var role = roleService.findByNameContaining(role_name);
-		return role.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(role);
+		final var entity = roleService.findByNameContaining(role_name);
+		return entity.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@PostMapping

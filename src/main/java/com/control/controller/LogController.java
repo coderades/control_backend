@@ -8,35 +8,36 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.service.UserRolesService;
+import com.control.service.LogService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/api/userRoles")
+@RequestMapping("/api/log")
 @Slf4j
-public class UserRolesController {
+public class LogController {
 
-	private UserRolesService userRolesService;
+	private final LogService logService;
 
-	public UserRolesController(UserRolesService userRolesService) {
-		this.userRolesService = userRolesService;
+	public LogController(LogService logService) {
+		this.logService = logService;
 	}
 
 	@GetMapping
-	public ResponseEntity<?> findAll(Pageable pageable) {
+	public ResponseEntity<?> findAll(Pageable pageable) {		
 		log.info("Pagination: {}", pageable);
 
-		final var entity = userRolesService.findAll(pageable);
+		final var entity = logService.findAll(pageable);
 		return entity.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
 				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
+	
+	
+	@GetMapping("/findByLevel/{log_level}")
+	public ResponseEntity<?> findByLevel(@PathVariable("log_level") String log_level) {				
+		log.info("Parameter: logLevel={}", log_level);
 
-	@GetMapping("/{user_roles_id}")
-	public ResponseEntity<?> findById(@PathVariable("user_roles_id") String user_roles_id) {
-		log.info("Parameter: userRolesId={}", user_roles_id);
-
-		final var entity = userRolesService.findById(user_roles_id);
+		final var entity = logService.findByLevel(log_level);
 		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
 				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}

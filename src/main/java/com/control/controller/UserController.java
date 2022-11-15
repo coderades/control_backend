@@ -36,45 +36,45 @@ public class UserController {
 	public ResponseEntity<?> findAll(Pageable pageable) {
 		log.info("Pagination: {}", pageable);
 
-		final var user = userService.findAll(pageable);
-		return user.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(user);
+		final var entity = userService.findAll(pageable);
+		return entity.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/{user_id}")
 	public ResponseEntity<?> findById(@PathVariable("user_id") String user_id) {
 		log.info("Parameter: userId={}", user_id);
 
-		final var user = userService.findById(user_id);
-		return user == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(user);
+		final var entity = userService.findById(user_id);
+		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/findByName/{user_name}")
 	public ResponseEntity<?> findByName(@PathVariable("user_name") String user_name) {
 		log.info("Parameter: userName={}", user_name);
 
-		final var user = userService.findByName(user_name);
-		return user == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(user);
+		final var entity = userService.findByName(user_name);
+		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/findByNameContaining/{user_name}")
 	public ResponseEntity<?> findByNameIgnoreCaseContaining(@PathVariable("user_name") String user_name) {
 		log.info("Parameter: userName={}", user_name);
 
-		final var user = userService.findByNameContaining(user_name);
-		return user.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(user);
+		final var entity = userService.findByNameContaining(user_name);
+		return entity.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/findByEmail/{user_email}")
 	public ResponseEntity<?> findByEmail(@PathVariable("user_email") String user_email) {
 		log.info("Parameter: userEmail={}", user_email);
 
-		final var user = userService.findByEmail(user_email);
-		return user == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(user);
+		final var entity = userService.findByEmail(user_email);
+		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/find/{find}")
@@ -82,9 +82,9 @@ public class UserController {
 			@PathVariable("find") String find) {
 		log.info("Parameter: find={}", find);
 
-		final var user = userService.find(find);
-		return user.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(user);
+		final var entity = userService.find(find);
+		return entity.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@PostMapping
