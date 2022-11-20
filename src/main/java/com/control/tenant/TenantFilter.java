@@ -21,6 +21,7 @@ public class TenantFilter implements Filter {
 			throws IOException, ServletException {
 		final var req = (HttpServletRequest) servletRequest;
 		final var tenantName = req.getHeader("X-TenantID");
+		
 		TenantContext.setCurrentTenant(tenantName);
 
 		try {

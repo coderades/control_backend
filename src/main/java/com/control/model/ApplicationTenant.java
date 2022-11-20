@@ -36,15 +36,24 @@ public class ApplicationTenant implements Serializable {
 	@Column(name = "application_id", columnDefinition = "uuid", nullable = false)
 	private String applicationId;
 
-	@Column(name = "application_tenant_name", length = 30, nullable = false, unique = true)
-	private String applicatioTenantName;
+	@Column(name = "application_tenant_is_enabled", nullable = false)
+	private Boolean applicationTenantIsEnabled;
 
-	@Column(name = "application_tenant_username", length = 50, nullable = false, unique = false)
-	private String applicatioTenantUserName;
+	@Column(name = "application_tenant_name", length = 30, nullable = false, unique = true)
+	private String applicationTenantName;
+	
+	@Column(name = "application_tenant_url", length = 500, nullable = false, unique = false)
+	private String applicationTenantUrl;
+
+	@Column(name = "application_tenant_user_name", length = 50, nullable = false, unique = false)
+	private String applicationTenantUserName;
 
 	@Column(name = "application_tenant_password", length = 70, nullable = false, unique = false)
-	private String applicatioTenantPassword;
+	private String applicationTenantPassword;
 
+	@Column(name = "application_tenant_driver_class_name", length = 50, nullable = false, unique = false)
+	private String applicationTenantDriverClassName;	
+	
 	@Column(name = "application_tenant_initialize", nullable = false)
 	private Boolean applicationTenantInitialize;
 

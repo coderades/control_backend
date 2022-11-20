@@ -24,6 +24,7 @@ public class TenantConfiguration {
 	@Bean
 	@ConfigurationProperties(prefix = "tenant")
 	public DataSource dataSource() {
+
 		final var files = Paths.get("src/main/resources/tenants").toFile().listFiles();
 		final Map<Object, Object> resolvedDataSources = new HashMap<>();
 
@@ -34,22 +35,23 @@ public class TenantConfiguration {
 			try {
 				tenantProperties.load(new FileInputStream(propertyFile));
 				
-				final var tenantId = tenantProperties.getProperty("name");
 				dataSourceBuilder.driverClassName(tenantProperties.getProperty("datasource.driver-class-name"));
 				dataSourceBuilder.username(tenantProperties.getProperty("datasource.username"));
 				dataSourceBuilder.password(tenantProperties.getProperty("datasource.password"));
 				dataSourceBuilder.url(tenantProperties.getProperty("datasource.url"));
-				resolvedDataSources.put(tenantId, dataSourceBuilder.build());
-			} catch (IOException exp) {
-				throw new RuntimeException("Problem in tenant datasource:" + exp);
+				
+				resolvedDataSources.put(tenantProperties.getProperty("name"), dataSourceBuilder.build());
+			} catch (IOException e) {
+				throw new RuntimeException("Problem in tenant datasource:" + e);
 			}
 		}
 
 		final var dataSource = new TenantRouting();
-		dataSource.setDefaultTargetDataSource(resolvedDataSources.get(defaultTenant));
-		dataSource.setTargetDataSources(resolvedDataSources);		
-		dataSource.afterPropertiesSet();
 		
+		dataSource.setDefaultTargetDataSource(resolvedDataSources.get(defaultTenant));
+		dataSource.setTargetDataSources(resolvedDataSources);
+		dataSource.afterPropertiesSet();
+
 		return dataSource;
 	}
 
