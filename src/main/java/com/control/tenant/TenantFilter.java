@@ -17,17 +17,17 @@ import org.springframework.stereotype.Component;
 public class TenantFilter implements Filter {
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
-		final var httpServletRequest = (HttpServletRequest) servletRequest;
-		final var tenantName = httpServletRequest.getHeader("X-TenantID");
-		final var tenantConnectionProvider = new TenantConnectionProvider();
-
-		tenantConnectionProvider.selectDataSource(tenantName);
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+			throws IOException, ServletException {
+		final var req = (HttpServletRequest) servletRequest;
+		final var tenantName = req.getHeader("X-TenantID");
+		
+		TenantContext.setCurrentTenant(tenantName);
 
 		try {
 			filterChain.doFilter(servletRequest, servletResponse);
-		} catch (IOException | ServletException e) {
-			e.printStackTrace();
+		} finally {
+			TenantContext.setCurrentTenant("");
 		}
 	}
 
