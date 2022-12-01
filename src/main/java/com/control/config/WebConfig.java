@@ -30,7 +30,7 @@ public class WebConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {		
 		http.httpBasic().and().authorizeRequests().and().csrf().disable();
 
-		roleRepository.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {
+		roleRepository.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {			
 			try {
 				if (Boolean.valueOf(method[2].toString())) {
 					http.authorizeRequests().antMatchers(HttpMethod.POST, method[1].toString() + "/**")

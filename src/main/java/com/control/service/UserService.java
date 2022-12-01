@@ -64,7 +64,7 @@ public class UserService {
 
 		log.info("Object: {}", entity);
 
-		return entity.isPresent() ? entity.get() : null;
+		return entity == null ? null : entity;
 	}
 
 	public List<?> find(String find) {
@@ -106,7 +106,7 @@ public class UserService {
 		BeanUtils.copyProperties(userPasswordUpdateDTO, entity);
 		entity.setUserPassword(new BCryptPasswordEncoder().encode(entity.getUserPassword()));
 
-		userRepository.saveUserPassword(entity.getUserId(), entity.getPassword());
+		userRepository.updateUserPassword(entity.getUserId(), entity.getPassword());
 		log.info("Status: OK");
 	}
 

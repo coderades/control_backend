@@ -19,7 +19,7 @@ public interface ApplicationRepository extends JpaRepository<Application, String
 	
 	List<?> findByApplicationNameIgnoreCaseContainingOrApplicationEmailIgnoreCaseContaining(String applicationName, String applicationEmail);
 		
-	@Query("SELECT application.applicationSecret FROM Application application WHERE (applicationIsEnabled = 1)")
+	@Query("SELECT applicationSecret FROM Application application WHERE (applicationIsEnabled = 1)")
 	String findApplicationSecret(String applicationId);
 	
 }
