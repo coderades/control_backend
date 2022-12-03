@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.control.model.dto.ApplicationInsertDTO;
 import com.control.model.dto.ApplicationUpdateDTO;
+import com.control.repository.ApplicationTenantRepository;
 import com.control.service.ApplicationService;
+import com.control.tenant.TenantDataSourceProvider;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,9 +28,19 @@ import lombok.extern.slf4j.Slf4j;
 public class ApplicationController {
 
 	private final ApplicationService applicationService;
+	private final ApplicationTenantRepository tenantInfoDao;	
 
-	public ApplicationController(ApplicationService applicationService) {
+	public ApplicationController(ApplicationService applicationService, ApplicationTenantRepository tenantInfoDao) {
 		this.applicationService = applicationService;
+		this.tenantInfoDao = tenantInfoDao;
+	}
+
+	@GetMapping("/a")
+	public void a() {
+		var a = tenantInfoDao.findAll();
+		for (var propertyFile : a) {
+			TenantDataSourceProvider.addDataSource(propertyFile);
+		}
 	}
 
 	@GetMapping
