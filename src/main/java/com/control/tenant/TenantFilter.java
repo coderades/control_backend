@@ -12,21 +12,25 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import com.control.controller.ApplicationTenantController;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Component
 @Order(1)
 public class TenantFilter implements Filter {
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-			throws IOException, ServletException {
-		final var req = (HttpServletRequest) servletRequest;
-		final var tenantName = req.getHeader("X-TenantID");
-		TenantContext.setCurrentTenant(tenantName);
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
+		final var httpServletRequest = (HttpServletRequest) servletRequest;
+		final var tenantId = httpServletRequest.getHeader("X-TenantID");
+		final var tenantConnectionProvider = new TenantConnectionProvider();
 
 		try {
+			tenantConnectionProvider.selectDataSource(tenantId);
 			filterChain.doFilter(servletRequest, servletResponse);
-		} finally {
-			TenantContext.setCurrentTenant("");
+		} catch (IOException | ServletException e) {
+			e.printStackTrace();
 		}
 	}
 

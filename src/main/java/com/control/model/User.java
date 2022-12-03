@@ -38,9 +38,9 @@ public class User implements UserDetails {
 	private static final long serialVersionUID = -1678201250382609358L;
 
 	@Id
+	@Column(name = "user_id", columnDefinition = "uuid", nullable = false, unique = true)
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(name = "user_id", columnDefinition = "uuid", nullable = false, unique = true)
 	private String userId;
 
 	@Column(name = "user_is_enabled", nullable = false)

@@ -55,6 +55,14 @@ public class RoleService {
 
 		return entity.size() == 0 ? null : entity;
 	}
+	
+	public List<Object[]> findByHasAnyRole(String applicationId) {
+		final var entity = roleRepository.findByHasAnyRole(applicationId);
+
+		log.info("Elements: {}, Object: {}", entity.size(), entity);
+
+		return entity.size() == 0 ? null : entity;
+	}	
 
 	@Transactional(rollbackFor = Exception.class)
 	public String save(RoleInsertDTO roleInsertDTO) {

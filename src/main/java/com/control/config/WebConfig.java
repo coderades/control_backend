@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.control.repository.RoleRepository;
+import com.control.service.RoleService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,17 +20,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WebConfig {
 
-	private final RoleRepository roleRepository;
-
-	public WebConfig(RoleRepository roleRepository) {
-		this.roleRepository = roleRepository;
+	private final RoleService roleService;
+	
+	public WebConfig(RoleService roleService) {
+		this.roleService = roleService;
 	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {		
 		http.httpBasic().and().authorizeRequests().and().csrf().disable();
 
-		roleRepository.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {
+		roleService.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {			
 			try {
 				if (Boolean.valueOf(method[2].toString())) {
 					http.authorizeRequests().antMatchers(HttpMethod.POST, method[1].toString() + "/**")
@@ -80,5 +80,5 @@ public class WebConfig {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
+	
 }
