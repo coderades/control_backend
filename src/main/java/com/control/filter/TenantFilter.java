@@ -1,4 +1,4 @@
-package com.control.tenant;
+package com.control.filter;
 
 import java.io.IOException;
 
@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import com.control.provider.TenantConnectionProvider;
 
 @Component
 @Order(1)
