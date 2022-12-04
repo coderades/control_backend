@@ -1,4 +1,4 @@
-package com.control.context;
+package com.control.tenant;
 
 public class TenantContext {
 

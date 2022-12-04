@@ -1,4 +1,4 @@
-package com.control.provider;
+package com.control.tenant;
 
 import java.util.ArrayList;
 import java.util.Arrays;

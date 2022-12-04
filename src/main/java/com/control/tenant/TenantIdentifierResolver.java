@@ -1,8 +1,6 @@
-package com.control.resolver;
+package com.control.tenant;
 
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
-
-import com.control.provider.TenantDataSourceProvider;
 
 public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver {
 

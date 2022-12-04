@@ -1,4 +1,4 @@
-package com.control.provider;
+package com.control.tenant;
 
 import javax.sql.DataSource;
 
@@ -9,12 +9,12 @@ public class TenantConnectionProvider extends AbstractDataSourceBasedMultiTenant
 	private static final long serialVersionUID = -7659357315355003531L;
 
 	@Override
-	public DataSource selectAnyDataSource() {
+	protected DataSource selectAnyDataSource() {
 		return TenantDataSourceProvider.getTenantDataSource("Default");
 	}
 
 	@Override
-	public DataSource selectDataSource(String tenantIdentifier) {
+	protected DataSource selectDataSource(String tenantIdentifier) {
 		return TenantDataSourceProvider.getTenantDataSource(tenantIdentifier);
 	}
 

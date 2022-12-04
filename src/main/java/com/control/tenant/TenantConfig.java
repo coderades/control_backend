@@ -1,9 +1,8 @@
-package com.control.config;
+package com.control.tenant;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.control.provider.TenantDataSourceProvider;
 import com.control.service.ApplicationTenantService;
 
 @Configuration
