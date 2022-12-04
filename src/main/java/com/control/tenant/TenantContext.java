@@ -9,12 +9,10 @@ public class TenantContext {
 	}
 
 	public static String getCurrentTenant() {
-		System.out.println(2);
 		return CURRENT_TENANT.get();
 	}
 
 	public static void setCurrentTenant(String tenant) {
-		System.out.println(2);
 		CURRENT_TENANT.set(tenant);
 	}
 

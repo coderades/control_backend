@@ -18,10 +18,7 @@ import com.control.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 这个类负责根据租户ID来提供对应的数据源
- * 
- * @author lanyuanxiaoyao
- * @version 1.0
+ * @see https://github.com/lanyuanxiaoyao/multi-tenant
  */
 @Slf4j
 public class TenantDataSourceProvider {
@@ -54,7 +51,8 @@ public class TenantDataSourceProvider {
 			log.info("Tenant: tenantId {} found", tenantId);
 			return dataSourceMap.get(TenantId);
 		} else {
-			ResponseEntity.status(HttpStatus.FORBIDDEN).body("Tenant: tenantId " + tenantId + " not found");
+			ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+					new StringBuilder().append("Tenant: tenantId ").append(tenantId).append(" not found").toString());
 			log.warn("Tenant: tenantId {} not found", tenantId);
 			return dataSourceMap.get("Default");
 		}

@@ -16,10 +16,8 @@ public class TenantConfig {
 
 	@Bean
 	public void tenantLoad() {
-		final var entity = applicationTenantService.findAll();	
-		for (var propertyFile : entity) {
-			TenantDataSourceProvider.addDataSource(propertyFile);
-		}
+		final var entity = applicationTenantService.findAll();
+		entity.forEach(TenantDataSourceProvider::addDataSource);
 	}
-	
+
 }

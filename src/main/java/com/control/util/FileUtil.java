@@ -6,18 +6,19 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class FileUtil {
 
-	public static Map<String, String> read(String filePath, String divisiveCharacter, String contains) {
+	private FileUtil() {
+		throw new IllegalStateException("Utility class");
+	}
+
+	public static Map<String, String> read(String filePath, String divisiveCharacter, String contain) {
 		final var map = new HashMap<String, String>();
 
-		try (Stream<String> lines = Files.lines(Paths.get(filePath))) {
-			lines.filter(line -> line.contains(contains)).forEach(line -> {
-				var keyValuePair = line.split(divisiveCharacter, 2);
-				map.put(keyValuePair[0], keyValuePair[1]);
-			});
+		try (var lines = Files.lines(Paths.get(filePath))) {
+			lines.filter(line -> line.contains(contain)).map(line -> line.split(divisiveCharacter, 2))
+					.forEach(keyValuePair -> map.put(keyValuePair[0], keyValuePair[1]));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -29,15 +30,8 @@ public class FileUtil {
 		final var map = new HashMap<String, String>();
 
 		for (var contain : contains) {
-			try (Stream<String> lines = Files.lines(Paths.get(filePath))) {
-				lines.filter(line -> line.contains(contain)).forEach(line -> {
-					var keyValuePair = line.split(divisiveCharacter, 2);
-					map.put(keyValuePair[0], keyValuePair[1]);
-				});
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+			map.putAll(read(filePath, divisiveCharacter, contain));
+		};
 
 		return map;
 	}
