@@ -29,7 +29,6 @@ public class WebConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {		
 		http.httpBasic().and().authorizeRequests().and().csrf().disable();
-
 		roleService.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {			
 			try {
 				if (Boolean.valueOf(method[2].toString())) {
@@ -67,7 +66,7 @@ public class WebConfig {
 		http.logout().addLogoutHandler((request, response, auth) -> {
 			MDC.put("sessionId", request.getSession().getId());
 			try {
-				log.info("Logout: OK from username {}", auth.getName());
+				log.info("Logout: OK from username={}", auth.getName());
 			} catch (Exception e) {
 				log.error("Logout: There is no active login for this session");
 			}

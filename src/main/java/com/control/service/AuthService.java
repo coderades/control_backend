@@ -1,5 +1,6 @@
 package com.control.service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.slf4j.MDC;
@@ -32,10 +33,10 @@ public class AuthService implements UserDetailsService {
 
 		MDC.put("sessionId", RequestContextHolder.currentRequestAttributes().getSessionId());
 
-		if (entity == null) {
-			log.warn("Login: Fail from userName {}", username);
+		if (Objects.isNull(entity)) {
+			log.warn("Login: Fail from userName={}", username);
 		} else {
-			log.info("Login: OK from userName {} linked to userId {}", username, entity.getUserId());
+			log.info("Login: OK from userName={} linked to userId={}", username, entity.getUserId());
 		}
 
 		return Optional

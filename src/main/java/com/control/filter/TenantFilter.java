@@ -1,4 +1,4 @@
-package com.control.tenant;
+package com.control.filter;
 
 import java.io.IOException;
 
@@ -9,11 +9,17 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import com.control.provider.TenantConnectionProvider;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Component
 @Order(1)
+@Slf4j
 public class TenantFilter implements Filter {
 
 	@Override
@@ -23,10 +29,12 @@ public class TenantFilter implements Filter {
 		final var tenantConnectionProvider = new TenantConnectionProvider();
 
 		try {
+			MDC.put("sessionId", httpServletRequest.getSession().getId());
+			log.info("Tenant: tenantId={}", tenantId);
 			tenantConnectionProvider.selectDataSource(tenantId);
 			filterChain.doFilter(servletRequest, servletResponse);
 		} catch (IOException | ServletException e) {
-			e.printStackTrace();
+			log.error("Tenant: {}", e);
 		}
 	}
 

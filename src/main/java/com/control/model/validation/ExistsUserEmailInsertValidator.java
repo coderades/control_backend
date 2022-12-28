@@ -5,6 +5,9 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.control.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ExistsUserEmailInsertValidator implements ConstraintValidator<ExistsUserEmailInsert, String> {
 
 	private final UserRepository userRepository;
@@ -15,10 +18,20 @@ public class ExistsUserEmailInsertValidator implements ConstraintValidator<Exist
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		context.disableDefaultConstraintViolation();
-		context.buildConstraintViolationWithTemplate(new StringBuilder().append("Conflict: UserEmail ").append(value)
-				.append(" is already in use").toString()).addConstraintViolation();
+		if (userRepository.existsByUserEmail(value)) {
+			final var message = new StringBuilder().append("Validator: userEmail=").append(value)
+					.append(" does not exist").toString();
 
-		return userRepository.existsByUserEmail(value) ? false : true;
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
+
+			log.warn("Validator: return={}, message={}", false, message);
+
+			return false;
+		}
+
+		log.info("Validator: return={}", true);
+
+		return true;
 	}
 }

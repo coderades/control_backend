@@ -1,6 +1,7 @@
 package com.control.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.Application;
+import com.control.model.dto.ApplicationDTO;
 import com.control.model.dto.ApplicationInsertDTO;
 import com.control.model.dto.ApplicationUpdateDTO;
 import com.control.repository.ApplicationRepository;
@@ -25,53 +27,45 @@ public class ApplicationService {
 		this.applicationRepository = applicationRepository;
 	}
 
-	public Page<?> findAll(Pageable pageable) {
+	public Page<Application> findAll(Pageable pageable) {
 		final var entity = applicationRepository.findAll(pageable);
 
-		log.info("Elements: {}, Object: {}", entity.getSize(), entity.getContent());
+		log.info("Return: Elements={}, Object={}", entity.getSize(), entity);
 
 		return entity;
 	}
 
-	public Application findById(String applicationId) {
+	public Optional<Application> findById(String applicationId) {
 		final var entity = applicationRepository.findById(applicationId);
 
-		log.info("Object: {}", entity);
+		log.info("Return: Object={}", entity);
 
-		return entity.isPresent() ? entity.get() : null;
+		return entity;
 	}
 
-	public Application findByName(String applicationName) {
-		final var entity = applicationRepository.findByApplicationName(applicationName);
-
-		log.info("Object: {}", entity);
-
-		return entity == null ? null : entity;
-	}
-
-	public List<?> findByNameContaining(String applicationName) {
+	public List<Application> findByNameContaining(String applicationName) {
 		final var entity = applicationRepository.findByApplicationNameIgnoreCaseContaining(applicationName);
 
-		log.info("Elements: {}, Object: {}", entity.size(), entity);
+		log.info("Return: Elements={}, Object={}", entity.size(), entity);
 
-		return entity == null ? null : entity;
+		return entity;
 	}
 
-	public List<?> findByEmailContaining(String applicationEmail) {
+	public List<Application> findByEmailContaining(String applicationEmail) {
 		final var entity = applicationRepository.findByApplicationEmailIgnoreCaseContaining(applicationEmail);
 
-		log.info("Object: {}", entity);
+		log.info("Return: Object={}", entity);
 
-		return entity == null ? null : entity;
+		return entity;
 	}
 
-	public List<?> find(String find) {
+	public List<Application> find(String find) {
 		final var entity = applicationRepository
 				.findByApplicationNameIgnoreCaseContainingOrApplicationEmailIgnoreCaseContaining(find, find);
 
-		log.info("Elements: {}, Object: {}", entity.size(), entity);
+		log.info("Return: Elements={}, Object={}", entity.size(), entity);
 
-		return entity == null ? null : entity;
+		return entity;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -97,8 +91,8 @@ public class ApplicationService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(String applicationId) {
-		applicationRepository.deleteById(applicationId);
+	public void delete(ApplicationDTO applicationIdDTO) {
+		applicationRepository.deleteById(applicationIdDTO.getApplicationId());
 		log.info("Status: OK");
 	}
 

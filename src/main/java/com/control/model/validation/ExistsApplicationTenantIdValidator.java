@@ -3,33 +3,33 @@ package com.control.model.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.control.repository.ApplicationRepository;
+import com.control.repository.ApplicationTenantRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ExistsApplicationIdValidator implements ConstraintValidator<ExistsApplicationId, String> {
+public class ExistsApplicationTenantIdValidator implements ConstraintValidator<ExistsApplicationTenantId, String> {
 
-	private final ApplicationRepository applicationRepository;
+	private final ApplicationTenantRepository applicationTenantRepository;
 
-	public ExistsApplicationIdValidator(ApplicationRepository applicationRepository) {
-		this.applicationRepository = applicationRepository;
+	public ExistsApplicationTenantIdValidator(ApplicationTenantRepository applicationTenantRepository) {
+		this.applicationTenantRepository = applicationTenantRepository;
 	}
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		if (applicationRepository.existsById(value)) {
-			final var message = new StringBuilder().append("Validator: applicationId=").append(value)
+		if (applicationTenantRepository.existsById(value)) {
+			final var message = new StringBuilder().append("Validator: applicationTenantId=").append(value)
 					.append(" does not exist").toString();
 
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-			
+
 			log.warn("Validator: return={}, message={}", false, message);
 
 			return false;
 		}
-		
+
 		log.info("Validator: return={}", true);
 
 		return true;

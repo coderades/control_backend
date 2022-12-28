@@ -1,6 +1,7 @@
 package com.control.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,34 +25,34 @@ public class UserRolesService {
 		this.roleRepository = roleRepository;
 	}
 
-	public Page<?> findAll(Pageable pageable) {
+	public Page<Role> findAll(Pageable pageable) {
 		final var entity = roleRepository.findAll(pageable);
 
-		log.info("Elements: {}, Object: {}", entity.getSize(), entity.getContent());
+		log.info("Return: Elements={}, Object={}", entity.getSize(), entity);
 
 		return entity;
 	}
 
-	public Role findById(String roleId) {
+	public Optional<Role> findById(String roleId) {
 		final var entity = roleRepository.findById(roleId);
 
-		log.info("Object: {}", entity);
+		log.info("Return: Object={}", entity);
 
-		return entity.isPresent() ? entity.get() : null;
+		return entity;
 	}
 
 	public Role findByName(String roleName) {
 		final var entity = roleRepository.findByRoleName(roleName);
 
-		log.info("Object: {}", entity);
+		log.info("Return: Object={}", entity);
 
-		return entity == null ? null : entity;
+		return entity;
 	}
 
 	public List<?> findByNameContaining(String roleName) {
 		final var entity = roleRepository.findByRoleNameIgnoreCaseContaining(roleName);
 
-		log.info("Elements: {}, Object: {}", entity.size(), entity);
+		log.info("Return: Elements={}, Object={}", entity.size(), entity);
 
 		return entity.size() == 0 ? null : entity;
 	}

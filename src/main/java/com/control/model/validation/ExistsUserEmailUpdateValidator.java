@@ -6,6 +6,9 @@ import javax.validation.ConstraintValidatorContext;
 import com.control.model.dto.UserUpdateDTO;
 import com.control.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ExistsUserEmailUpdateValidator implements ConstraintValidator<ExistsUserEmailUpdate, UserUpdateDTO> {
 
 	private final UserRepository userRepository;
@@ -20,12 +23,20 @@ public class ExistsUserEmailUpdateValidator implements ConstraintValidator<Exist
 
 	@Override
 	public boolean isValid(UserUpdateDTO userUpdateDTO, ConstraintValidatorContext context) {
-		context.disableDefaultConstraintViolation();
-		context.buildConstraintViolationWithTemplate(new StringBuilder().append("Conflict: UserEmail ")
-				.append(userUpdateDTO.getUserEmail()).append(" is already in use").toString()).addConstraintViolation();
+		if (userRepository.existsByUserIdIsNotAndUserEmail(userUpdateDTO.getUserId(), userUpdateDTO.getUserEmail())) {
+			final var message = new StringBuilder().append("Validator: userId=").append("userUpdateDTO.getUserId()")
+					.append(", userEmail=").append(userUpdateDTO.getUserEmail()).append(" does not exist").toString();
 
-		return userRepository.existsByUserIdIsNotAndUserEmail(userUpdateDTO.getUserId(), userUpdateDTO.getUserEmail())
-				? false
-				: true;
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
+
+			log.warn("Validator: return={}, message={}", false, message);
+
+			return false;
+		}
+
+		log.info("Validator: return={}", true);
+
+		return true;
 	}
 }

@@ -19,8 +19,7 @@ public class SessionListner implements HttpSessionListener {
 	@Override
 	public void sessionCreated(HttpSessionEvent httpSessionEvent) {
 		MDC.put("sessionId", httpSessionEvent.getSession().getId());
-		log.info("Session: {}", "Created");
-
+		log.info("Session: Created");
 		counter.incrementAndGet();
 		updateSessionCounter(httpSessionEvent);
 	}
@@ -30,7 +29,6 @@ public class SessionListner implements HttpSessionListener {
 		try {
 			MDC.put("sessionId", httpSessionEvent.getSession().getId());
 			log.info("Session: Destroyed");
-
 			counter.decrementAndGet();
 			updateSessionCounter(httpSessionEvent);
 		} catch (Exception e) {
@@ -42,7 +40,6 @@ public class SessionListner implements HttpSessionListener {
 	private void updateSessionCounter(HttpSessionEvent httpSessionEvent) {
 		MDC.put("sessionId", httpSessionEvent.getSession().getId());
 		log.info("Session: Total active session are {}", counter.get());
-
 		httpSessionEvent.getSession().getServletContext().setAttribute("activeSession", counter.get());
 	}
 

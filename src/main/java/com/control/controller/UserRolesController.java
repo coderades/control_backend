@@ -27,18 +27,15 @@ public class UserRolesController {
 	public ResponseEntity<?> findAll(Pageable pageable) {
 		log.info("Pagination: {}", pageable);
 
-		final var entity = userRolesService.findAll(pageable);
-		return entity.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		return ResponseEntity.status(HttpStatus.OK).body(userRolesService.findAll(pageable));
 	}
 
-	@GetMapping("/{user_roles_id}")
-	public ResponseEntity<?> findById(@PathVariable("user_roles_id") String user_roles_id) {
-		log.info("Parameter: userRolesId={}", user_roles_id);
+	@GetMapping("/{userRolesId}")
+	public ResponseEntity<?> findById(@PathVariable("userRolesId") String userRolesId) {
+		log.info("Parameter: userRolesId={}", userRolesId);
 
-		final var entity = userRolesService.findById(user_roles_id);
-		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		final var entity = userRolesService.findById(userRolesId);
+		return ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 }

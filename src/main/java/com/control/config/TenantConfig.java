@@ -1,8 +1,9 @@
-package com.control.tenant;
+package com.control.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.control.provider.TenantDataSourceProvider;
 import com.control.service.ApplicationTenantService;
 
 @Configuration
@@ -16,8 +17,7 @@ public class TenantConfig {
 
 	@Bean
 	public void tenantLoad() {
-		final var entity = applicationTenantService.findAll();
-		entity.forEach(TenantDataSourceProvider::addDataSource);
+		applicationTenantService.findAll().forEach(TenantDataSourceProvider::addDataSource);
 	}
 
 }

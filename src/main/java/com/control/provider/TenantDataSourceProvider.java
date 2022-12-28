@@ -1,10 +1,10 @@
-package com.control.tenant;
+package com.control.provider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 
 import javax.sql.DataSource;
 
@@ -45,15 +45,15 @@ public class TenantDataSourceProvider {
 	}
 
 	public static DataSource getTenantDataSource(String tenantId) {
-		TenantId = Optional.ofNullable(tenantId).orElse("");
+		TenantId = Objects.isNull(tenantId) || tenantId.isEmpty() || tenantId.isBlank() ? "Default" : tenantId;
 
 		if (dataSourceMap.containsKey(TenantId)) {
-			log.info("Tenant: tenantId {} found", tenantId);
+			log.info("Tenant: tenantId={} found", TenantId);
 			return dataSourceMap.get(TenantId);
 		} else {
 			ResponseEntity.status(HttpStatus.FORBIDDEN).body(
 					new StringBuilder().append("Tenant: tenantId ").append(tenantId).append(" not found").toString());
-			log.warn("Tenant: tenantId {} not found", tenantId);
+			log.warn("Tenant: tenantId={} not found", TenantId);
 			return dataSourceMap.get("Default");
 		}
 	}
@@ -65,9 +65,9 @@ public class TenantDataSourceProvider {
 		dataSourceBuilder.password(applicationTenant.getApplicationTenantPassword());
 		dataSourceBuilder.driverClassName(applicationTenant.getApplicationTenantDriverClassName());
 
-		dataSourceMap
-				.put(applicationTenant.getApplicationTenantId() == null ? applicationTenant.getApplicationTenantName()
-						: applicationTenant.getApplicationTenantId().replace("-", ""), dataSourceBuilder.build());
+		dataSourceMap.put(Objects.isNull(applicationTenant.getApplicationTenantId())
+				? applicationTenant.getApplicationTenantName()
+				: applicationTenant.getApplicationTenantId().replace("-", ""), dataSourceBuilder.build());
 	}
 
 }

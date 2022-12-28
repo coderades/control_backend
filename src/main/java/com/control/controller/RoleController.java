@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.control.model.dto.RoleIdDTO;
 import com.control.model.dto.RoleInsertDTO;
 import com.control.model.dto.RoleUpdateDTO;
 import com.control.service.RoleService;
@@ -36,58 +37,56 @@ public class RoleController {
 		log.info("Pagination: {}", pageable);
 
 		final var entity = roleService.findAll(pageable);
-		return entity.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		return !entity.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(entity)
+				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 
-	@GetMapping("/{role_id}")
-	public ResponseEntity<?> findById(@PathVariable("role_id") String role_id) {
-		log.info("Parameter: roleId={}", role_id);
+	@GetMapping("/{roleId}")
+	public ResponseEntity<?> findById(@PathVariable("roleId") String roleId) {
+		log.info("Parameter: roleId={}", roleId);
 
-		final var entity = roleService.findById(role_id);
-		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		final var entity = roleService.findById(roleId);
+		return entity.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(entity)
+				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 
-	@GetMapping("/findByName/{role_name}")
-	public ResponseEntity<?> findByName(@PathVariable("role_name") String role_name) {
-		log.info("Parameter: roleName={}", role_name);
+	@GetMapping("/findByName/{roleName}")
+	public ResponseEntity<?> findByName(@PathVariable("role_name") String roleName) {
+		log.info("Parameter: roleName={}", roleName);
 
-		final var entity = roleService.findByName(role_name);
-		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		final var entity = roleService.findByName(roleName);
+		return entity != null ? ResponseEntity.status(HttpStatus.OK).body(entity)
+				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 
-	@GetMapping("/findByNameContaining/{role_name}")
-	public ResponseEntity<?> findByNameIgnoreCaseContaining(@PathVariable("role_name") String role_name) {
-		log.info("Parameter: roleName={}", role_name);
+	@GetMapping("/findByNameContaining/{roleName}")
+	public ResponseEntity<?> findByNameIgnoreCaseContaining(@PathVariable("roleName") String roleName) {
+		log.info("Parameter: roleName={}", roleName);
 
-		final var entity = roleService.findByNameContaining(role_name);
-		return entity.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		final var entity = roleService.findByNameContaining(roleName);
+		return !entity.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(entity)
+				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody RoleInsertDTO roleInsertDTO) {
-		log.info("Parameter: object {}", roleInsertDTO.toString());
+		log.info("Parameter: object={}", roleInsertDTO.toString());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(roleService.save(roleInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody RoleUpdateDTO roleUpdateDTO) {
-		log.info("Parameter: object {}", roleUpdateDTO);
-
+		log.info("Parameter: object={}", roleUpdateDTO);
 		roleService.save(roleUpdateDTO);
 
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
-	@DeleteMapping("/{role_id}")
-	public ResponseEntity<?> delete(@PathVariable("role_id") String role_id) {
-		log.info("Parameter: roleId={}", role_id);
-
-		roleService.delete(role_id);
+	@DeleteMapping()
+	public ResponseEntity<?> delete(@Valid @RequestBody RoleIdDTO roleIdDTO) {
+		log.info("Parameter: roleId={}", roleIdDTO.getRoleId());
+		roleService.delete(roleIdDTO.getRoleId());
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

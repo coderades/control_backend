@@ -1,6 +1,7 @@
 package com.control.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.User;
+import com.control.model.dto.UserDTO;
 import com.control.model.dto.UserInsertDTO;
 import com.control.model.dto.UserPasswordUpdateDTO;
 import com.control.model.dto.UserUpdateDTO;
@@ -27,52 +29,52 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public Page<?> findAll(Pageable pageable) {
+	public Page<User> findAll(Pageable pageable) {
 		final var entity = userRepository.findAll(pageable);
 
-		log.info("Elements: {}, Object: {}", entity.getSize(), entity.getContent());
+		log.info("Return: Elements={}, Object={}", entity.getSize(), entity);
 
 		return entity;
 	}
 
-	public User findById(String userId) {
+	public Optional<User> findById(String userId) {
 		final var entity = userRepository.findById(userId);
 
-		log.info("Object: {}", entity);
+		log.info("Return: Object={}", entity);
 
-		return entity.isPresent() ? entity.get() : null;
+		return entity;
 	}
 
 	public User findByName(String userName) {
 		final var entity = userRepository.findByUserName(userName);
 
-		log.info("Object: {}", entity);
+		log.info("Return: Object={}", entity);;
 
-		return entity == null ? null : entity;
-	}
-
-	public List<?> findByNameContaining(String userName) {
-		final var entity = userRepository.findByUserNameIgnoreCaseContaining(userName);
-
-		log.info("Elements: {}, Object: {}", entity.size(), entity);
-
-		return entity == null ? null : entity;
+		return entity;
 	}
 
 	public User findByEmail(String userEmail) {
 		final var entity = userRepository.findByUserEmail(userEmail);
 
-		log.info("Object: {}", entity);
+		log.info("Return: Object={}", entity);
 
-		return entity == null ? null : entity;
+		return entity;
 	}
 
-	public List<?> find(String find) {
+	public List<User> findByNameContaining(String userName) {
+		final var entity = userRepository.findByUserNameIgnoreCaseContaining(userName);
+
+		log.info("Return: Elements={}, Object={}", entity.size(), entity);
+
+		return entity;
+	}
+
+	public List<User> find(String find) {
 		final var entity = userRepository.findByUserNameIgnoreCaseContainingOrUserEmailIgnoreCaseContaining(find, find);
 
-		log.info("Elements: {}, Object: {}", entity.size(), entity);
+		log.info("Return: Elements={}, Object={}", entity.size(), entity);
 
-		return entity == null ? null : entity;
+		return entity;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -111,8 +113,8 @@ public class UserService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(String userId) {
-		userRepository.deleteById(userId);
+	public void delete(UserDTO userIdDTO) {
+		userRepository.deleteById(userIdDTO.getUserId());
 		log.info("Status: OK");
 	}
 }

@@ -3,24 +3,24 @@ package com.control.model.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.control.repository.UserRepository;
+import com.control.repository.RoleRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ExistsUserNameInsertValidator implements ConstraintValidator<ExistsUserNameInsert, String> {
+public class ExistsRoleIdValidator implements ConstraintValidator<ExistsRoleId, String> {
 
-	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
 
-	public ExistsUserNameInsertValidator(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	public ExistsRoleIdValidator(RoleRepository roleRepository) {
+		this.roleRepository = roleRepository;
 	}
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		if (userRepository.existsByUserName(value)) {
-			final var message = new StringBuilder().append("Conflict: userName=").append(value)
-					.append(" is already in use").toString();
+		if (roleRepository.existsById(value)) {
+			final var message = new StringBuilder().append("Validator: roleId=").append(value).append(" does not exist")
+					.toString();
 
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();

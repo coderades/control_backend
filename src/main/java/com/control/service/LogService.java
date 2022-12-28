@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.control.model.Log;
+import com.control.model.dto.LogSelectDTO;
 import com.control.repository.LogRepository;
 
 @Service
@@ -17,14 +19,16 @@ public class LogService {
 		this.logRepository = logRepository;
 	}
 
-	public Page<?> findAll(Pageable pageable) {
+	public Page<Log> findAll(Pageable pageable) {
 		final var entity = logRepository.findAll(pageable);
 		return entity;
 	}
 
-	public List<?> findByLevel(String logLevel) {
-		final var entity = logRepository.findByLogLevel(logLevel);
-		return entity == null ? null : entity;
+	public List<Log> findByLog(LogSelectDTO logSelectDTO) {
+		final var entity = logRepository.findByLog(logSelectDTO.getLogId(), logSelectDTO.getLogCreatedStart(),
+				logSelectDTO.getLogCreatedEnd(), logSelectDTO.getLogLevel(), logSelectDTO.getLogClass(),
+				logSelectDTO.getLogMethod(), logSelectDTO.getLogMessage());
+		return entity;
 	}
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.control.model.dto.UserDTO;
 import com.control.model.dto.UserInsertDTO;
 import com.control.model.dto.UserPasswordUpdateDTO;
 import com.control.model.dto.UserUpdateDTO;
@@ -37,44 +38,40 @@ public class UserController {
 		log.info("Pagination: {}", pageable);
 
 		final var entity = userService.findAll(pageable);
-		return entity.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		return !entity.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(entity)
+				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 
-	@GetMapping("/{user_id}")
-	public ResponseEntity<?> findById(@PathVariable("user_id") String user_id) {
-		log.info("Parameter: userId={}", user_id);
+	@GetMapping("/{userId}")
+	public ResponseEntity<?> findById(@PathVariable("userId") String userId) {
+		log.info("Parameter: userId={}", userId);
 
-		final var entity = userService.findById(user_id);
-		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		final var entity = userService.findById(userId);
+		return ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
-	@GetMapping("/findByName/{user_name}")
-	public ResponseEntity<?> findByName(@PathVariable("user_name") String user_name) {
-		log.info("Parameter: userName={}", user_name);
+	@GetMapping("/findByName/{userName}")
+	public ResponseEntity<?> findByName(@PathVariable("user_name") String userName) {
+		log.info("Parameter: userName={}", userName);
 
-		final var entity = userService.findByName(user_name);
-		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		final var entity = userService.findByName(userName);
+		return ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
-	@GetMapping("/findByNameContaining/{user_name}")
-	public ResponseEntity<?> findByNameIgnoreCaseContaining(@PathVariable("user_name") String user_name) {
-		log.info("Parameter: userName={}", user_name);
+	@GetMapping("/findByEmail/{userEmail}")
+	public ResponseEntity<?> findByEmail(@PathVariable("user_email") String userEmail) {
+		log.info("Parameter: userEmail={}", userEmail);
 
-		final var entity = userService.findByNameContaining(user_name);
-		return entity.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		final var entity = userService.findByEmail(userEmail);
+		return  ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
-	@GetMapping("/findByEmail/{user_email}")
-	public ResponseEntity<?> findByEmail(@PathVariable("user_email") String user_email) {
-		log.info("Parameter: userEmail={}", user_email);
+	@GetMapping("/findByNameContaining/{userName}")
+	public ResponseEntity<?> findByNameIgnoreCaseContaining(@PathVariable("userName") String userName) {
+		log.info("Parameter: userName={}", userName);
 
-		final var entity = userService.findByEmail(user_email);
-		return entity == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		final var entity = userService.findByNameContaining(userName);
+		return ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@GetMapping("/find/{find}")
@@ -83,21 +80,19 @@ public class UserController {
 		log.info("Parameter: find={}", find);
 
 		final var entity = userService.find(find);
-		return entity.size() == 0 ? ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-				: ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		return ResponseEntity.status(HttpStatus.FOUND).body(entity);
 	}
 
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody UserInsertDTO userInsertDTO) {
-		log.info("Parameter: object {}", userInsertDTO.toString());
+		log.info("Parameter: object={}", userInsertDTO.toString());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(userInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
-		log.info("Parameter: object {}", userUpdateDTO);
-
+		log.info("Parameter: object={}", userUpdateDTO);
 		userService.save(userUpdateDTO);
 
 		return ResponseEntity.status(HttpStatus.OK).build();
@@ -105,18 +100,16 @@ public class UserController {
 
 	@PutMapping("/password")
 	public ResponseEntity<?> savePassword(@Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO) {
-		log.info("Parameter: object {}", userPasswordUpdateDTO);
-
+		log.info("Parameter: object={}", userPasswordUpdateDTO);
 		userService.savePassword(userPasswordUpdateDTO);
 
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
-	@DeleteMapping("/{user_id}")
-	public ResponseEntity<?> delete(@PathVariable("user_id") String user_id) {
-		log.info("Parameter: userId={}", user_id);
-
-		userService.delete(user_id);
+	@DeleteMapping()
+	public ResponseEntity<?> delete(@Valid @RequestBody UserDTO userDTO) {
+		log.info("Parameter: userId={}", userDTO.getUserId());
+		userService.delete(userDTO);
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

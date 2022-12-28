@@ -56,6 +56,6 @@ public class Log implements Serializable {
 	private String logMethod;
 	
 	@Column(name = "log_message", nullable = false, unique = false)
-	private String log_message;
+	private String logMessage;
 	
 }

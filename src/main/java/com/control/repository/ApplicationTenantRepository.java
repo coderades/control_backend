@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.control.model.ApplicationTenant;
 
-public interface ApplicationTenantRepository extends JpaRepository<ApplicationTenant, Integer> {
-	
+public interface ApplicationTenantRepository extends JpaRepository<ApplicationTenant, String> {
+		
 	@Query("SELECT applicationTenant FROM ApplicationTenant applicationTenant INNER JOIN Application application ON applicationTenant.applicationId = application.applicationId WHERE (applicationTenant.applicationTenantIsEnabled = 1) AND (application.applicationIsEnabled = 1)")
-	List<?> findByDataSource();
+	List<ApplicationTenant> findByDataSource();
 	
 }

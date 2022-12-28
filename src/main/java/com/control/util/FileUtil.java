@@ -29,9 +29,7 @@ public class FileUtil {
 	public static Map<String, String> read(String filePath, String divisiveCharacter, List<String> contains) {
 		final var map = new HashMap<String, String>();
 
-		for (var contain : contains) {
-			map.putAll(read(filePath, divisiveCharacter, contain));
-		};
+		contains.forEach(contain -> map.putAll(read(filePath, divisiveCharacter, contain)));
 
 		return map;
 	}
