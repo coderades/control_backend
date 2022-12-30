@@ -1,4 +1,4 @@
-package com.control.model.dto;
+package com.control.model.dto.log;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

@@ -91,8 +91,8 @@ public class ApplicationService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(ApplicationDTO applicationIdDTO) {
-		applicationRepository.deleteById(applicationIdDTO.getApplicationId());
+	public void delete(ApplicationDTO applicationDTO) {
+		applicationRepository.deleteById(applicationDTO.getApplicationId());
 		log.info("Status: OK");
 	}
 

@@ -1,4 +1,4 @@
-package com.control.repository;
+package com.control.repository.log;
 
 import java.time.LocalDateTime;
 import java.util.List;

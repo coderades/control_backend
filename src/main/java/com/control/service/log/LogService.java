@@ -1,4 +1,4 @@
-package com.control.service;
+package com.control.service.log;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.control.model.Log;
-import com.control.model.dto.LogSelectDTO;
-import com.control.repository.LogRepository;
+import com.control.model.dto.log.LogSelectDTO;
+import com.control.repository.log.LogRepository;
 
 @Service
 public class LogService {

@@ -48,7 +48,7 @@ public class UserService {
 	public User findByName(String userName) {
 		final var entity = userRepository.findByUserName(userName);
 
-		log.info("Return: Object={}", entity);;
+		log.info("Return: Object={}", entity);
 
 		return entity;
 	}

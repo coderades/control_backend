@@ -1,4 +1,4 @@
-package com.control.controller;
+package com.control.controller.log;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.model.dto.LogSelectDTO;
-import com.control.service.LogService;
+import com.control.model.dto.log.LogSelectDTO;
+import com.control.service.log.LogService;
 
 import lombok.extern.slf4j.Slf4j;
 

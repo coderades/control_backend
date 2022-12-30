@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.control.model.validation.ExistsApplicationId;
 import com.control.model.validation.ExistsApplicationTenantId;
 
 import lombok.Data;
@@ -23,6 +24,7 @@ public class ApplicationTenantUpdateDTO implements Serializable {
 	private String applicationTenantId;
 
 	@NotNull(message = "It cannot be null")
+	@ExistsApplicationId
 	private String applicationId;
 
 	@NotNull(message = "It cannot be null")
