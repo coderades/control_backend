@@ -1,10 +1,9 @@
 package com.control.model.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import com.control.repository.ApplicationRepository;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -24,12 +23,12 @@ public class ExistsApplicationIdValidator implements ConstraintValidator<ExistsA
 
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-			
+
 			log.warn("Validator: return={}, message={}", false, message);
 
 			return false;
 		}
-		
+
 		log.info("Validator: return={}", true);
 
 		return true;

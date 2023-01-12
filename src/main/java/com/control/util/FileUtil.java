@@ -13,11 +13,11 @@ public class FileUtil {
 		throw new IllegalStateException("Utility class");
 	}
 
-	public static Map<String, String> read(String filePath, String divisiveCharacter, String contain) {
+	public static Map<String, String> read(String filePath, String delimit, String contain) {
 		final var map = new HashMap<String, String>();
 
 		try (var lines = Files.lines(Paths.get(filePath))) {
-			lines.filter(line -> line.contains(contain)).map(line -> line.split(divisiveCharacter, 2))
+			lines.filter(line -> line.contains(contain)).map(line -> line.split(delimit, 2))
 					.forEach(keyValuePair -> map.put(keyValuePair[0], keyValuePair[1]));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -26,10 +26,10 @@ public class FileUtil {
 		return map;
 	}
 
-	public static Map<String, String> read(String filePath, String divisiveCharacter, List<String> contains) {
+	public static Map<String, String> read(String filePath, String delimit, List<String> contains) {
 		final var map = new HashMap<String, String>();
 
-		contains.forEach(contain -> map.putAll(read(filePath, divisiveCharacter, contain)));
+		contains.forEach(contain -> map.putAll(read(filePath, delimit, contain)));
 
 		return map;
 	}

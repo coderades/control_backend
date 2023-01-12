@@ -1,7 +1,5 @@
 package com.control.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +17,7 @@ import com.control.model.dto.ApplicationInsertDTO;
 import com.control.model.dto.ApplicationUpdateDTO;
 import com.control.service.ApplicationService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController

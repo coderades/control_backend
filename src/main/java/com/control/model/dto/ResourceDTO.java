@@ -2,12 +2,11 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import com.control.model.validation.ExistsResourceId;
 
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data

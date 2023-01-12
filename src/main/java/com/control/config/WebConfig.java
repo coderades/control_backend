@@ -21,34 +21,39 @@ import lombok.extern.slf4j.Slf4j;
 public class WebConfig {
 
 	private final RoleService roleService;
-	
+
 	public WebConfig(RoleService roleService) {
 		this.roleService = roleService;
 	}
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {		
-		http.httpBasic().and().authorizeRequests().and().csrf().disable();
-		roleService.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {			
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.httpBasic().and().authorizeHttpRequests().and().csrf().disable();
+		roleService.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {
 			try {
 				if (Boolean.valueOf(method[2].toString())) {
-					http.authorizeRequests().antMatchers(HttpMethod.POST, method[1].toString() + "/**")
-							.hasRole(method[0].toString());
+					http.authorizeHttpRequests(
+							authorize -> authorize.requestMatchers(HttpMethod.POST, method[1].toString() + "/**")
+									.hasRole(method[0].toString()));
+					// .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 				}
 
 				if (Boolean.valueOf(method[3].toString())) {
-					http.authorizeRequests().antMatchers(HttpMethod.GET, method[1].toString() + "/**")
-							.hasRole(method[0].toString());
+					http.authorizeHttpRequests(
+							authorize -> authorize.requestMatchers(HttpMethod.GET, method[1].toString() + "/**")
+									.hasRole(method[0].toString()));
 				}
 
 				if (Boolean.valueOf(method[4].toString())) {
-					http.authorizeRequests().antMatchers(HttpMethod.PUT, method[1].toString() + "/**")
-							.hasRole(method[0].toString());
+					http.authorizeHttpRequests(
+							authorize -> authorize.requestMatchers(HttpMethod.PUT, method[1].toString() + "/**")
+									.hasRole(method[0].toString()));
 				}
 
 				if (Boolean.valueOf(method[5].toString())) {
-					http.authorizeRequests().antMatchers(HttpMethod.DELETE, method[1].toString() + "/**")
-							.hasRole(method[0].toString());
+					http.authorizeHttpRequests(
+							authorize -> authorize.requestMatchers(HttpMethod.DELETE, method[1].toString() + "/**")
+									.hasRole(method[0].toString()));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -60,7 +65,7 @@ public class WebConfig {
 					Boolean.parseBoolean(method[5].toString()) ? "D" : "-", method[0].toString(), method[1].toString());
 		});
 
-		http.authorizeRequests().anyRequest().authenticated();
+		http.authorizeHttpRequests().anyRequest().authenticated();
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout")).invalidateHttpSession(true);
 		http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK));
 		http.logout().addLogoutHandler((request, response, auth) -> {
@@ -79,5 +84,5 @@ public class WebConfig {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 }

@@ -2,12 +2,11 @@ package com.control.listner;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
 import org.slf4j.MDC;
 
+import jakarta.servlet.annotation.WebListener;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
 import lombok.extern.slf4j.Slf4j;
 
 @WebListener
@@ -34,7 +33,6 @@ public class SessionListner implements HttpSessionListener {
 		} catch (Exception e) {
 			log.error("Session: It's already destroyed");
 		}
-
 	}
 
 	private void updateSessionCounter(HttpSessionEvent httpSessionEvent) {

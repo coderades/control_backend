@@ -1,13 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 
-<Configuration status="INFO">
+<Configuration>
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout
 				pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue} %style{${sys:PID}}{magenta} --- [%15.15t] [%-32mdc{sessionId}] %style{%-40.40C{1.}}{cyan} -> %-30.30M : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
 				disableAnsi="false" />
 		</Console>
+		<JDBC name="Database" tableName="log">
+			<DriverManager
+				connectionString="jdbc:sqlserver://localhost:1433;databaseName=control_log;encrypt=true;trustServerCertificate=true;"
+				driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+				username="master" password="mestre" />
+			<Column name="log_session_id" pattern="%X{sessionId}" />
+			<Column name="log_created"
+				pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}" />
+			<Column name="log_level" pattern="${LOG_LEVEL_PATTERN:-%5p}" />
+			<Column name="log_pid" pattern="${sys:PID}" />
+			<Column name="log_thread" pattern="%t" />
+			<Column name="log_class" pattern="%c" />
+			<Column name="log_method" pattern="%M" />
+			<Column name="log_message"
+				pattern="%m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
+		</JDBC>
+		<JDBC name="DatabaseSql" tableName="log">
+			<DriverManager
+				connectionString="jdbc:sqlserver://localhost:1433;databaseName=control_log;encrypt=true;trustServerCertificate=true;"
+				driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+				username="master" password="mestre" />
+			<Column name="log_session_id" pattern="%X{sessionId}" />
+			<Column name="log_created"
+				pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}" />
+			<Column name="log_level" pattern="${LOG_LEVEL_PATTERN:-%5p}" />
+			<Column name="log_pid" pattern="${sys:PID}" />
+			<Column name="log_thread" pattern="%t" />
+			<Column name="log_class" pattern="%c" />
+			<Column name="log_method" pattern="%M" />
+			<Column name="log_message"
+				pattern="Sql: %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
+		</JDBC>		
 		<!-- <RollingFile name="LogToRollingFile" -->
 		<!-- fileName="log/control.log" filePattern="log/control.log-%d{yyyy-MM-dd}.log"> -->
 		<!-- <PatternLayout -->
@@ -26,30 +58,20 @@
 		<!-- </Delete> -->
 		<!-- </DefaultRolloverStrategy> -->
 		<!-- </RollingFile> -->
-		<JDBC name="Database" tableName="log">
-			<DriverManager
-				connectionString="jdbc:sqlserver://localhost:1433;databaseName=control_log;encrypt=true;trustServerCertificate=true;"
-				driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-				username="master" password="mestre" />
-			<Column name="log_session_id" pattern="%X{sessionId}" />
-			<Column name="log_created"
-				pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}" />
-			<Column name="log_level" pattern="${LOG_LEVEL_PATTERN:-%5p}" />
-			<Column name="log_pid" pattern="${sys:PID}" />
-			<Column name="log_thread" pattern="%t" />
-			<Column name="log_class" pattern="%c" />
-			<Column name="log_method" pattern="%M" />
-			<Column name="log_message"
-				pattern="%m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
-		</JDBC>
 	</Appenders>
 	<Loggers>
 		<Logger
 			name="org.springframework.data.convert.CustomConversions"
-			level="ERROR"></Logger>
+			level="error" additivity="false">
+		</Logger>
+		<Logger name="org.hibernate.SQL" level="debug"
+			additivity="false">
+			<AppenderRef ref="DatabaseSql" />
+		</Logger>
 		<Root level="info" additivity="false">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="Database" />
+			<!-- <appender-ref ref="LogToRollingFile" /> -->
 		</Root>
 	</Loggers>
 </Configuration>

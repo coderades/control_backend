@@ -2,14 +2,13 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import com.control.model.validation.ExistsApplicationId;
 
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -22,7 +21,7 @@ public class ApplicationUpdateDTO implements Serializable {
 	@NotBlank(message = "It cannot be empty")
 	@ExistsApplicationId
 	private String applicationId;
-	
+
 	@NotNull(message = "It cannot be null")
 	private Boolean applicationIsEnabled;
 

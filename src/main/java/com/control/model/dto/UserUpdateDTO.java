@@ -2,16 +2,15 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import com.control.model.validation.ExistsUserEmailUpdate;
 import com.control.model.validation.ExistsUserId;
 import com.control.model.validation.ExistsUserNameUpdate;
 
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -20,7 +19,7 @@ import lombok.Data;
 public class UserUpdateDTO implements Serializable {
 
 	private static final long serialVersionUID = 3445600659154104881L;
-	
+
 	@Id
 	@NotNull(message = "It cannot be null")
 	@NotBlank(message = "It cannot be empty")
@@ -47,11 +46,11 @@ public class UserUpdateDTO implements Serializable {
 	@Email(message = "Incorrect format")
 	@Size(min = 8, max = 50, message = "Enter between 8 and 50 characters")
 	private String userEmail;
-	
+
 	private String userPasswordToken;
 
 	private String userRememberToken;
 
 	private Long userPinCode;
-		
+
 }

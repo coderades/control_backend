@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.control.model.Log;
-import com.control.model.dto.log.LogSelectDTO;
+import com.control.model.log.Log;
+import com.control.model.log.dto.LogSelectDTO;
 import com.control.repository.log.LogRepository;
 
 @Service
