@@ -1,7 +1,7 @@
 package com.control.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,19 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ResourceController {
 
-	private final ResourceService resourceService;
-
-	public ResourceController(ResourceService resourceService) {
-		this.resourceService = resourceService;
-	}
+	@Autowired
+	private ResourceService resourceService;
 
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
 		log.info("Pagination: {}", pageable);
 
 		final var entity = resourceService.findAll(pageable);
-		return !entity.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(entity)
-				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
 
 	@GetMapping("/{resourceId}")
@@ -45,31 +41,32 @@ public class ResourceController {
 		log.info("Parameter: applicationId={}", resourceId);
 
 		final var entity = resourceService.findById(resourceId);
-		return entity.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(entity)
-				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
 
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ResourceInsertDTO resourceInsertDTO) {
 		log.info("Parameter: object={}", resourceInsertDTO.toString());
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(resourceService.save(resourceInsertDTO));
+		return ResponseEntity.ok(resourceService.save(resourceInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ResourceUpdadeDTO resourceUpdateDTO) {
 		log.info("Parameter: object={}", resourceUpdateDTO);
+		
 		resourceService.save(resourceUpdateDTO);
 
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping()
 	public ResponseEntity<?> delete(@Valid @RequestBody ResourceDTO resourceDTO) {
 		log.info("Parameter: resourceId={}", resourceDTO.getResourceId());
+		
 		resourceService.delete(resourceDTO);
 
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.noContent().build();
 	}
 
 }

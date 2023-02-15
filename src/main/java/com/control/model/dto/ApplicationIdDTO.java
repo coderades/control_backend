@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class ApplicationDTO implements Serializable {
+public class ApplicationIdDTO implements Serializable {
 
 	private static final long serialVersionUID = -527506195465983324L;
 

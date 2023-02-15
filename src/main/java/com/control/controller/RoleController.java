@@ -1,7 +1,7 @@
 package com.control.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,19 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RoleController {
 
-	private final RoleService roleService;
-
-	public RoleController(RoleService roleService) {
-		this.roleService = roleService;
-	}
+	@Autowired
+	private RoleService roleService;
 
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
 		log.info("Pagination: {}", pageable);
 
 		final var entity = roleService.findAll(pageable);
-		return !entity.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(entity)
-				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
 
 	@GetMapping("/{roleId}")
@@ -45,8 +41,7 @@ public class RoleController {
 		log.info("Parameter: roleId={}", roleId);
 
 		final var entity = roleService.findById(roleId);
-		return entity.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(entity)
-				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
 
 	@GetMapping("/findByName/{roleName}")
@@ -54,40 +49,40 @@ public class RoleController {
 		log.info("Parameter: roleName={}", roleName);
 
 		final var entity = roleService.findByName(roleName);
-		return entity != null ? ResponseEntity.status(HttpStatus.OK).body(entity)
-				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return entity == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
 
 	@GetMapping("/findByNameContaining/{roleName}")
-	public ResponseEntity<?> findByNameIgnoreCaseContaining(@PathVariable("roleName") String roleName) {
+	public ResponseEntity<?> findByNameContaining(@PathVariable("roleName") String roleName) {
 		log.info("Parameter: roleName={}", roleName);
 
 		final var entity = roleService.findByNameContaining(roleName);
-		return !entity.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(entity)
-				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
 
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody RoleInsertDTO roleInsertDTO) {
 		log.info("Parameter: object={}", roleInsertDTO.toString());
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(roleService.save(roleInsertDTO));
+		return ResponseEntity.ok(roleService.save(roleInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody RoleUpdateDTO roleUpdateDTO) {
 		log.info("Parameter: object={}", roleUpdateDTO);
+
 		roleService.save(roleUpdateDTO);
 
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping()
 	public ResponseEntity<?> delete(@Valid @RequestBody RoleIdDTO roleIdDTO) {
 		log.info("Parameter: roleId={}", roleIdDTO.getRoleId());
+
 		roleService.delete(roleIdDTO.getRoleId());
 
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.noContent().build();
 	}
 
 }

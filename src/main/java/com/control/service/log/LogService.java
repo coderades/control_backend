@@ -2,6 +2,7 @@ package com.control.service.log;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,8 @@ import com.control.repository.log.LogRepository;
 @Service
 public class LogService {
 
-	private final LogRepository logRepository;
-
-	public LogService(LogRepository logRepository) {
-		this.logRepository = logRepository;
-	}
+	@Autowired
+	private LogRepository logRepository;
 
 	public Page<Log> findAll(Pageable pageable) {
 		final var entity = logRepository.findAll(pageable);

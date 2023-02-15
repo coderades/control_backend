@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,11 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserService {
 
-	private final UserRepository userRepository;
-
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	@Autowired
+	private UserRepository userRepository;
 
 	public Page<User> findAll(Pageable pageable) {
 		final var entity = userRepository.findAll(pageable);
@@ -63,6 +61,14 @@ public class UserService {
 
 	public List<User> findByNameContaining(String userName) {
 		final var entity = userRepository.findByUserNameIgnoreCaseContaining(userName);
+
+		log.info("Return: Elements={}, Object={}", entity.size(), entity);
+
+		return entity;
+	}
+	
+	public List<User> findByEmailContaining(String userName) {
+		final var entity = userRepository.findByUserEmailIgnoreCaseContaining(userName);
 
 		log.info("Return: Elements={}, Object={}", entity.size(), entity);
 

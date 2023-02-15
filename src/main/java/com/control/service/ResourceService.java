@@ -3,6 +3,7 @@ package com.control.service;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ResourceService {
 
-	private final ResourceRepository resourceRepository;
-
-	public ResourceService(ResourceRepository resourceRepository) {
-		this.resourceRepository = resourceRepository;
-	}
+	@Autowired
+	private ResourceRepository resourceRepository;
 
 	public Page<Resource> findAll(Pageable pageable) {
 		final var entity = resourceRepository.findAll(pageable);

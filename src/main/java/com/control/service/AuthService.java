@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,11 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthService implements UserDetailsService {
 
-	private final UserRepository userRepository;
-
-	public AuthService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {

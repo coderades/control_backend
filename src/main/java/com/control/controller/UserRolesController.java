@@ -1,7 +1,7 @@
 package com.control.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,17 +17,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserRolesController {
 
-	private final UserRolesService userRolesService;
-
-	public UserRolesController(UserRolesService userRolesService) {
-		this.userRolesService = userRolesService;
-	}
+	@Autowired
+	private UserRolesService userRolesService;
 
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
 		log.info("Pagination: {}", pageable);
 
-		return ResponseEntity.status(HttpStatus.OK).body(userRolesService.findAll(pageable));
+		final var entity = userRolesService.findAll(pageable);
+		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
 
 	@GetMapping("/{userRolesId}")
@@ -35,7 +33,7 @@ public class UserRolesController {
 		log.info("Parameter: userRolesId={}", userRolesId);
 
 		final var entity = userRolesService.findById(userRolesId);
-		return ResponseEntity.status(HttpStatus.FOUND).body(entity);
+		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
 
 }

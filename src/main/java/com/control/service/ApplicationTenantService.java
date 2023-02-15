@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApplicationTenantService {
 
-	private final ApplicationTenantRepository applicationTenantRepository;
-
-	public ApplicationTenantService(ApplicationTenantRepository applicationTenantRepository) {
-		this.applicationTenantRepository = applicationTenantRepository;
-	}
+	@Autowired
+	private ApplicationTenantRepository applicationTenantRepository;
 
 	public Page<ApplicationTenant> findAll(Pageable pageable) {
 		final var entity = applicationTenantRepository.findAll(pageable);
@@ -34,7 +32,7 @@ public class ApplicationTenantService {
 
 		return entity;
 	}
-	
+
 	public List<ApplicationTenant> findAll() {
 		final var entity = applicationTenantRepository.findAll();
 
@@ -67,7 +65,7 @@ public class ApplicationTenantService {
 
 		applicationTenantRepository.save(entity);
 		log.info("Return: applicationTenantId={}", entity.getApplicationTenantId());
-		
+
 		return entity.getApplicationId();
 	}
 

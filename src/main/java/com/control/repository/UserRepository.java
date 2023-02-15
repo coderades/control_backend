@@ -5,12 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.User;
 
-@Repository
 //https://www.baeldung.com/spring-data-derived-queries
 public interface UserRepository extends JpaRepository<User, String> {
 
@@ -27,6 +25,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 	User findByUserEmail(String userEmail);
 
 	List<User> findByUserNameIgnoreCaseContaining(String userName);
+	
+	List<User> findByUserEmailIgnoreCaseContaining(String userName);
 
 	List<User> findByUserNameIgnoreCaseContainingOrUserEmailIgnoreCaseContaining(String userName, String userEmail);
 
