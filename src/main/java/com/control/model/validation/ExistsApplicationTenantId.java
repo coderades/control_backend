@@ -1,26 +1,52 @@
 package com.control.model.validation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.control.service.ApplicationTenantService;
 
 import jakarta.validation.Constraint;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * https://www.youtube.com/watch?v=C4rDGOne0s4
- *
- */
-@Documented
-@Constraint(validatedBy = ExistsApplicationTenantIdValidator.class)
+@Constraint(validatedBy = { ExistsApplicationTenantId.Validator.class })
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER })
 public @interface ExistsApplicationTenantId {
-	String message() default "Not Found: ApplicationTenantId does not exist";
+
+	String message() default "Validator: applicationTenantId does not exist";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
+
+	@Slf4j
+	class Validator implements ConstraintValidator<ExistsApplicationId, String> {
+
+		@Autowired
+		private ApplicationTenantService applicationTenantService;
+
+		@Override
+		public boolean isValid(String value, ConstraintValidatorContext context) {
+			if (applicationTenantService.existsById(value)) {
+				log.info("Validator: true");
+
+				return true;
+			}
+
+			final var message = new StringBuilder().append("Validator: applicationTenantId=").append(value)
+					.append(" does not exist").toString();
+
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
+
+			log.error(message);
+
+			return false;
+		}
+	}
+	
 }

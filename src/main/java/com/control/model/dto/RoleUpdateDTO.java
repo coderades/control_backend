@@ -24,8 +24,6 @@ public class RoleUpdateDTO implements Serializable {
 	@NotNull(message = "It cannot be null")
 	private Boolean roleIsEnabled;
 
-	@NotNull(message = "It cannot be null")
-	@NotBlank(message = "It cannot be empty")
 	@Size(min = 2, max = 50, message = "Enter between 2 and 50 characters")
 	private String roleName;
 

@@ -22,8 +22,6 @@ public class UserPasswordUpdateDTO implements Serializable {
 	@ExistsUserId
 	private String userId;
 
-	@NotNull(message = "It cannot be null")
-	@NotBlank(message = "It cannot be empty")
 	@Size(min = 1, max = 70, message = "Enter between 1 and 70 characters" )
 	private String userPassword;	
 		

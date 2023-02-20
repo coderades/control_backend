@@ -29,13 +29,9 @@ public class ResourceUpdadeDTO implements Serializable {
 	@NotNull(message = "It cannot be null")
 	private Boolean resourceIsEnabled;
 
-	@NotNull(message = "It cannot be null")
-	@NotBlank(message = "It cannot be empty")
 	@Size(min = 2, max = 50, message = "Enter between 2 and 50 characters")
 	private String resourceName;
 
-	@NotNull(message = "It cannot be null")
-	@NotBlank(message = "It cannot be empty")
 	@Size(min = 2, max = 200, message = "Enter between 2 and 500 characters")
 	private String resourceUrl;
 

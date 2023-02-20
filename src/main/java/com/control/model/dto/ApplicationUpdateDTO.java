@@ -18,15 +18,13 @@ public class ApplicationUpdateDTO implements Serializable {
 
 	@Id
 	@NotNull(message = "It cannot be null")
-	@NotBlank(message = "It cannot be empty")
+	@NotBlank(message = "It cannot be blank")
 	@ExistsApplicationId
 	private String applicationId;
 
 	@NotNull(message = "It cannot be null")
 	private Boolean applicationIsEnabled;
 
-	@NotNull(message = "It cannot be null")
-	@NotBlank(message = "It cannot be empty")
 	@Size(min = 2, max = 50, message = "Enter between 2 and 50 characters")
 	private String applicationName;
 

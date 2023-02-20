@@ -24,6 +24,14 @@ public class ApplicationTenantService {
 
 	@Autowired
 	private ApplicationTenantRepository applicationTenantRepository;
+	
+	public Boolean existsById(String roleId) {
+		final var entity = applicationTenantRepository.existsById(roleId);
+
+		log.info("Return: Object={}", entity);
+
+		return entity;
+	}
 
 	public Page<ApplicationTenant> findAll(Pageable pageable) {
 		final var entity = applicationTenantRepository.findAll(pageable);

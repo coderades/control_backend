@@ -1,26 +1,51 @@
 package com.control.model.validation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.control.service.UserService;
 
 import jakarta.validation.Constraint;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * https://www.youtube.com/watch?v=C4rDGOne0s4
- *
- */
-@Documented
-@Constraint(validatedBy = ExistsUserIdValidator.class)
+@Constraint(validatedBy = ExistsUserId.Validator.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER })
 public @interface ExistsUserId {
-	String message() default "Not Found: UserId does not exist";
+	String message() default "Validator: userId does not exist";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
+
+	@Slf4j
+	class Validator implements ConstraintValidator<ExistsUserId, String> {
+
+		@Autowired
+		private UserService userService;
+
+		@Override
+		public boolean isValid(String value, ConstraintValidatorContext context) {
+			if (userService.existsById(value)) {
+				log.info("Validator: true");
+
+				return true;
+			}
+
+			final var message = new StringBuilder().append("Validator: userId=").append(value).append(" does not exist")
+					.toString();
+
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
+
+			log.error(message);
+
+			return false;
+		}
+	}
+
 }

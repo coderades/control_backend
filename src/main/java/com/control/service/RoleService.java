@@ -23,6 +23,14 @@ public class RoleService {
 	@Autowired
 	private RoleRepository roleRepository;
 
+	public Boolean existsById(String roleId) {
+		final var entity = roleRepository.existsById(roleId);
+
+		log.info("Return: Object={}", entity);
+
+		return entity;
+	}
+
 	public Page<Role> findAll(Pageable pageable) {
 		final var entity = roleRepository.findAll(pageable);
 

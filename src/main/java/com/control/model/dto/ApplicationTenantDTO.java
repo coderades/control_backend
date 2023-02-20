@@ -16,7 +16,7 @@ public class ApplicationTenantDTO implements Serializable {
 
 	@Id
 	@NotNull(message = "It cannot be null")
-	@NotBlank(message = "It cannot be empty")
+	@NotBlank(message = "It cannot be blank")
 	@ExistsApplicationTenantId
 	private String applicationTenantId;
 
