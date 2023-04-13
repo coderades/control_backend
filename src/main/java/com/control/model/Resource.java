@@ -39,6 +39,9 @@ public class Resource implements Serializable {
 
 	@Column(name = "resource_is_enabled", nullable = false)
 	private Boolean resourceIsEnabled;
+	
+	@Column(name = "resource_is_favorite", nullable = false)
+	private Boolean resourceIsFavorite;
 
 	@Column(name = "resource_name", length = 50, nullable = false, unique = true)
 	@Size(min = 2, max = 50)

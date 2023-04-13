@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.model.dto.ResourceDTO;
+import com.control.model.dto.ResourceIdDTO;
 import com.control.model.dto.ResourceInsertDTO;
 import com.control.model.dto.ResourceUpdadeDTO;
 import com.control.service.ResourceService;
@@ -61,7 +61,7 @@ public class ResourceController {
 	}
 
 	@DeleteMapping()
-	public ResponseEntity<?> delete(@Valid @RequestBody ResourceDTO resourceDTO) {
+	public ResponseEntity<?> delete(@Valid @RequestBody ResourceIdDTO resourceDTO) {
 		log.info("Parameter: resourceId={}", resourceDTO.getResourceId());
 		
 		resourceService.delete(resourceDTO);

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.User;
-import com.control.model.dto.UserDTO;
+import com.control.model.dto.UserIdDTO;
 import com.control.model.dto.UserInsertDTO;
 import com.control.model.dto.UserPasswordUpdateDTO;
 import com.control.model.dto.UserUpdateDTO;
@@ -119,7 +119,7 @@ public class UserService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(UserDTO userIdDTO) {
+	public void delete(UserIdDTO userIdDTO) {
 		userRepository.deleteById(userIdDTO.getUserId());
 		log.info("Status: OK");
 	}

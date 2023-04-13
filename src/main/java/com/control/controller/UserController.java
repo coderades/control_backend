@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.model.dto.UserDTO;
+import com.control.model.dto.UserIdDTO;
 import com.control.model.dto.UserInsertDTO;
 import com.control.model.dto.UserPasswordUpdateDTO;
 import com.control.model.dto.UserUpdateDTO;
@@ -110,7 +110,7 @@ public class UserController {
 	}
 
 	@DeleteMapping()
-	public ResponseEntity<?> delete(@Valid @RequestBody UserDTO userDTO) {
+	public ResponseEntity<?> delete(@Valid @RequestBody UserIdDTO userDTO) {
 		log.info("Parameter: userId={}", userDTO.getUserId());
 
 		userService.delete(userDTO);

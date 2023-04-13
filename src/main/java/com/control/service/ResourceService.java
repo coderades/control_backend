@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.Resource;
-import com.control.model.dto.ResourceDTO;
+import com.control.model.dto.ResourceIdDTO;
 import com.control.model.dto.ResourceInsertDTO;
 import com.control.model.dto.ResourceUpdadeDTO;
 import com.control.repository.ResourceRepository;
@@ -63,7 +63,7 @@ public class ResourceService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(ResourceDTO resourceDTO) {
+	public void delete(ResourceIdDTO resourceDTO) {
 		resourceRepository.deleteById(resourceDTO.getResourceId());
 		log.info("Status: OK");
 	}

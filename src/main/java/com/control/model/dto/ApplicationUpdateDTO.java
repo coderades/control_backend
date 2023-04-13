@@ -7,6 +7,7 @@ import com.control.model.validation.ExistsApplicationId;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,16 +18,14 @@ public class ApplicationUpdateDTO implements Serializable {
 	private static final long serialVersionUID = -3241393212626215402L;
 
 	@Id
-	@NotNull(message = "It cannot be null")
-	@NotBlank(message = "It cannot be empty")
+	@NotBlank(message = "It cannot be blank")
 	@ExistsApplicationId
 	private String applicationId;
 
 	@NotNull(message = "It cannot be null")
+	@NotEmpty(message = "It cannot be empty")
 	private Boolean applicationIsEnabled;
 
-	@NotNull(message = "It cannot be null")
-	@NotBlank(message = "It cannot be empty")
 	@Size(min = 2, max = 50, message = "Enter between 2 and 50 characters")
 	private String applicationName;
 
@@ -34,7 +33,7 @@ public class ApplicationUpdateDTO implements Serializable {
 	@Size(min = 8, max = 50, message = "Enter between 8 and 50 characters")
 	private String applicationEmail;
 
-	@NotNull(message = "It cannot be null")
+	@NotBlank(message = "It cannot be blank")
 	private String applicationSecret;
 
 }
