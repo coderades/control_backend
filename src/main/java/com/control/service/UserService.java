@@ -27,6 +27,46 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	public Boolean existsById(String userId) {
+		final var entity = userRepository.existsById(userId);
+
+		log.info("Return: Object={}", entity);
+
+		return entity;
+	}
+
+	public Boolean existsByUserName(String userName) {
+		final var entity = userRepository.existsByUserName(userName);
+
+		log.info("Return: Object={}", entity);
+
+		return entity;
+	}
+
+	public Boolean existsByUserEmail(String userEmail) {
+		final var entity = userRepository.existsByUserEmail(userEmail);
+
+		log.info("Return: Object={}", entity);
+
+		return entity;
+	}
+
+	public Boolean existsByUserIdIsNotAndUserName(String userId, String userName) {
+		final var entity = userRepository.existsByUserIdIsNotAndUserName(userId, userName);
+
+		log.info("Return: Object={}", entity);
+
+		return entity;
+	}
+
+	public Boolean existsByUserIdIsNotAndUserEmail(String userId, String userEmail) {
+		final var entity = userRepository.existsByUserIdIsNotAndUserEmail(userId, userEmail);
+
+		log.info("Return: Object={}", entity);
+
+		return entity;
+	}
+
 	public Page<User> findAll(Pageable pageable) {
 		final var entity = userRepository.findAll(pageable);
 
@@ -66,7 +106,7 @@ public class UserService {
 
 		return entity;
 	}
-	
+
 	public List<User> findByEmailContaining(String userName) {
 		final var entity = userRepository.findByUserEmailIgnoreCaseContaining(userName);
 

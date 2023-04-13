@@ -34,6 +34,15 @@ public class ApplicationService {
 
 		return entity;
 	}
+	
+	public boolean existsByApplicationNameIsNotAndApplicationId(String applicationName, String applicationId) {
+		final var entity = !applicationRepository.existsByApplicationIdIsNotAndApplicationName(applicationId,
+				applicationName);
+
+		log.info("Return: object={}", entity);
+
+		return true;
+	}
 
 	public Page<Application> findAll(Pageable pageable) {
 		final var entity = applicationRepository.findAll(pageable);

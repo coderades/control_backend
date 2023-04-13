@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.control.model.validation.ExistsUserEmailUpdate;
 import com.control.model.validation.ExistsUserId;
-import com.control.model.validation.ExistsUserNameUpdate;
+import com.control.model.validation.ExistsUserName;
 
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-@ExistsUserNameUpdate
+@ExistsUserName
 @ExistsUserEmailUpdate
 public class UserUpdateDTO implements Serializable {
 

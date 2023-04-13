@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.control.service.ResourceService;
+import com.control.service.UserService;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
@@ -13,32 +13,32 @@ import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
 import lombok.extern.slf4j.Slf4j;
 
-@Constraint(validatedBy = ExistsResourceId.Validator.class)
+@Constraint(validatedBy = ExistsUserName.Validator.class)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ExistsResourceId {
+public @interface ExistsUserName {
 	
-	String message() default "Not Found: ResourceId does not exist";
+	String message() default "Validator: userName is already in use";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
-	
+
 	@Slf4j
-	class Validator implements ConstraintValidator<ExistsResourceId, String> {
+	class Validator implements ConstraintValidator<ExistsUserName, String> {
 
 		@Autowired
-		private ResourceService resourceService;
+		private UserService userService;
 
 		@Override
 		public boolean isValid(String value, ConstraintValidatorContext context) {
-			if (resourceService.existsById(value)) {
+			if (userService.existsByUserName(value)) {
 				log.info("Validator: true");
 
 				return true;
 			}
 
-			final var message = new StringBuilder().append("Validator: resourceId=").append(value).append(" does not exist")
-					.toString();
+			final var message = new StringBuilder().append("Validator: userName=").append(value)
+					.append(" is already in use").toString();
 
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
@@ -48,5 +48,5 @@ public @interface ExistsResourceId {
 			return false;
 		}
 	}
-	
+
 }

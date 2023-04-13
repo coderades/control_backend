@@ -12,20 +12,20 @@ import com.control.model.User;
 //https://www.baeldung.com/spring-data-derived-queries
 public interface UserRepository extends JpaRepository<User, String> {
 
-	Boolean existsByUserIdIsNotAndUserName(String userId, String userName);
-
-	Boolean existsByUserIdIsNotAndUserEmail(String userId, String userEmail);
-
 	Boolean existsByUserName(String userName);
 
 	Boolean existsByUserEmail(String userEmail);
+
+	Boolean existsByUserIdIsNotAndUserName(String userId, String userName);
+
+	Boolean existsByUserIdIsNotAndUserEmail(String userId, String userEmail);
 
 	User findByUserName(String userName);
 
 	User findByUserEmail(String userEmail);
 
 	List<User> findByUserNameIgnoreCaseContaining(String userName);
-	
+
 	List<User> findByUserEmailIgnoreCaseContaining(String userName);
 
 	List<User> findByUserNameIgnoreCaseContainingOrUserEmailIgnoreCaseContaining(String userName, String userEmail);

@@ -31,7 +31,7 @@ public class ApplicationController {
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
 		log.info("Pagination: {}", pageable);
-
+		
 		final var entity = applicationService.findAll(pageable);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
