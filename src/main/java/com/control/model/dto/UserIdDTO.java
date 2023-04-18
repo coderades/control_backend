@@ -2,7 +2,7 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
-import com.control.model.validation.ExistsUserId;
+import com.control.model.dto.validation.ExistsUserId;
 
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;

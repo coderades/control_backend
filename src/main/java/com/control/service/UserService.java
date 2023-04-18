@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.control.model.User;
 import com.control.model.dto.UserIdDTO;
 import com.control.model.dto.UserInsertDTO;
-import com.control.model.dto.UserPasswordUpdateDTO;
+import com.control.model.dto.UserPasswordDTO;
 import com.control.model.dto.UserUpdateDTO;
 import com.control.repository.UserRepository;
 
@@ -26,46 +26,6 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	public Boolean existsById(String userId) {
-		final var entity = userRepository.existsById(userId);
-
-		log.info("Return: Object={}", entity);
-
-		return entity;
-	}
-
-	public Boolean existsByUserName(String userName) {
-		final var entity = userRepository.existsByUserName(userName);
-
-		log.info("Return: Object={}", entity);
-
-		return entity;
-	}
-
-	public Boolean existsByUserEmail(String userEmail) {
-		final var entity = userRepository.existsByUserEmail(userEmail);
-
-		log.info("Return: Object={}", entity);
-
-		return entity;
-	}
-
-	public Boolean existsByUserIdIsNotAndUserName(String userId, String userName) {
-		final var entity = userRepository.existsByUserIdIsNotAndUserName(userId, userName);
-
-		log.info("Return: Object={}", entity);
-
-		return entity;
-	}
-
-	public Boolean existsByUserIdIsNotAndUserEmail(String userId, String userEmail) {
-		final var entity = userRepository.existsByUserIdIsNotAndUserEmail(userId, userEmail);
-
-		log.info("Return: Object={}", entity);
-
-		return entity;
-	}
 
 	public Page<User> findAll(Pageable pageable) {
 		final var entity = userRepository.findAll(pageable);
@@ -106,7 +66,7 @@ public class UserService {
 
 		return entity;
 	}
-
+	
 	public List<User> findByEmailContaining(String userName) {
 		final var entity = userRepository.findByUserEmailIgnoreCaseContaining(userName);
 
@@ -148,7 +108,7 @@ public class UserService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void savePassword(UserPasswordUpdateDTO userPasswordUpdateDTO) {
+	public void savePassword(UserPasswordDTO userPasswordUpdateDTO) {
 		final var entity = new User();
 
 		BeanUtils.copyProperties(userPasswordUpdateDTO, entity);

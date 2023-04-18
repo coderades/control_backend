@@ -2,9 +2,6 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
-import com.control.model.validation.ExistsApplicationId;
-import com.control.model.validation.ExistsResourceId;
-
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -19,11 +16,9 @@ public class ResourceUpdadeDTO implements Serializable {
 
 	@Id
 	@NotBlank(message = "It cannot be blank")
-	@ExistsResourceId
 	private String resourceId;
 
 	@NotBlank(message = "It cannot be blank")
-	@ExistsApplicationId
 	private String applicationId;
 
 	@NotNull(message = "It cannot be null")

@@ -2,8 +2,6 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
-import com.control.model.validation.ExistsApplicationTenantId;
-
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -15,7 +13,6 @@ public class ApplicationTenantDTO implements Serializable {
 
 	@Id
 	@NotBlank(message = "It cannot be blank")
-	@ExistsApplicationTenantId
 	private String applicationTenantId;
 
 }

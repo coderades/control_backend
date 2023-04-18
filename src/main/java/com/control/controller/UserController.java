@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.control.model.dto.UserIdDTO;
 import com.control.model.dto.UserInsertDTO;
-import com.control.model.dto.UserPasswordUpdateDTO;
+import com.control.model.dto.UserPasswordDTO;
 import com.control.model.dto.UserUpdateDTO;
 import com.control.service.UserService;
 
@@ -46,7 +46,7 @@ public class UserController {
 	}
 
 	@GetMapping("/findByName/{userName}")
-	public ResponseEntity<?> findByName(@PathVariable("user_name") String userName) {
+	public ResponseEntity<?> findByName(@PathVariable("userName") String userName) {
 		log.info("Parameter: userName={}", userName);
 
 		final var entity = userService.findByName(userName);
@@ -54,7 +54,7 @@ public class UserController {
 	}
 
 	@GetMapping("/findByEmail/{userEmail}")
-	public ResponseEntity<?> findByEmail(@PathVariable("user_email") String userEmail) {
+	public ResponseEntity<?> findByEmail(@PathVariable("userEmail") String userEmail) {
 		log.info("Parameter: userEmail={}", userEmail);
 
 		final var entity = userService.findByEmail(userEmail);
@@ -101,7 +101,7 @@ public class UserController {
 	}
 
 	@PutMapping("/password")
-	public ResponseEntity<?> savePassword(@Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO) {
+	public ResponseEntity<?> savePassword(@Valid @RequestBody UserPasswordDTO userPasswordUpdateDTO) {
 		log.info("Parameter: object={}", userPasswordUpdateDTO);
 
 		userService.savePassword(userPasswordUpdateDTO);

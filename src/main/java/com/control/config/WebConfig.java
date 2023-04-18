@@ -30,7 +30,7 @@ public class WebConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.httpBasic().and().authorizeHttpRequests().and().csrf().disable();
+    	http.httpBasic().and().authorizeHttpRequests().and().csrf().disable();
         roleService.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {
             try {
                 if (Boolean.valueOf(method[2].toString())) {
@@ -68,16 +68,16 @@ public class WebConfig {
         });
 
         http.authorizeHttpRequests().anyRequest().authenticated();
-        http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout")).invalidateHttpSession(true);
-        http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK));
-        http.logout().addLogoutHandler((request, response, auth) -> {
+        http.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/api/logout")).invalidateHttpSession(true));
+        http.logout(logout -> logout.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)));
+        http.logout(logout -> logout.addLogoutHandler((request, response, auth) -> {
             MDC.put("sessionId", request.getSession().getId());
             try {
                 log.info("Logout: OK from username={}", auth.getName());
             } catch (Exception e) {
                 log.error("Logout: There is no active login for this session");
             }
-        });
+        }));
 
         return http.build();
     }

@@ -23,14 +23,6 @@ public class ResourceService {
 
 	@Autowired
 	private ResourceRepository resourceRepository;
-	
-	public Boolean existsById(String roleId) {
-		final var entity = resourceRepository.existsById(roleId);
-
-		log.info("Return: Object={}", entity);
-
-		return entity;
-	}
 
 	public Page<Resource> findAll(Pageable pageable) {
 		final var entity = resourceRepository.findAll(pageable);

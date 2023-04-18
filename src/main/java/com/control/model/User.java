@@ -5,15 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -26,6 +17,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.ToString;
 
@@ -53,7 +52,7 @@ public class User implements UserDetails {
 	private Boolean userIsAccountNonLocked;
 
 	@Column(name = "user_is_credentials_non_expired", nullable = false)
-	private Boolean userIsCredentialsNonDiscredited;
+	private Boolean userIsCredentialsNonExpired;
 
 	@Column(name = "user_name", length = 50, nullable = false, unique = true)
 	private String userName;
@@ -126,7 +125,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return this.userIsCredentialsNonDiscredited;
+		return this.userIsCredentialsNonExpired;
 	}
 
 	@Override

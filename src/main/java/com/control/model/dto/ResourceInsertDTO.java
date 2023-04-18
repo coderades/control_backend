@@ -2,8 +2,6 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
-import com.control.model.validation.ExistsApplicationId;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +14,6 @@ public class ResourceInsertDTO implements Serializable {
 	private static final long serialVersionUID = -8130065148349958506L;
 
 	@NotBlank(message = "It cannot be blank")
-	@ExistsApplicationId
 	private String applicationId;
 
 	@NotNull(message = "It cannot be null")

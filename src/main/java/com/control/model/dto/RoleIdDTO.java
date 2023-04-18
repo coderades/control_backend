@@ -1,8 +1,6 @@
 package com.control.model.dto;
 import java.io.Serializable;
 
-import com.control.model.validation.ExistsRoleId;
-
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -14,7 +12,6 @@ public class RoleIdDTO implements Serializable {
 
 	@Id
 	@NotBlank(message = "It cannot be blank")
-	@ExistsRoleId
 	private String roleId;
 
 }

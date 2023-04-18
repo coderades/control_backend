@@ -2,8 +2,6 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
-import com.control.model.validation.ExistsRoleId;
-
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,7 +16,6 @@ public class RoleUpdateDTO implements Serializable {
 
 	@Id
 	@NotBlank(message = "It cannot be blank")
-	@ExistsRoleId
 	private String roleId;
 
 	@NotNull(message = "It cannot be null")

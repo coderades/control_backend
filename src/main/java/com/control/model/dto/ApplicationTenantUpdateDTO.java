@@ -2,9 +2,6 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
-import com.control.model.validation.ExistsApplicationId;
-import com.control.model.validation.ExistsApplicationTenantId;
-
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -19,11 +16,9 @@ public class ApplicationTenantUpdateDTO implements Serializable {
 
 	@Id
 	@NotBlank(message = "It cannot be blank")
-	@ExistsApplicationTenantId
 	private String applicationTenantId;
 
 	@NotBlank(message = "It cannot be blank")
-	@ExistsApplicationId
 	private String applicationId;
 
 	@NotNull(message = "It cannot be null")
@@ -41,7 +36,6 @@ public class ApplicationTenantUpdateDTO implements Serializable {
 
 	@Size(min = 1, max = 70, message = "Enter between 1 and 70 characters")
 	private String applicationTenantPassword;
-
 
 	@Size(min = 10, max = 50, message = "Enter between 1 and 70 characters")
 	private String applicationTenantDriverClassName;
