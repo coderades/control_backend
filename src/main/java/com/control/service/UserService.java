@@ -29,70 +29,68 @@ public class UserService {
 
 	public Page<User> findAll(Pageable pageable) {
 		final var entity = userRepository.findAll(pageable);
-
-		log.info("Return: Elements={}, Object={}", entity.getSize(), entity);
-
+		
+		log.info("Elements {}, Object {}", entity.getSize(), entity);
+		
 		return entity;
 	}
 
 	public Optional<User> findById(String userId) {
 		final var entity = userRepository.findById(userId);
-
-		log.info("Return: Object={}", entity);
-
+		
+		log.info("Object {}", entity);
+		
 		return entity;
 	}
 
 	public User findByName(String userName) {
 		final var entity = userRepository.findByUserName(userName);
-
-		log.info("Return: Object={}", entity);
-
+		log.info("Object {}", entity);
 		return entity;
 	}
 
 	public User findByEmail(String userEmail) {
 		final var entity = userRepository.findByUserEmail(userEmail);
-
-		log.info("Return: Object={}", entity);
-
+		
+		log.info("Object {}", entity);
+		
 		return entity;
 	}
 
 	public List<User> findByNameContaining(String userName) {
 		final var entity = userRepository.findByUserNameIgnoreCaseContaining(userName);
-
-		log.info("Return: Elements={}, Object={}", entity.size(), entity);
-
+		
+		log.info("Elements {}, Object {}", entity.size(), entity);
+		
 		return entity;
 	}
 	
 	public List<User> findByEmailContaining(String userName) {
 		final var entity = userRepository.findByUserEmailIgnoreCaseContaining(userName);
-
-		log.info("Return: Elements={}, Object={}", entity.size(), entity);
-
+		
+		log.info("Elements {}, Object {}", entity.size(), entity);
+		
 		return entity;
 	}
 
 	public List<User> find(String find) {
 		final var entity = userRepository.findByUserNameIgnoreCaseContainingOrUserEmailIgnoreCaseContaining(find, find);
-
-		log.info("Return: Elements={}, Object={}", entity.size(), entity);
-
+		
+		log.info("Elements {}, Object {}", entity.size(), entity);
+		
 		return entity;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public String save(UserInsertDTO userInsertDTO) {
 		final var entity = new User();
-
+		
 		BeanUtils.copyProperties(userInsertDTO, entity);
 		entity.setUserPassword(new BCryptPasswordEncoder().encode(entity.getUserPassword()));
-
+		
 		userRepository.save(entity);
-		log.info("Return: userId={}", entity.getUserId());
-
+		log.info("userId {}", entity.getUserId());
+		
 		return entity.getUserId();
 	}
 
@@ -104,7 +102,7 @@ public class UserService {
 		entity.setUserPassword(userRepository.findByUserPassword(userUpdateDTO.getUserId()));
 
 		userRepository.save(entity);
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -115,12 +113,13 @@ public class UserService {
 		entity.setUserPassword(new BCryptPasswordEncoder().encode(entity.getUserPassword()));
 
 		userRepository.updateUserPassword(entity.getUserId(), entity.getPassword());
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(UserIdDTO userIdDTO) {
 		userRepository.deleteById(userIdDTO.getUserId());
-		log.info("Status: OK");
+		log.info("OK");
 	}
+	
 }

@@ -30,7 +30,7 @@ public class ApplicationTenantController {
 
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
-		log.info("Pagination: {}", pageable);
+		log.info("Pagination {}", pageable);
 
 		final var entity = applicationTenantService.findAll(pageable);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -38,7 +38,7 @@ public class ApplicationTenantController {
 
 	@GetMapping("/{applicationTenantId}")
 	public ResponseEntity<?> findById(@PathVariable("applicationTenantId") String applicationTenantId) {
-		log.info("Parameter: applicationTenantId={}", applicationTenantId);
+		log.info("applicationTenantId {}", applicationTenantId);
 
 		final var entity = applicationTenantService.findById(applicationTenantId);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -46,7 +46,7 @@ public class ApplicationTenantController {
 
 	@GetMapping("/findDataSource")
 	public ResponseEntity<?> findDataSource(Pageable pageable) {
-		log.info("Pagination: {}", pageable);
+		log.info("Pagination {}", pageable);
 
 		final var entity = applicationTenantService.findByDataSource();
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -54,15 +54,14 @@ public class ApplicationTenantController {
 
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ApplicationTenantInsertDTO applicationTenantInsertDTO) {
-		log.info("Parameter: object={}", applicationTenantInsertDTO.toString());
+		log.info("object {}", applicationTenantInsertDTO.toString());
 
 		return ResponseEntity.ok(applicationTenantService.save(applicationTenantInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ApplicationTenantUpdateDTO applicationTenantUpdateDTO) {
-		log.info("Parameter: object={}", applicationTenantUpdateDTO);
-		
+		log.info("object {}", applicationTenantUpdateDTO);		
 		applicationTenantService.save(applicationTenantUpdateDTO);
 
 		return ResponseEntity.ok().build();
@@ -70,8 +69,7 @@ public class ApplicationTenantController {
 
 	@DeleteMapping()
 	public ResponseEntity<?> delete(@Valid @RequestBody ApplicationTenantDTO applicationTenantDTO) {
-		log.info("Parameter: applicationId={}", applicationTenantDTO.getApplicationTenantId());
-		
+		log.info("applicationId {}", applicationTenantDTO.getApplicationTenantId());		
 		applicationTenantService.delete(applicationTenantDTO);
 		
 		return ResponseEntity.noContent().build();

@@ -22,7 +22,7 @@ public class UserRolesController {
 
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
-		log.info("Pagination: {}", pageable);
+		log.info("Pagination {}", pageable);
 
 		final var entity = userRolesService.findAll(pageable);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -30,7 +30,7 @@ public class UserRolesController {
 
 	@GetMapping("/{userRolesId}")
 	public ResponseEntity<?> findById(@PathVariable("userRolesId") String userRolesId) {
-		log.info("Parameter: userRolesId={}", userRolesId);
+		log.info("userRolesId {}", userRolesId);
 
 		final var entity = userRolesService.findById(userRolesId);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);

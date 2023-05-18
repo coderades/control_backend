@@ -26,7 +26,7 @@ public class LogController {
 
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
-		log.info("Pagination: {}", pageable);
+		log.info("Pagination {}", pageable);
 
 		final var entity = logService.findAll(pageable);
 		return !entity.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(entity)
@@ -35,7 +35,7 @@ public class LogController {
 
 	@GetMapping("/findByLog")
 	public ResponseEntity<?> findByLevel(@RequestBody LogSelectDTO logSelectDTO) {
-		log.info("Parameter: log={}", logSelectDTO);
+		log.info(logSelectDTO.toString());
 
 		final var entity = logService.findByLog(logSelectDTO);
 		return !entity.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(entity)

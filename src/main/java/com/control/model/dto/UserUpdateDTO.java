@@ -1,16 +1,29 @@
 package com.control.model.dto;
 
+import java.io.Serializable;
+
+import com.control.model.dto.validation.ExistsUserEmailForAnotherUserId;
+import com.control.model.dto.validation.ExistsUserId;
+import com.control.model.dto.validation.ExistsUserNameForAnotherUserId;
+
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class UserUpdateDTO extends UserIdDTO {
+@ExistsUserNameForAnotherUserId(fieldUserName = "userName", fieldUserId = "userId")
+@ExistsUserEmailForAnotherUserId(fieldUserEmail = "userEmail", fieldUserId = "userId")
+public class UserUpdateDTO implements Serializable {
 
 	private static final long serialVersionUID = 3445600659154104881L;
+
+	@Id
+	@NotBlank(message = "It cannot be blank")
+	@ExistsUserId
+	private String userId;
 
 	@NotNull(message = "It cannot be null")
 	private Boolean userIsEnabled;
@@ -22,7 +35,7 @@ public class UserUpdateDTO extends UserIdDTO {
 	private Boolean userIsAccountNonLocked;
 
 	@NotNull(message = "It cannot be null")
-	private Boolean userIsCredentialsNonDiscredited;
+	private Boolean userIsCredentialsNonExpired;
 
 	@Size(min = 2, max = 50, message = "Enter between 2 and 50 characters")
 	private String userName;

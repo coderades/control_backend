@@ -30,7 +30,7 @@ public class ResourceController {
 
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
-		log.info("Pagination: {}", pageable);
+		log.info("Pagination {}", pageable);
 
 		final var entity = resourceService.findAll(pageable);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -38,7 +38,7 @@ public class ResourceController {
 
 	@GetMapping("/{resourceId}")
 	public ResponseEntity<?> findById(@PathVariable("resourceId") String resourceId) {
-		log.info("Parameter: applicationId={}", resourceId);
+		log.info("applicationId {}", resourceId);
 
 		final var entity = resourceService.findById(resourceId);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -46,15 +46,14 @@ public class ResourceController {
 
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ResourceInsertDTO resourceInsertDTO) {
-		log.info("Parameter: object={}", resourceInsertDTO.toString());
+		log.info("object {}", resourceInsertDTO.toString());
 
 		return ResponseEntity.ok(resourceService.save(resourceInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ResourceUpdadeDTO resourceUpdateDTO) {
-		log.info("Parameter: object={}", resourceUpdateDTO);
-		
+		log.info("object {}", resourceUpdateDTO);		
 		resourceService.save(resourceUpdateDTO);
 
 		return ResponseEntity.ok().build();
@@ -62,8 +61,7 @@ public class ResourceController {
 
 	@DeleteMapping()
 	public ResponseEntity<?> delete(@Valid @RequestBody ResourceIdDTO resourceDTO) {
-		log.info("Parameter: resourceId={}", resourceDTO.getResourceId());
-		
+		log.info("resourceId {}", resourceDTO.getResourceId());		
 		resourceService.delete(resourceDTO);
 
 		return ResponseEntity.noContent().build();

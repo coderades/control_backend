@@ -24,6 +24,7 @@ class TenantFilter implements Filter {
 
 		final var req = (HttpServletRequest) request;
 		final var tenantName = req.getHeader("X-TenantID");
+		
 		TenantContext.setCurrentTenant(tenantName);
 
 		try {

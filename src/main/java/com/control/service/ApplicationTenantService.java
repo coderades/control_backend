@@ -28,7 +28,7 @@ public class ApplicationTenantService {
 	public Page<ApplicationTenant> findAll(Pageable pageable) {
 		final var entity = applicationTenantRepository.findAll(pageable);
 
-		log.info("Return: Elements={}, Object={}", entity.getSize(), entity);
+		log.info("Elements {}, Object {}", entity.getSize(), entity);
 
 		return entity;
 	}
@@ -36,7 +36,7 @@ public class ApplicationTenantService {
 	public List<ApplicationTenant> findAll() {
 		final var entity = applicationTenantRepository.findAll();
 
-		log.info("Return: Elements={}, Object={}", entity.size(), entity);
+		log.info("Elements {}, Object {}", entity.size(), entity);
 
 		return entity;
 	}
@@ -44,7 +44,7 @@ public class ApplicationTenantService {
 	public Optional<ApplicationTenant> findById(String applicationTenantId) {
 		final var entity = applicationTenantRepository.findById(applicationTenantId);
 
-		log.info("Return: Object={}", entity);
+		log.info("Object {}", entity);
 
 		return entity;
 	}
@@ -52,7 +52,7 @@ public class ApplicationTenantService {
 	public List<ApplicationTenant> findByDataSource() {
 		final var entity = applicationTenantRepository.findByDataSource();
 
-		log.info("Return: Elements={}, Object={}", entity.size(), entity);
+		log.info("Elements {}, Object {}", entity.size(), entity);
 
 		return entity;
 	}
@@ -64,7 +64,7 @@ public class ApplicationTenantService {
 		BeanUtils.copyProperties(applicationTenantInsertDTO, entity);
 
 		applicationTenantRepository.save(entity);
-		log.info("Return: applicationTenantId={}", entity.getApplicationTenantId());
+		log.info("applicationTenantId {}", entity.getApplicationTenantId());
 
 		return entity.getApplicationId();
 	}
@@ -76,13 +76,13 @@ public class ApplicationTenantService {
 		BeanUtils.copyProperties(applicationTenantUpdateDTO, entity);
 
 		applicationTenantRepository.save(entity);
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(ApplicationTenantDTO applicationTenantIdDTO) {
 		applicationTenantRepository.deleteById(applicationTenantIdDTO.getApplicationTenantId());
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 }

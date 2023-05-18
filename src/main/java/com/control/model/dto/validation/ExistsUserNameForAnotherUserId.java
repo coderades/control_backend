@@ -18,13 +18,17 @@ import jakarta.validation.Payload;
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = ExistsUserIdValidator.class)
-public @interface ExistsUserId {
+@Constraint(validatedBy = ExistsUserNameForAnotherUserIdValidator.class)
+public @interface ExistsUserNameForAnotherUserId {
+	
+	String message() default "{}";
 
-	String message() default "{ }";
+	Class<?>[] groups() default {};
 
-	Class<?>[] groups() default { };
-
-	Class<? extends Payload>[] payload() default { };
-
+	Class<? extends Payload>[] payload() default {};
+	
+    String fieldUserId();
+    
+    String fieldUserName();
+	
 }

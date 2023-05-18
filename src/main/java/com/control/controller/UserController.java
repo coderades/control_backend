@@ -31,7 +31,7 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
-		log.info("Pagination: {}", pageable);
+		log.info("Pagination {}", pageable);
 
 		final var entity = userService.findAll(pageable);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -39,7 +39,7 @@ public class UserController {
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<?> findById(@PathVariable("userId") String userId) {
-		log.info("Parameter: userId={}", userId);
+		log.info("userId {}", userId);
 
 		final var entity = userService.findById(userId);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -47,7 +47,7 @@ public class UserController {
 
 	@GetMapping("/findByName/{userName}")
 	public ResponseEntity<?> findByName(@PathVariable("userName") String userName) {
-		log.info("Parameter: userName={}", userName);
+		log.info("userName {}", userName);
 
 		final var entity = userService.findByName(userName);
 		return entity == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -55,7 +55,7 @@ public class UserController {
 
 	@GetMapping("/findByEmail/{userEmail}")
 	public ResponseEntity<?> findByEmail(@PathVariable("userEmail") String userEmail) {
-		log.info("Parameter: userEmail={}", userEmail);
+		log.info("userEmail {}", userEmail);
 
 		final var entity = userService.findByEmail(userEmail);
 		return entity == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -63,7 +63,7 @@ public class UserController {
 
 	@GetMapping("/findByNameContaining/{userName}")
 	public ResponseEntity<?> findByNameContaining(@PathVariable("userName") String userName) {
-		log.info("Parameter: userName={}", userName);
+		log.info("userName {}", userName);
 
 		final var entity = userService.findByNameContaining(userName);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -71,7 +71,7 @@ public class UserController {
 
 	@GetMapping("/findByEmailContaining/{userEmail}")
 	public ResponseEntity<?> findByEmailContaining(@PathVariable("userEmail") String userEmail) {
-		log.info("Parameter: userName={}", userEmail);
+		log.info("userName {}", userEmail);
 
 		final var entity = userService.findByEmailContaining(userEmail);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -79,31 +79,30 @@ public class UserController {
 
 	@GetMapping("/find/{find}")
 	public ResponseEntity<?> find(@PathVariable("find") String find) {
-		log.info("Parameter: find={}", find);
+		log.info("find {}", find);
 
 		final var entity = userService.find(find);
-
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
 	}
 
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody UserInsertDTO userInsertDTO) {
-		log.info("Parameter: object={}", userInsertDTO.toString());
+		log.info("object {}", userInsertDTO.toString());
 
 		return ResponseEntity.ok(userService.save(userInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
-		log.info("Parameter: object={}", userUpdateDTO);
-
+		log.info("object {}", userUpdateDTO);
+		userService.save(userUpdateDTO);
+		
 		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping("/password")
 	public ResponseEntity<?> savePassword(@Valid @RequestBody UserPasswordDTO userPasswordUpdateDTO) {
-		log.info("Parameter: object={}", userPasswordUpdateDTO);
-
+		log.info("object {}", userPasswordUpdateDTO);
 		userService.savePassword(userPasswordUpdateDTO);
 
 		return ResponseEntity.ok().build();
@@ -111,8 +110,7 @@ public class UserController {
 
 	@DeleteMapping()
 	public ResponseEntity<?> delete(@Valid @RequestBody UserIdDTO userDTO) {
-		log.info("Parameter: userId={}", userDTO.getUserId());
-
+		log.info("userId {}", userDTO.getUserId());
 		userService.delete(userDTO);
 
 		return ResponseEntity.noContent().build();

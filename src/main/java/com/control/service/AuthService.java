@@ -32,9 +32,9 @@ public class AuthService implements UserDetailsService {
 		MDC.put("sessionId", RequestContextHolder.currentRequestAttributes().getSessionId());
 
 		if (Objects.isNull(entity)) {
-			log.warn("Login: Fail from userName={}", username);
+			log.warn("Fail from userName {}", username);
 		} else {
-			log.info("Login: OK from userName={} linked to userId={}", username, entity.getUserId());
+			log.info("OK from userName {} linked to userId {}", username, entity.getUserId());
 		}
 
 		return Optional

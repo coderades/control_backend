@@ -26,7 +26,7 @@ public class RoleService {
 	public Page<Role> findAll(Pageable pageable) {
 		final var entity = roleRepository.findAll(pageable);
 
-		log.info("Return: Elements={}, Object={}", entity.getSize(), entity);
+		log.info("Elements {}, Object {}", entity.getSize(), entity);
 
 		return entity;
 	}
@@ -34,7 +34,7 @@ public class RoleService {
 	public Optional<Role> findById(String roleId) {
 		final var entity = roleRepository.findById(roleId);
 
-		log.info("Return: Object={}", entity);
+		log.info("Object {}", entity);
 
 		return entity;
 	}
@@ -42,7 +42,7 @@ public class RoleService {
 	public Role findByName(String roleName) {
 		final var entity = roleRepository.findByRoleName(roleName);
 
-		log.info("Return: Object={}", entity);
+		log.info("Object {}", entity);
 
 		return entity;
 	}
@@ -50,7 +50,7 @@ public class RoleService {
 	public List<Role> findByNameContaining(String roleName) {
 		final var entity = roleRepository.findByRoleNameIgnoreCaseContaining(roleName);
 
-		log.info("Return: Elements={}, Object={}", entity.size(), entity);
+		log.info("Elements {}, Object {}", entity.size(), entity);
 
 		return entity;
 	}
@@ -58,7 +58,7 @@ public class RoleService {
 	public List<Object[]> findByHasAnyRole(String applicationId) {
 		final var entity = roleRepository.findByHasAnyRole(applicationId);
 
-		log.info("Return: Elements={}, Object={}", entity.size(), entity);
+		log.info("Elements {}, Object {}", entity.size(), entity);
 
 		return entity;
 	}
@@ -68,7 +68,7 @@ public class RoleService {
 		final var entity = new Role();
 
 		roleRepository.save(entity);
-		log.info("Return: roleId={}", entity.getRoleId());
+		log.info("roleId {}", entity.getRoleId());
 
 		return entity.getRoleId();
 	}
@@ -78,13 +78,13 @@ public class RoleService {
 		final var entity = new Role();
 
 		roleRepository.save(entity);
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(String roleId) {
 		roleRepository.deleteById(roleId);
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 }

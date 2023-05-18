@@ -30,7 +30,7 @@ public class RoleController {
 
 	@GetMapping
 	public ResponseEntity<?> findAll(Pageable pageable) {
-		log.info("Pagination: {}", pageable);
+		log.info("Pagination {}", pageable);
 
 		final var entity = roleService.findAll(pageable);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -38,7 +38,7 @@ public class RoleController {
 
 	@GetMapping("/{roleId}")
 	public ResponseEntity<?> findById(@PathVariable("roleId") String roleId) {
-		log.info("Parameter: roleId={}", roleId);
+		log.info("roleId {}", roleId);
 
 		final var entity = roleService.findById(roleId);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -46,7 +46,7 @@ public class RoleController {
 
 	@GetMapping("/findByName/{roleName}")
 	public ResponseEntity<?> findByName(@PathVariable("role_name") String roleName) {
-		log.info("Parameter: roleName={}", roleName);
+		log.info("roleName {}", roleName);
 
 		final var entity = roleService.findByName(roleName);
 		return entity == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -54,7 +54,7 @@ public class RoleController {
 
 	@GetMapping("/findByNameContaining/{roleName}")
 	public ResponseEntity<?> findByNameContaining(@PathVariable("roleName") String roleName) {
-		log.info("Parameter: roleName={}", roleName);
+		log.info("roleName {}", roleName);
 
 		final var entity = roleService.findByNameContaining(roleName);
 		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
@@ -62,15 +62,14 @@ public class RoleController {
 
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody RoleInsertDTO roleInsertDTO) {
-		log.info("Parameter: object={}", roleInsertDTO.toString());
+		log.info("object {}", roleInsertDTO.toString());
 
 		return ResponseEntity.ok(roleService.save(roleInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody RoleUpdateDTO roleUpdateDTO) {
-		log.info("Parameter: object={}", roleUpdateDTO);
-
+		log.info("object {}", roleUpdateDTO);
 		roleService.save(roleUpdateDTO);
 
 		return ResponseEntity.ok().build();
@@ -78,7 +77,7 @@ public class RoleController {
 
 	@DeleteMapping()
 	public ResponseEntity<?> delete(@Valid @RequestBody RoleIdDTO roleIdDTO) {
-		log.info("Parameter: roleId={}", roleIdDTO.getRoleId());
+		log.info("roleId {}", roleIdDTO.getRoleId());
 
 		roleService.delete(roleIdDTO.getRoleId());
 

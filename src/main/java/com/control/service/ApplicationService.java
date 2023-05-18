@@ -30,7 +30,7 @@ public class ApplicationService {
 	public boolean existsById(String applicationId) {
 		final var entity = applicationRepository.existsById(applicationId);
 
-		log.info("Return: object={}", entity);
+		log.info("object {}", entity);
 
 		return entity;
 	}
@@ -38,7 +38,7 @@ public class ApplicationService {
 	public Page<Application> findAll(Pageable pageable) {
 		final var entity = applicationRepository.findAll(pageable);
 
-		log.info("Return: elements={}, object={}", entity.getSize(), entity);
+		log.info("elements {}, object {}", entity.getSize(), entity);
 
 		return entity;
 	}
@@ -46,7 +46,7 @@ public class ApplicationService {
 	public Optional<Application> findById(String applicationId) {
 		final var entity = applicationRepository.findById(applicationId);
 
-		log.info("Return: object={}", entity);
+		log.info("object {}", entity);
 
 		return entity;
 	}
@@ -54,7 +54,7 @@ public class ApplicationService {
 	public List<Application> findByNameContaining(String applicationName) {
 		final var entity = applicationRepository.findByApplicationNameIgnoreCaseContaining(applicationName);
 
-		log.info("Return: elements={}, object={}", entity.size(), entity);
+		log.info("elements {}, object {}", entity.size(), entity);
 
 		return entity;
 	}
@@ -62,7 +62,7 @@ public class ApplicationService {
 	public List<Application> findByEmailContaining(String applicationEmail) {
 		final var entity = applicationRepository.findByApplicationEmailIgnoreCaseContaining(applicationEmail);
 
-		log.info("Return: object={}", entity);
+		log.info("object {}", entity);
 
 		return entity;
 	}
@@ -71,7 +71,7 @@ public class ApplicationService {
 		final var entity = applicationRepository
 				.findByApplicationNameIgnoreCaseContainingOrApplicationEmailIgnoreCaseContaining(find, find);
 
-		log.info("Return: elements={}, object={}", entity.size(), entity);
+		log.info("elements {}, object {}", entity.size(), entity);
 
 		return entity;
 	}
@@ -84,7 +84,7 @@ public class ApplicationService {
 
 		applicationRepository.save(entity);
 		applicationIdDTO.setApplicationId(entity.getApplicationId());
-		log.info("Return: applicationId={}", entity.getApplicationId());
+		log.info("applicationId {}", entity.getApplicationId());
 
 		return applicationIdDTO;
 	}
@@ -96,13 +96,13 @@ public class ApplicationService {
 		BeanUtils.copyProperties(applicationUpdateDTO, entity);
 
 		applicationRepository.save(entity);
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(ApplicationIdDTO applicationDTO) {
 		applicationRepository.deleteById(applicationDTO.getApplicationId());
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 }

@@ -18,7 +18,7 @@ public class SessionListner implements HttpSessionListener {
 	@Override
 	public void sessionCreated(HttpSessionEvent httpSessionEvent) {
 		MDC.put("sessionId", httpSessionEvent.getSession().getId());
-		log.info("Session: Created");
+		log.info("OK");
 		counter.incrementAndGet();
 		updateSessionCounter(httpSessionEvent);
 	}
@@ -27,17 +27,17 @@ public class SessionListner implements HttpSessionListener {
 	public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
 		try {
 			MDC.put("sessionId", httpSessionEvent.getSession().getId());
-			log.info("Session: Destroyed");
+			log.info("OK");
 			counter.decrementAndGet();
 			updateSessionCounter(httpSessionEvent);
 		} catch (Exception e) {
-			log.error("Session: It's already destroyed");
+			log.error("It's already destroyed");
 		}
 	}
 
 	private void updateSessionCounter(HttpSessionEvent httpSessionEvent) {
 		MDC.put("sessionId", httpSessionEvent.getSession().getId());
-		log.info("Session: Total active session are {}", counter.get());
+		log.info("Total active session are {}", counter.get());
 		httpSessionEvent.getSession().getServletContext().setAttribute("activeSession", counter.get());
 	}
 

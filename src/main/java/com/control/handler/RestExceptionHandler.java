@@ -10,47 +10,61 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.control.model.exception.Exception;
+import com.control.model.exception.ExceptionField;
+
+import lombok.extern.slf4j.Slf4j;
+
 /*
  * @see
  * https://www.youtube.com/watch?v=OSgf6z8xcGs&t=1232s
  */
 @RestControllerAdvice(annotations = RestController.class)
+@Slf4j
 public class RestExceptionHandler {
 
 	@ExceptionHandler(ResponseStatusException.class)
-	public ResponseEntity<ErrorResponse> handleNotFound(final ResponseStatusException exception) {
-		final var errorResponse = new ErrorResponse();
-		errorResponse.setHttpStatus(exception.getStatusCode().value());
-		errorResponse.setException(exception.getClass().getSimpleName());
+	public ResponseEntity<Exception> handleNotFound(final ResponseStatusException exception) {
+		final var errorResponse = new Exception();		
+		errorResponse.setStatus(exception.getStatusCode().value());
+		errorResponse.setError(exception.getClass().getSimpleName());
 		errorResponse.setMessage(exception.getMessage());
+		
+		log.error(errorResponse.toString());
+		
 		return new ResponseEntity<>(errorResponse, exception.getStatusCode());
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(final MethodArgumentNotValidException exception) {
-		final var blindingResult = exception.getBindingResult();
-		final var fieldErros = blindingResult.getFieldErrors().stream().map(error -> {
-			final var fieldError = new FieldError();
-			fieldError.setField(error.getField());
+	public ResponseEntity<Exception> handleMethodArgumentNotValid(final MethodArgumentNotValidException exception) {
+		final var fieldErros = exception.getBindingResult().getAllErrors().stream().map(error -> {
+			final var fieldError = new ExceptionField();
+			fieldError.setField(error.getClass().getFields().toString());
 			fieldError.setType(error.getCode());
-			fieldError.setArguments(error.getDefaultMessage());
+			fieldError.setArgument(error.getDefaultMessage());
 			return fieldError;
 		}).collect(Collectors.toList());
 
-		final var errorResponse = new ErrorResponse();
-		errorResponse.setHttpStatus(HttpStatus.BAD_REQUEST.value());
-		errorResponse.setException(exception.getClass().getSimpleName());
-		errorResponse.setMessage("");
-		errorResponse.setFieldErrors(fieldErros);
+		final var errorResponse = new Exception();
+		errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+		errorResponse.setError(exception.getClass().getSimpleName());
+		errorResponse.setMessage("Error");
+		errorResponse.setFields(fieldErros);
+		
+		log.error(errorResponse.toString());
+		
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(Throwable.class)
-	public ResponseEntity<ErrorResponse> handleThrowable(final Throwable exception) {
+	public ResponseEntity<Exception> handleThrowable(final Throwable exception) {
 		exception.printStackTrace();
-		final var errorResponse = new ErrorResponse();
-		errorResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-		errorResponse.setException(exception.getClass().getSimpleName());
+		final var errorResponse = new Exception();
+		errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		errorResponse.setError(exception.getClass().getSimpleName());
+		
+		log.error(errorResponse.toString());
+		
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

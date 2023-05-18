@@ -27,7 +27,7 @@ public class ResourceService {
 	public Page<Resource> findAll(Pageable pageable) {
 		final var entity = resourceRepository.findAll(pageable);
 
-		log.info("Return: Elements={}, Object={}", entity.getSize(), entity);
+		log.info("Elements {}, Object {}", entity.getSize(), entity);
 
 		return entity;
 	}
@@ -35,7 +35,7 @@ public class ResourceService {
 	public Optional<Resource> findById(String resourceId) {
 		final var entity = resourceRepository.findById(resourceId);
 
-		log.info("Return: Object={}", entity);
+		log.info("Object {}", entity);
 
 		return entity;
 	}
@@ -47,7 +47,7 @@ public class ResourceService {
 		BeanUtils.copyProperties(resourceInsertDTO, entity);
 
 		resourceRepository.save(entity);
-		log.info("Return: applicationId={}", entity.getApplicationId());
+		log.info("applicationId {}", entity.getApplicationId());
 
 		return entity.getApplicationId();
 	}
@@ -59,13 +59,13 @@ public class ResourceService {
 		BeanUtils.copyProperties(resourceUpdateDTO, entity);
 
 		resourceRepository.save(entity);
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(ResourceIdDTO resourceDTO) {
 		resourceRepository.deleteById(resourceDTO.getResourceId());
-		log.info("Status: OK");
+		log.info("OK");
 	}
 
 }
