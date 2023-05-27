@@ -13,39 +13,33 @@ import lombok.extern.slf4j.Slf4j;
 public class ExistsUserNameForAnotherUserIdValidator
 		implements ConstraintValidator<ExistsUserNameForAnotherUserId, Object> {
 
-	private String fieldUserId;
-	private String fieldUserName;
+	private String field;
+	private String fieldMatch;
+	private String message;
 
 	@Autowired
 	private UserRepository userRepository;
 
 	@Override
-	public void initialize(ExistsUserNameForAnotherUserId constraint) {
-		fieldUserId = constraint.fieldUserId();
-		fieldUserName = constraint.fieldUserName();
+	public void initialize(ExistsUserNameForAnotherUserId constraintAnnotation) {
+		this.field = constraintAnnotation.field();
+		this.fieldMatch = constraintAnnotation.fieldMatch();
+		this.message = constraintAnnotation.message();
 	}
 
 	@Override
-	public boolean isValid(Object object, ConstraintValidatorContext context) {	
-		if(fieldUserId == null || fieldUserName == null) {
-			return false;
-		}		
-		
-		final var userId = new BeanWrapperImpl(object).getPropertyValue(fieldUserId).toString();
-		final var userName = new BeanWrapperImpl(object).getPropertyValue(fieldUserName).toString();
-
-		if (!userRepository.existsByUserIdIsNotAndUserName(userId, userName)) {
-			log.info("True");
+	public boolean isValid(Object object, ConstraintValidatorContext context) {
+		if (!userRepository.existsByUserIdIsNotAndUserName(
+				new BeanWrapperImpl(object).getPropertyValue(fieldMatch).toString(),
+				new BeanWrapperImpl(object).getPropertyValue(field).toString())) {			
+			log.info("True");			
 			return true;
 		}
 
-		final var message = new StringBuilder().append("userName ").append(userName).append(" exists for another user")
-				.toString();
-		
 		context.disableDefaultConstraintViolation();
 		context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-		log.error("False");
 		
+		log.error("False");		
 		return false;
 	}
 

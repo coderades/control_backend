@@ -1,6 +1,7 @@
 package com.control.handler;
 
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,44 +16,50 @@ import com.control.model.exception.ExceptionField;
 
 import lombok.extern.slf4j.Slf4j;
 
-/*
- * @see
- * https://www.youtube.com/watch?v=OSgf6z8xcGs&t=1232s
- */
 @RestControllerAdvice(annotations = RestController.class)
 @Slf4j
 public class RestExceptionHandler {
 
 	@ExceptionHandler(ResponseStatusException.class)
 	public ResponseEntity<Exception> handleNotFound(final ResponseStatusException exception) {
-		final var errorResponse = new Exception();		
+		final var errorResponse = new Exception();
 		errorResponse.setStatus(exception.getStatusCode().value());
-		errorResponse.setError(exception.getClass().getSimpleName());
+		errorResponse.setException(exception.getClass().getSimpleName());
 		errorResponse.setMessage(exception.getMessage());
-		
+
 		log.error(errorResponse.toString());
-		
+
 		return new ResponseEntity<>(errorResponse, exception.getStatusCode());
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Exception> handleMethodArgumentNotValid(final MethodArgumentNotValidException exception) {
-		final var fieldErros = exception.getBindingResult().getAllErrors().stream().map(error -> {
-			final var fieldError = new ExceptionField();
-			fieldError.setField(error.getClass().getFields().toString());
-			fieldError.setType(error.getCode());
-			fieldError.setArgument(error.getDefaultMessage());
-			return fieldError;
-		}).collect(Collectors.toList());
+		final List<ExceptionField> fieldErros = new ArrayList<>();
+
+		exception.getBindingResult().getFieldErrors().forEach(fieldError -> {
+			final var fieldExtension = new ExceptionField();
+			fieldExtension.setField(fieldError.getField());
+			fieldExtension.setType(fieldError.getCode());
+			fieldExtension.setArgument(fieldError.getDefaultMessage());
+			fieldErros.add(fieldExtension);
+		});
+
+		exception.getBindingResult().getGlobalErrors().forEach(fieldError -> {
+			final var fieldExtension = new ExceptionField();
+			fieldExtension.setField(fieldError.getObjectName());
+			fieldExtension.setType(fieldError.getCode());
+			fieldExtension.setArgument(fieldError.getDefaultMessage());
+			fieldErros.add(fieldExtension);
+		});
 
 		final var errorResponse = new Exception();
 		errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
-		errorResponse.setError(exception.getClass().getSimpleName());
-		errorResponse.setMessage("Error");
+		errorResponse.setException(HttpStatus.BAD_REQUEST.name());
+		errorResponse.setMessage(exception.getClass().getSimpleName());
 		errorResponse.setFields(fieldErros);
-		
+
 		log.error(errorResponse.toString());
-		
+
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
 
@@ -61,10 +68,10 @@ public class RestExceptionHandler {
 		exception.printStackTrace();
 		final var errorResponse = new Exception();
 		errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-		errorResponse.setError(exception.getClass().getSimpleName());
-		
+		errorResponse.setException(exception.getClass().getSimpleName());
+
 		log.error(errorResponse.toString());
-		
+
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

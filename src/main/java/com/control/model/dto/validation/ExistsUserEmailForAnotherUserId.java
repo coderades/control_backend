@@ -20,15 +20,15 @@ import jakarta.validation.Payload;
 @Documented
 @Constraint(validatedBy = ExistsUserEmailForAnotherUserIdValidator.class)
 public @interface ExistsUserEmailForAnotherUserId {
-	
-	String message() default "{}";
+
+	String message() default "Exists for another user";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
-	
-    String fieldUserId();
-    
-    String fieldUserEmail();
-	
+
+	String field();
+
+	String fieldMatch();
+
 }

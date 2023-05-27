@@ -11,22 +11,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExistsUserIdValidator implements ConstraintValidator<ExistsUserId, String> {
 
+	private String message;
+	
 	@Autowired
 	private UserRepository userRepository;
 
+	@Override
+	public void initialize(ExistsUserId constraintAnnotation) {
+		this.message = constraintAnnotation.message();
+	}
+	
 	@Override
 	public boolean isValid(String object, ConstraintValidatorContext context) {
 		if (userRepository.existsById(object)) {
 			log.info("True");
 			return true;
 		}
-
-		final var message = new StringBuilder().append("userId ").append(object).append(" does not exist").toString();
 		
 		context.disableDefaultConstraintViolation();
 		context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-		log.error("False");
 		
+		log.error("False");		
 		return false;
 	}
 	

@@ -14,8 +14,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-@ExistsUserNameForAnotherUserId(fieldUserName = "userName", fieldUserId = "userId")
-@ExistsUserEmailForAnotherUserId(fieldUserEmail = "userEmail", fieldUserId = "userId")
+@ExistsUserNameForAnotherUserId(field = "userName", fieldMatch = "userId")
+@ExistsUserEmailForAnotherUserId(field = "userEmail", fieldMatch = "userId")
 public class UserUpdateDTO implements Serializable {
 
 	private static final long serialVersionUID = 3445600659154104881L;

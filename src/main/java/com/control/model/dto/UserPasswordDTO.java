@@ -19,7 +19,7 @@ public class UserPasswordDTO implements Serializable {
 	@ExistsUserId
 	private String userId;
 
-	@Size(min = 33, max = 37, message = "Enter between 1 and 70 characters" )
+	@Size(min = 33, max = 37, message = "Enter between 1 and 70 characters")
 	private String userPassword;	
 		
 }
