@@ -8,7 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import com.control.model.Role;
 
 public interface RoleRepository extends JpaRepository<Role, String> {
-
+	
+	Boolean existsByRoleName(String roleName);
+	
+	Boolean existsByRoleIdIsNotAndRoleName(String userId, String roleName);
+	
 	Role findByRoleName(String roleName);
 	
 	List<Role> findByRoleNameIgnoreCaseContaining(String roleName);

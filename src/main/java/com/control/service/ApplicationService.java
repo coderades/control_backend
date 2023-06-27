@@ -12,97 +12,59 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.Application;
 import com.control.model.dto.ApplicationIdDTO;
-import com.control.model.dto.ApplicationInsertDTO;
-import com.control.model.dto.ApplicationUpdateDTO;
+import com.control.model.dto.ApplicationPostDTO;
+import com.control.model.dto.ApplicationPutDTO;
 import com.control.repository.ApplicationRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class ApplicationService {
 
 	@Autowired
 	private ApplicationRepository applicationRepository;
 
-	private final ApplicationIdDTO applicationIdDTO = new ApplicationIdDTO();
-
 	public boolean existsById(String applicationId) {
-		final var entity = applicationRepository.existsById(applicationId);
-
-		log.info("object {}", entity);
-
-		return entity;
+		return applicationRepository.existsById(applicationId);
 	}
 
 	public Page<Application> findAll(Pageable pageable) {
-		final var entity = applicationRepository.findAll(pageable);
-
-		log.info("elements {}, object {}", entity.getSize(), entity);
-
-		return entity;
+		return applicationRepository.findAll(pageable);
 	}
 
 	public Optional<Application> findById(String applicationId) {
-		final var entity = applicationRepository.findById(applicationId);
-
-		log.info("object {}", entity);
-
-		return entity;
+		return applicationRepository.findById(applicationId);
 	}
 
 	public List<Application> findByNameContaining(String applicationName) {
-		final var entity = applicationRepository.findByApplicationNameIgnoreCaseContaining(applicationName);
-
-		log.info("elements {}, object {}", entity.size(), entity);
-
-		return entity;
+		return applicationRepository.findByApplicationNameIgnoreCaseContaining(applicationName);
 	}
 
 	public List<Application> findByEmailContaining(String applicationEmail) {
-		final var entity = applicationRepository.findByApplicationEmailIgnoreCaseContaining(applicationEmail);
-
-		log.info("object {}", entity);
-
-		return entity;
+		return applicationRepository.findByApplicationEmailIgnoreCaseContaining(applicationEmail);
 	}
 
 	public List<Application> find(String find) {
-		final var entity = applicationRepository
+		return applicationRepository
 				.findByApplicationNameIgnoreCaseContainingOrApplicationEmailIgnoreCaseContaining(find, find);
-
-		log.info("elements {}, object {}", entity.size(), entity);
-
-		return entity;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public ApplicationIdDTO save(ApplicationInsertDTO applicationInsertDTO) {
+	public String save(ApplicationPostDTO applicationInsertDTO) {
 		final var entity = new Application();
-
 		BeanUtils.copyProperties(applicationInsertDTO, entity);
-
 		applicationRepository.save(entity);
-		applicationIdDTO.setApplicationId(entity.getApplicationId());
-		log.info("applicationId {}", entity.getApplicationId());
-
-		return applicationIdDTO;
+		return entity.getApplicationId();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void save(ApplicationUpdateDTO applicationUpdateDTO) {
+	public void save(ApplicationPutDTO applicationUpdateDTO) {
 		final var entity = new Application();
-
 		BeanUtils.copyProperties(applicationUpdateDTO, entity);
-
 		applicationRepository.save(entity);
-		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(ApplicationIdDTO applicationDTO) {
 		applicationRepository.deleteById(applicationDTO.getApplicationId());
-		log.info("OK");
 	}
 
 }

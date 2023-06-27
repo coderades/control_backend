@@ -13,8 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ExistsUserNameForAnotherUserIdValidator
 		implements ConstraintValidator<ExistsUserNameForAnotherUserId, Object> {
 
-	private String field;
-	private String fieldMatch;
+	private String fieldId;
+	private String fieldName;
 	private String message;
 
 	@Autowired
@@ -22,24 +22,24 @@ public class ExistsUserNameForAnotherUserIdValidator
 
 	@Override
 	public void initialize(ExistsUserNameForAnotherUserId constraintAnnotation) {
-		this.field = constraintAnnotation.field();
-		this.fieldMatch = constraintAnnotation.fieldMatch();
+		this.fieldName = constraintAnnotation.fieldName();
+		this.fieldId = constraintAnnotation.fieldId();
 		this.message = constraintAnnotation.message();
 	}
 
 	@Override
 	public boolean isValid(Object object, ConstraintValidatorContext context) {
 		if (!userRepository.existsByUserIdIsNotAndUserName(
-				new BeanWrapperImpl(object).getPropertyValue(fieldMatch).toString(),
-				new BeanWrapperImpl(object).getPropertyValue(field).toString())) {			
-			log.info("True");			
+				new BeanWrapperImpl(object).getPropertyValue(fieldId).toString(),
+				new BeanWrapperImpl(object).getPropertyValue(fieldName).toString())) {
+			log.info("True");
 			return true;
 		}
 
 		context.disableDefaultConstraintViolation();
 		context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-		
-		log.error("False");		
+
+		log.error("False");
 		return false;
 	}
 

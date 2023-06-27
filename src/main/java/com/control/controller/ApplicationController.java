@@ -2,6 +2,8 @@ package com.control.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,81 +15,59 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.control.model.dto.ApplicationIdDTO;
-import com.control.model.dto.ApplicationInsertDTO;
-import com.control.model.dto.ApplicationUpdateDTO;
+import com.control.model.dto.ApplicationPostDTO;
+import com.control.model.dto.ApplicationPutDTO;
 import com.control.service.ApplicationService;
 
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/application")
-@Slf4j
 public class ApplicationController {
 
 	@Autowired
 	private ApplicationService applicationService;
 
 	@GetMapping
-	public ResponseEntity<?> findAll(Pageable pageable) {
-		log.info("Pagination: {}", pageable);
-
-		final var entity = applicationService.findAll(pageable);
-		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
+	public ResponseEntity<?> findAll(
+			@SortDefault(sort = "applicationName") @PageableDefault(size = 100) final Pageable pageable) {
+		return ResponseEntity.ok(applicationService.findAll(pageable));
 	}
 
 	@GetMapping("/{applicationId}")
 	public ResponseEntity<?> findById(@PathVariable("applicationId") String applicationId) {
-		log.info("applicationId {}", applicationId);
-
-		final var entity = applicationService.findById(applicationId);
-		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
+		return ResponseEntity.ok(applicationService.findById(applicationId));
 	}
 
 	@GetMapping("/findByNameContaining/{applicationName}")
 	public ResponseEntity<?> findByNameContaining(@PathVariable("applicationName") String applicationName) {
-		log.info("applicationName {}", applicationName);
-
-		final var entity = applicationService.findByNameContaining(applicationName);
-		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
+		return ResponseEntity.ok(applicationService.findByNameContaining(applicationName));
 	}
 
 	@GetMapping("/findByEmailContaining/{applicationEmail}")
 	public ResponseEntity<?> findByEmailContaining(@PathVariable("applicationEmail") String applicationEmail) {
-		log.info("applicationEmail {}", applicationEmail);
-
-		final var entity = applicationService.findByEmailContaining(applicationEmail);
-		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
+		return ResponseEntity.ok(applicationEmail);
 	}
 
 	@GetMapping("/find/{find}")
 	public ResponseEntity<?> find(@PathVariable("find") String find) {
-		log.info("find {}", find);
-
-		final var entity = applicationService.find(find);
-		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
+		return ResponseEntity.ok(applicationService.find(find));
 	}
 
 	@PostMapping
-	public ResponseEntity<?> save(@Valid @RequestBody ApplicationInsertDTO applicationInsertDTO) {
-		log.info("object {}", applicationInsertDTO.toString());
-
+	public ResponseEntity<?> save(@Valid @RequestBody ApplicationPostDTO applicationInsertDTO) {
 		return ResponseEntity.ok(applicationService.save(applicationInsertDTO));
 	}
 
 	@PutMapping
-	public ResponseEntity<?> save(@Valid @RequestBody ApplicationUpdateDTO applicationUpdateDTO) {
-		log.info("object {}", applicationUpdateDTO);
+	public ResponseEntity<?> save(@Valid @RequestBody ApplicationPutDTO applicationUpdateDTO) {
 		applicationService.save(applicationUpdateDTO);
-		
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping()
+	@DeleteMapping
 	public ResponseEntity<?> delete(@Valid @RequestBody ApplicationIdDTO applicationIdDTO) {
-		log.info("object {}", applicationIdDTO);
 		applicationService.delete(applicationIdDTO);
-		
 		return ResponseEntity.noContent().build();
 	}
 

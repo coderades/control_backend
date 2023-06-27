@@ -22,8 +22,8 @@ import lombok.Data;
 import lombok.ToString;
 
 @Entity
-@Table(name = "[role]")
 @Data
+@Table(name = "[role]")
 @ToString(exclude = "users")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "roleId")
 public class Role implements Serializable {

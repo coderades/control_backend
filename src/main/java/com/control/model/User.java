@@ -29,8 +29,8 @@ import lombok.Data;
 import lombok.ToString;
 
 @Entity
-@Table(name = "[user]")
 @Data
+@Table(name = "[user]")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User implements UserDetails {
 

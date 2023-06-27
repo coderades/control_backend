@@ -9,30 +9,30 @@ public class IsCpfValidator implements ConstraintValidator<IsCpf, String> {
 
 	@Override
 	public boolean isValid(String cpf, ConstraintValidatorContext context) {
-		final String cpfSomenteDigitos = cpf.replaceAll("\\D", "");		
-		if ((cpfSomenteDigitos == null) || (cpfSomenteDigitos.length() != 11) || "00000000000".equals(cpfSomenteDigitos)
-				|| "11111111111".equals(cpfSomenteDigitos) || "22222222222".equals(cpfSomenteDigitos)
-				|| "33333333333".equals(cpfSomenteDigitos) || "44444444444".equals(cpfSomenteDigitos)
-				|| "55555555555".equals(cpfSomenteDigitos) || "66666666666".equals(cpfSomenteDigitos)
-				|| "77777777777".equals(cpfSomenteDigitos) || "88888888888".equals(cpfSomenteDigitos)
-				|| "99999999999".equals(cpfSomenteDigitos)) {
+		final String cpfDigitosOnly = cpf.replaceAll("\\D", "");
+		if ((cpfDigitosOnly == null) || (cpfDigitosOnly.length() != 11) || "00000000000".equals(cpfDigitosOnly)
+				|| "11111111111".equals(cpfDigitosOnly) || "22222222222".equals(cpfDigitosOnly)
+				|| "33333333333".equals(cpfDigitosOnly) || "44444444444".equals(cpfDigitosOnly)
+				|| "55555555555".equals(cpfDigitosOnly) || "66666666666".equals(cpfDigitosOnly)
+				|| "77777777777".equals(cpfDigitosOnly) || "88888888888".equals(cpfDigitosOnly)
+				|| "99999999999".equals(cpfDigitosOnly)) {
 			return false;
 		}
-		
-		final Integer digito1 = calcularDigito(cpfSomenteDigitos.substring(0, 9), PESO_CPF);
-		final Integer digito2 = calcularDigito(cpfSomenteDigitos.substring(0, 9) + digito1, PESO_CPF);
-		return cpfSomenteDigitos.equals(cpfSomenteDigitos.substring(0, 9) + digito1.toString() + digito2.toString());
+
+		final Integer digit1 = calculateDigit(cpfDigitosOnly.substring(0, 9), PESO_CPF);
+		final Integer digit2 = calculateDigit(cpfDigitosOnly.substring(0, 9) + digit1, PESO_CPF);
+		return cpfDigitosOnly.equals(cpfDigitosOnly.substring(0, 9) + digit1.toString() + digit2.toString());
 	}
 
-	private int calcularDigito(String str, int[] peso) {
-		int soma = 0;
-		for (int indice = str.length() - 1, digito; indice >= 0; indice--) {
-			digito = Integer.parseInt(str.substring(indice, indice + 1));
-			soma += digito * peso[peso.length - str.length() + indice];
+	private int calculateDigit(String str, int[] peso) {
+		int sum = 0;
+		for (int index = str.length() - 1, digit; index >= 0; index--) {
+			digit = Integer.parseInt(str.substring(index, index + 1));
+			sum += digit * peso[peso.length - str.length() + index];
 		}
-		
-		soma = 11 - soma % 11;
-		return soma > 9 ? 0 : soma;
+
+		sum = 11 - sum % 11;
+		return sum > 9 ? 0 : sum;
 	}
 
 }

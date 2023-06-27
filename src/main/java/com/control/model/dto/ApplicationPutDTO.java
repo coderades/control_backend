@@ -2,16 +2,25 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class ApplicationInsertDTO implements Serializable {
+@DynamicUpdate
+public class ApplicationPutDTO implements Serializable {
 
-	private static final long serialVersionUID = -527506195465983324L;
+	private static final long serialVersionUID = -3241393212626215402L;
+
+	@Id
+	@NotBlank(message = "It cannot be blank")
+	private String applicationId;
 
 	@NotNull(message = "It cannot be null")
 	@NotEmpty(message = "It cannot be empty")
@@ -24,8 +33,7 @@ public class ApplicationInsertDTO implements Serializable {
 	@Size(min = 8, max = 50, message = "Enter between 8 and 50 characters")
 	private String applicationEmail;
 
-	@NotNull(message = "It cannot be null")
-	@NotEmpty(message = "It cannot be empty")
+	@NotBlank(message = "It cannot be blank")
 	private String applicationSecret;
 
 }

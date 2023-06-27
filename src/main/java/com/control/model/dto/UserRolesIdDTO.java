@@ -7,12 +7,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class RoleIdDTO implements Serializable {
+public class UserRolesIdDTO implements Serializable {
 
-	private static final long serialVersionUID = -1506397500308371712L;
+	private static final long serialVersionUID = 3445600659154104881L;
 
 	@Id
 	@NotBlank(message = "It cannot be blank")
-	private String roleId;
+	private String userRolesId;
 
 }

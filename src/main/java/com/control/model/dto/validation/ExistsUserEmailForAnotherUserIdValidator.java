@@ -13,8 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ExistsUserEmailForAnotherUserIdValidator
 		implements ConstraintValidator<ExistsUserEmailForAnotherUserId, Object> {
 
-	private String field;
-	private String fieldMatch;
+	private String fieldId;
+	private String fieldEmail;
 	private String message;
 
 	@Autowired
@@ -22,16 +22,16 @@ public class ExistsUserEmailForAnotherUserIdValidator
 
 	@Override
 	public void initialize(ExistsUserEmailForAnotherUserId constraintAnnotation) {
-		this.field = constraintAnnotation.field();
-		this.fieldMatch = constraintAnnotation.fieldMatch();
+		this.fieldId = constraintAnnotation.fieldId();
+		this.fieldEmail = constraintAnnotation.fieldEmail();
 		this.message = constraintAnnotation.message();
 	}
 
 	@Override
 	public boolean isValid(Object object, ConstraintValidatorContext context) {
 		if (!userRepository.existsByUserIdIsNotAndUserEmail(
-				new BeanWrapperImpl(object).getPropertyValue(fieldMatch).toString(),
-				new BeanWrapperImpl(object).getPropertyValue(field).toString())) {
+				new BeanWrapperImpl(object).getPropertyValue(fieldId).toString(),
+				new BeanWrapperImpl(object).getPropertyValue(fieldEmail).toString())) {
 			log.info("True");
 			return true;
 		}

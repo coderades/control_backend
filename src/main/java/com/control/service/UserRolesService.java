@@ -1,82 +1,52 @@
 package com.control.service;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.control.model.Role;
-import com.control.model.dto.RoleInsertDTO;
-import com.control.model.dto.RoleUpdateDTO;
-import com.control.repository.RoleRepository;
-
-import lombok.extern.slf4j.Slf4j;
+import com.control.model.UserRoles;
+import com.control.model.dto.UserRolesIdDTO;
+import com.control.model.dto.UserRolesPostDTO;
+import com.control.model.dto.UserRolesPutDTO;
+import com.control.repository.UserRolesRepository;
 
 @Service
-@Slf4j
 public class UserRolesService {
 
 	@Autowired
-	private RoleRepository roleRepository;
+	private UserRolesRepository roleRepository;
 
-	public Page<Role> findAll(Pageable pageable) {
-		final var entity = roleRepository.findAll(pageable);
-
-		log.info("Elements {}, Object {}", entity.getSize(), entity);
-
-		return entity;
+	public Page<UserRoles> findAll(Pageable pageable) {
+		return roleRepository.findAll(pageable);
 	}
 
-	public Optional<Role> findById(String roleId) {
-		final var entity = roleRepository.findById(roleId);
-
-		log.info("Object {}", entity);
-
-		return entity;
-	}
-
-	public Role findByName(String roleName) {
-		final var entity = roleRepository.findByRoleName(roleName);
-
-		log.info("Object {}", entity);
-
-		return entity;
-	}
-
-	public List<?> findByNameContaining(String roleName) {
-		final var entity = roleRepository.findByRoleNameIgnoreCaseContaining(roleName);
-
-		log.info("Elements {}, Object {}", entity.size(), entity);
-
-		return entity.size() == 0 ? null : entity;
+	public Optional<UserRoles> findById(String roleId) {
+		return roleRepository.findById(roleId);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public String save(RoleInsertDTO roleInsertDTO) {
-		final var entity = new Role();
-
+	public String save(UserRolesPostDTO userRolesPostDTO) {
+		final var entity = new UserRoles();
+		BeanUtils.copyProperties(userRolesPostDTO, entity);
 		roleRepository.save(entity);
-		log.info("roleId {}", entity.getRoleId());
-
 		return entity.getRoleId();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void save(RoleUpdateDTO roleUpdateDTO) {
-		final var entity = new Role();
-
+	public void save(UserRolesPutDTO userRolesPutDTO) {
+		final var entity = new UserRoles();
+		BeanUtils.copyProperties(userRolesPutDTO, entity);
 		roleRepository.save(entity);
-		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(String roleId) {
-		roleRepository.deleteById(roleId);
-		log.info("OK");
+	public void delete(UserRolesIdDTO userRolesIdDTO) {
+		roleRepository.deleteById(userRolesIdDTO.getUserRolesId());
 	}
 
 }

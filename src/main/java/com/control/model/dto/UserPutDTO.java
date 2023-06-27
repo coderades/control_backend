@@ -2,6 +2,8 @@ package com.control.model.dto;
 
 import java.io.Serializable;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.control.model.dto.validation.ExistsUserEmailForAnotherUserId;
 import com.control.model.dto.validation.ExistsUserId;
 import com.control.model.dto.validation.ExistsUserNameForAnotherUserId;
@@ -14,9 +16,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-@ExistsUserNameForAnotherUserId(field = "userName", fieldMatch = "userId")
-@ExistsUserEmailForAnotherUserId(field = "userEmail", fieldMatch = "userId")
-public class UserUpdateDTO implements Serializable {
+@DynamicUpdate
+@ExistsUserNameForAnotherUserId( fieldId = "userId", fieldName = "userName")
+@ExistsUserEmailForAnotherUserId( fieldId = "userId", fieldEmail = "userEmail")
+public class UserPutDTO implements Serializable {
 
 	private static final long serialVersionUID = 3445600659154104881L;
 

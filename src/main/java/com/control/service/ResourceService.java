@@ -15,57 +15,38 @@ import com.control.model.dto.ResourceInsertDTO;
 import com.control.model.dto.ResourceUpdadeDTO;
 import com.control.repository.ResourceRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class ResourceService {
 
 	@Autowired
 	private ResourceRepository resourceRepository;
 
 	public Page<Resource> findAll(Pageable pageable) {
-		final var entity = resourceRepository.findAll(pageable);
-
-		log.info("Elements {}, Object {}", entity.getSize(), entity);
-
-		return entity;
+		return resourceRepository.findAll(pageable);
 	}
 
 	public Optional<Resource> findById(String resourceId) {
-		final var entity = resourceRepository.findById(resourceId);
-
-		log.info("Object {}", entity);
-
-		return entity;
+		return resourceRepository.findById(resourceId);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public String save(ResourceInsertDTO resourceInsertDTO) {
 		final var entity = new Resource();
-
 		BeanUtils.copyProperties(resourceInsertDTO, entity);
-
 		resourceRepository.save(entity);
-		log.info("applicationId {}", entity.getApplicationId());
-
 		return entity.getApplicationId();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void save(ResourceUpdadeDTO resourceUpdateDTO) {
 		final var entity = new Resource();
-
 		BeanUtils.copyProperties(resourceUpdateDTO, entity);
-
 		resourceRepository.save(entity);
-		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(ResourceIdDTO resourceDTO) {
 		resourceRepository.deleteById(resourceDTO.getResourceId());
-		log.info("OK");
 	}
 
 }

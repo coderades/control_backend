@@ -9,7 +9,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ExistsUserIdValidator implements ConstraintValidator<ExistsUserId, String> {
+public class NotExistsUserEmailValidator implements ConstraintValidator<NotExistsUserEmail, String> {
 
 	private String message;
 	
@@ -17,13 +17,13 @@ public class ExistsUserIdValidator implements ConstraintValidator<ExistsUserId, 
 	private UserRepository userRepository;
 
 	@Override
-	public void initialize(ExistsUserId constraintAnnotation) {
+	public void initialize(NotExistsUserEmail constraintAnnotation) {
 		this.message = constraintAnnotation.message();
 	}
 	
 	@Override
-	public boolean isValid(String id, ConstraintValidatorContext context) {
-		if (userRepository.existsById(id)) {
+	public boolean isValid(String email, ConstraintValidatorContext context) {
+		if (!userRepository.existsByUserEmail(email)) {
 			log.info("True");
 			return true;
 		}

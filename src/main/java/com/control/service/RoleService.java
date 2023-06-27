@@ -3,6 +3,7 @@ package com.control.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,81 +11,55 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.Role;
-import com.control.model.dto.RoleInsertDTO;
-import com.control.model.dto.RoleUpdateDTO;
+import com.control.model.dto.RoleIdDTO;
+import com.control.model.dto.RolePostDTO;
+import com.control.model.dto.RolePutDTO;
 import com.control.repository.RoleRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class RoleService {
 
 	@Autowired
 	private RoleRepository roleRepository;
 
 	public Page<Role> findAll(Pageable pageable) {
-		final var entity = roleRepository.findAll(pageable);
-
-		log.info("Elements {}, Object {}", entity.getSize(), entity);
-
-		return entity;
+		return roleRepository.findAll(pageable);
 	}
 
 	public Optional<Role> findById(String roleId) {
-		final var entity = roleRepository.findById(roleId);
-
-		log.info("Object {}", entity);
-
-		return entity;
+		return roleRepository.findById(roleId);
 	}
 
 	public Role findByName(String roleName) {
-		final var entity = roleRepository.findByRoleName(roleName);
-
-		log.info("Object {}", entity);
-
-		return entity;
+		return roleRepository.findByRoleName(roleName);
 	}
 
 	public List<Role> findByNameContaining(String roleName) {
-		final var entity = roleRepository.findByRoleNameIgnoreCaseContaining(roleName);
-
-		log.info("Elements {}, Object {}", entity.size(), entity);
-
-		return entity;
+		return roleRepository.findByRoleNameIgnoreCaseContaining(roleName);
 	}
 
 	public List<Object[]> findByHasAnyRole(String applicationId) {
-		final var entity = roleRepository.findByHasAnyRole(applicationId);
-
-		log.info("Elements {}, Object {}", entity.size(), entity);
-
-		return entity;
+		return roleRepository.findByHasAnyRole(applicationId);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public String save(RoleInsertDTO roleInsertDTO) {
+	public String save(RolePostDTO roleInsertDTO) {
 		final var entity = new Role();
-
+		BeanUtils.copyProperties(roleInsertDTO, entity);
 		roleRepository.save(entity);
-		log.info("roleId {}", entity.getRoleId());
-
 		return entity.getRoleId();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void save(RoleUpdateDTO roleUpdateDTO) {
+	public void save(RolePutDTO roleUpdateDTO) {
 		final var entity = new Role();
-
+		BeanUtils.copyProperties(roleUpdateDTO, entity);
 		roleRepository.save(entity);
-		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(String roleId) {
-		roleRepository.deleteById(roleId);
-		log.info("OK");
+	public void delete(RoleIdDTO roleIdDTO) {
+		roleRepository.deleteById(roleIdDTO.getRoleId());
 	}
 
 }

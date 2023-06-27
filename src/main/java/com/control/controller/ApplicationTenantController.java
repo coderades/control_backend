@@ -2,6 +2,8 @@ package com.control.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,60 +20,44 @@ import com.control.model.dto.ApplicationTenantUpdateDTO;
 import com.control.service.ApplicationTenantService;
 
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/applicationTenant")
-@Slf4j
 public class ApplicationTenantController {
 
 	@Autowired
 	private ApplicationTenantService applicationTenantService;
 
 	@GetMapping
-	public ResponseEntity<?> findAll(Pageable pageable) {
-		log.info("Pagination {}", pageable);
-
-		final var entity = applicationTenantService.findAll(pageable);
-		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
+	public ResponseEntity<?> findAll(
+			@SortDefault(sort = "applicationTenantName") @PageableDefault(size = 100) final Pageable pageable) {
+		return ResponseEntity.ok(applicationTenantService.findAll(pageable));
 	}
 
 	@GetMapping("/{applicationTenantId}")
 	public ResponseEntity<?> findById(@PathVariable("applicationTenantId") String applicationTenantId) {
-		log.info("applicationTenantId {}", applicationTenantId);
-
-		final var entity = applicationTenantService.findById(applicationTenantId);
-		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
+		return ResponseEntity.ok(applicationTenantId);
 	}
 
 	@GetMapping("/findDataSource")
 	public ResponseEntity<?> findDataSource(Pageable pageable) {
-		log.info("Pagination {}", pageable);
-
-		final var entity = applicationTenantService.findByDataSource();
-		return entity.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
+		return ResponseEntity.ok(applicationTenantService.findByDataSource());
 	}
 
 	@PostMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ApplicationTenantInsertDTO applicationTenantInsertDTO) {
-		log.info("object {}", applicationTenantInsertDTO.toString());
-
 		return ResponseEntity.ok(applicationTenantService.save(applicationTenantInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ApplicationTenantUpdateDTO applicationTenantUpdateDTO) {
-		log.info("object {}", applicationTenantUpdateDTO);		
 		applicationTenantService.save(applicationTenantUpdateDTO);
-
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping()
+	@DeleteMapping
 	public ResponseEntity<?> delete(@Valid @RequestBody ApplicationTenantDTO applicationTenantDTO) {
-		log.info("applicationId {}", applicationTenantDTO.getApplicationTenantId());		
 		applicationTenantService.delete(applicationTenantDTO);
-		
 		return ResponseEntity.noContent().build();
 	}
 

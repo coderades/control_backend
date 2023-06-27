@@ -12,13 +12,13 @@ import com.control.model.User;
 //https://www.baeldung.com/spring-data-derived-queries
 public interface UserRepository extends JpaRepository<User, String> {
 
-	Boolean existsByUserIdIsNotAndUserName(String userId, String userName);
-
-	Boolean existsByUserIdIsNotAndUserEmail(String userId, String userEmail);
-
 	Boolean existsByUserName(String userName);
 
 	Boolean existsByUserEmail(String userEmail);
+	
+	Boolean existsByUserIdIsNotAndUserName(String userId, String userName);
+
+	Boolean existsByUserIdIsNotAndUserEmail(String userId, String userEmail);
 
 	User findByUserName(String userName);
 

@@ -18,10 +18,10 @@ import jakarta.validation.Payload;
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = ExistsUserIdValidator.class)
-public @interface ExistsUserId {
+@Constraint(validatedBy = NotExistsUserNameValidator.class)
+public @interface NotExistsUserName {
 
-	String message() default "Id does not exist";
+	String message() default "Name already exist";
 
 	Class<?>[] groups() default { };
 

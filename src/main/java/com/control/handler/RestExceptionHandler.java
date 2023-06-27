@@ -65,11 +65,20 @@ public class RestExceptionHandler {
 
 	@ExceptionHandler(Throwable.class)
 	public ResponseEntity<Exception> handleThrowable(final Throwable exception) {
-		exception.printStackTrace();
+		final List<ExceptionField> fieldErros = new ArrayList<>();
+		
+		final var fieldExtension = new ExceptionField();
+		fieldExtension.setField("");
+		fieldExtension.setType("");
+		fieldExtension.setArgument(exception.getMessage());
+		fieldErros.add(fieldExtension);
+		
 		final var errorResponse = new Exception();
 		errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-		errorResponse.setException(exception.getClass().getSimpleName());
-
+		errorResponse.setException(HttpStatus.BAD_REQUEST.name());
+		errorResponse.setMessage(exception.getClass().getSimpleName());
+		errorResponse.setFields(fieldErros);
+		
 		log.error(errorResponse.toString());
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

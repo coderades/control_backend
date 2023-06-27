@@ -16,73 +16,46 @@ import com.control.model.dto.ApplicationTenantInsertDTO;
 import com.control.model.dto.ApplicationTenantUpdateDTO;
 import com.control.repository.ApplicationTenantRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class ApplicationTenantService {
 
 	@Autowired
 	private ApplicationTenantRepository applicationTenantRepository;
 
 	public Page<ApplicationTenant> findAll(Pageable pageable) {
-		final var entity = applicationTenantRepository.findAll(pageable);
-
-		log.info("Elements {}, Object {}", entity.getSize(), entity);
-
-		return entity;
+		return applicationTenantRepository.findAll(pageable);
 	}
 
 	public List<ApplicationTenant> findAll() {
-		final var entity = applicationTenantRepository.findAll();
-
-		log.info("Elements {}, Object {}", entity.size(), entity);
-
-		return entity;
+		return applicationTenantRepository.findAll();
 	}
 
 	public Optional<ApplicationTenant> findById(String applicationTenantId) {
-		final var entity = applicationTenantRepository.findById(applicationTenantId);
-
-		log.info("Object {}", entity);
-
-		return entity;
+		return applicationTenantRepository.findById(applicationTenantId);
 	}
 
 	public List<ApplicationTenant> findByDataSource() {
-		final var entity = applicationTenantRepository.findByDataSource();
-
-		log.info("Elements {}, Object {}", entity.size(), entity);
-
-		return entity;
+		return applicationTenantRepository.findByDataSource();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public String save(ApplicationTenantInsertDTO applicationTenantInsertDTO) {
 		final var entity = new ApplicationTenant();
-
 		BeanUtils.copyProperties(applicationTenantInsertDTO, entity);
-
 		applicationTenantRepository.save(entity);
-		log.info("applicationTenantId {}", entity.getApplicationTenantId());
-
 		return entity.getApplicationId();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void save(ApplicationTenantUpdateDTO applicationTenantUpdateDTO) {
 		final var entity = new ApplicationTenant();
-
 		BeanUtils.copyProperties(applicationTenantUpdateDTO, entity);
-
 		applicationTenantRepository.save(entity);
-		log.info("OK");
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(ApplicationTenantDTO applicationTenantIdDTO) {
 		applicationTenantRepository.deleteById(applicationTenantIdDTO.getApplicationTenantId());
-		log.info("OK");
 	}
 
 }
