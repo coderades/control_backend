@@ -27,8 +27,8 @@ public @interface ExistsUserEmailForAnotherUserId {
 
 	Class<? extends Payload>[] payload() default {};
 
-	String fieldId();
+	String field();
 
-	String fieldEmail();
+	String fieldMatch();
 
 }

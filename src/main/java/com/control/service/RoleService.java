@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.Role;
-import com.control.model.dto.RoleIdDTO;
-import com.control.model.dto.RolePostDTO;
-import com.control.model.dto.RolePutDTO;
+import com.control.model.dto.RoleInsertDTO;
+import com.control.model.dto.RoleUpdateDTO;
 import com.control.repository.RoleRepository;
 
 @Service
@@ -23,43 +22,46 @@ public class RoleService {
 	private RoleRepository roleRepository;
 
 	public Page<Role> findAll(Pageable pageable) {
-		return roleRepository.findAll(pageable);
+		final var role = roleRepository.findAll(pageable);
+		return role;
 	}
 
-	public Optional<Role> findById(String roleId) {
-		return roleRepository.findById(roleId);
+	public Optional<Role> findById(String RoleId) {
+		final var role = roleRepository.findById(RoleId);
+		return role;
 	}
 
-	public Role findByName(String roleName) {
-		return roleRepository.findByRoleName(roleName);
+	public Role findByName(String RoleName) {
+		final var role = roleRepository.findByRoleName(RoleName);
+		return role;
 	}
 
 	public List<Role> findByNameContaining(String roleName) {
-		return roleRepository.findByRoleNameIgnoreCaseContaining(roleName);
-	}
-
-	public List<Object[]> findByHasAnyRole(String applicationId) {
-		return roleRepository.findByHasAnyRole(applicationId);
+		final var role = roleRepository.findByRoleNameIgnoreCaseContaining(roleName);
+		return role;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public String save(RolePostDTO roleInsertDTO) {
-		final var entity = new Role();
-		BeanUtils.copyProperties(roleInsertDTO, entity);
-		roleRepository.save(entity);
-		return entity.getRoleId();
+	public String save(RoleInsertDTO RoleInsertDTO) {
+		final var role = new Role();
+
+		BeanUtils.copyProperties(RoleInsertDTO, role);
+		roleRepository.save(role);
+
+		return role.getRoleId();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void save(RolePutDTO roleUpdateDTO) {
-		final var entity = new Role();
-		BeanUtils.copyProperties(roleUpdateDTO, entity);
-		roleRepository.save(entity);
+	public void save(RoleUpdateDTO RoleUpdateDTO) {
+		final var role = new Role();
+
+		BeanUtils.copyProperties(RoleUpdateDTO, role);
+		roleRepository.save(role);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(RoleIdDTO roleIdDTO) {
-		roleRepository.deleteById(roleIdDTO.getRoleId());
+	public void delete(String roleId) {
+		roleRepository.deleteById(roleId);
 	}
 
 }

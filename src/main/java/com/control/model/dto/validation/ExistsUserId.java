@@ -21,7 +21,7 @@ import jakarta.validation.Payload;
 @Constraint(validatedBy = ExistsUserIdValidator.class)
 public @interface ExistsUserId {
 
-	String message() default "Id does not exist";
+	String message() default "userId does not exist";
 
 	Class<?>[] groups() default { };
 

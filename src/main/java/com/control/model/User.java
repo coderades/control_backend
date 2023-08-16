@@ -1,25 +1,25 @@
 package com.control.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -29,17 +29,15 @@ import lombok.Data;
 import lombok.ToString;
 
 @Entity
-@Data
 @Table(name = "[user]")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
+@Data
 public class User implements UserDetails {
 
-	private static final long serialVersionUID = -1678201250382609358L;
+	private static final long serialVersionUID = 2187761020055803199L;
 
 	@Id
 	@Column(name = "user_id", columnDefinition = "uuid", nullable = false, unique = true)
-	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
+	@GeneratedValue(strategy = GenerationType.UUID)
 	private String userId;
 
 	@Column(name = "user_is_enabled", nullable = false)
@@ -88,49 +86,44 @@ public class User implements UserDetails {
 	@DateTimeFormat
 	private LocalDateTime userAccessed;
 
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	@ManyToMany()
-	private List<Role> roles;
-
-	public String getUserName() {
-		return userName;
-	}
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "user_roles", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "role_id") })
+	private Set<Role> roles = new HashSet<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		final Collection<GrantedAuthority> grantedAuthority = new ArrayList<>();
-		roles.forEach(role -> grantedAuthority.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName())));
-		return grantedAuthority;
+		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 
 	@Override
 	public String getPassword() {
-		return this.userPassword;
+		return userPassword;
 	}
 
 	@Override
 	public String getUsername() {
-		return this.userName;
+		return userName;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return this.userIsAccountNonExpired;
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return this.userIsAccountNonLocked;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return this.userIsCredentialsNonExpired;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return this.userIsEnabled;
+		return true;
 	}
 
 }

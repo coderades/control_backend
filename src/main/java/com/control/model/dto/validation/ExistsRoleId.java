@@ -18,17 +18,13 @@ import jakarta.validation.Payload;
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = ExistsUserNameForAnotherUserIdValidator.class)
-public @interface ExistsUserNameForAnotherUserId {
+@Constraint(validatedBy = ExistsRoleIdValidator.class)
+public @interface ExistsRoleId {
 
-	String message() default "Exists for another user";
+	String message() default "RoleId does not exist";
 
-	Class<?>[] groups() default {};
+	Class<?>[] groups() default { };
 
-	Class<? extends Payload>[] payload() default {};
-
-	String field();
-
-	String fieldMatch();
+	Class<? extends Payload>[] payload() default { };
 
 }

@@ -12,13 +12,13 @@ import com.control.model.User;
 //https://www.baeldung.com/spring-data-derived-queries
 public interface UserRepository extends JpaRepository<User, String> {
 
-	Boolean existsByUserName(String userName);
-
-	Boolean existsByUserEmail(String userEmail);
-	
 	Boolean existsByUserIdIsNotAndUserName(String userId, String userName);
 
 	Boolean existsByUserIdIsNotAndUserEmail(String userId, String userEmail);
+
+	Boolean existsByUserName(String userName);
+
+	Boolean existsByUserEmail(String userEmail);
 
 	User findByUserName(String userName);
 
@@ -34,12 +34,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 	List<User> findByUser(String userName, Boolean userIsEnabled, Boolean userIsAccountNonExpired,
 			Boolean userIsAccountNonLocked, Boolean userIsCredentialsNonExpired);
 
-	@Query("SELECT userPassword FROM User user WHERE userId =?1")
-	String findByUserPassword(String userId);
-
 	@Modifying
 	@Transactional
 	@Query("UPDATE User user SET userPassword = ?2 WHERE userId = ?1")
-	void updateUserPassword(String userId, String userPassword);
+	void saveUserPassword(String userId, String userPassword);
 
 }

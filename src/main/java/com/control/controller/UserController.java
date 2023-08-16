@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.model.dto.UserIdDTO;
-import com.control.model.dto.UserPasswordDTO;
-import com.control.model.dto.UserPostDTO;
-import com.control.model.dto.UserPutDTO;
+import com.control.model.dto.UserInsertDTO;
+import com.control.model.dto.UserUpdateDTO;
+import com.control.model.dto.UserUpdatePasswordDTO;
 import com.control.service.UserService;
 
 import jakarta.validation.Valid;
@@ -66,25 +65,25 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> save(@RequestBody @Valid UserPostDTO userInsertDTO) {
+	public ResponseEntity<?> save(@RequestBody @Valid UserInsertDTO userInsertDTO) {
 		return ResponseEntity.ok(userService.save(userInsertDTO));
 	}
 
 	@PutMapping
-	public ResponseEntity<?> save(@RequestBody @Valid UserPutDTO userUpdateDTO) {
+	public ResponseEntity<?> save(@RequestBody @Valid UserUpdateDTO userUpdateDTO) {
 		userService.save(userUpdateDTO);
 		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping("/password")
-	public ResponseEntity<?> savePassword(@RequestBody @Valid UserPasswordDTO userPasswordUpdateDTO) {
-		userService.savePassword(userPasswordUpdateDTO);
+	public ResponseEntity<?> savePassword(@RequestBody @Valid UserUpdatePasswordDTO userUpdatePasswordDTO) {
+		userService.save(userUpdatePasswordDTO);
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping
-	public ResponseEntity<?> delete(@RequestBody @Valid UserIdDTO userDTO) {
-		userService.delete(userDTO);
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<?> delete(@Valid @PathVariable("userId") String userId) {
+		userService.delete(userId);
 		return ResponseEntity.noContent().build();
 	}
 

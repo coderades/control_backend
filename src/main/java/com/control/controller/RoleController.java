@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.model.dto.RoleIdDTO;
-import com.control.model.dto.RolePostDTO;
-import com.control.model.dto.RolePutDTO;
+import com.control.model.dto.RoleInsertDTO;
+import com.control.model.dto.RoleUpdateDTO;
 import com.control.service.RoleService;
 
 import jakarta.validation.Valid;
@@ -40,7 +39,7 @@ public class RoleController {
 	}
 
 	@GetMapping("/findByName/{roleName}")
-	public ResponseEntity<?> findByName(@PathVariable("role_name") String roleName) {
+	public ResponseEntity<?> findByName(@PathVariable("roleName") String roleName) {
 		return ResponseEntity.ok(roleService.findByName(roleName));
 	}
 
@@ -49,20 +48,25 @@ public class RoleController {
 		return ResponseEntity.ok(roleService.findByNameContaining(roleName));
 	}
 
+	@GetMapping("/find/{find}")
+	public ResponseEntity<?> find(@PathVariable("find") String find) {
+		return ResponseEntity.ok(roleService.findByNameContaining(find));
+	}
+
 	@PostMapping
-	public ResponseEntity<?> save(@Valid @RequestBody RolePostDTO roleInsertDTO) {
+	public ResponseEntity<?> save(@RequestBody @Valid RoleInsertDTO roleInsertDTO) {
 		return ResponseEntity.ok(roleService.save(roleInsertDTO));
 	}
 
 	@PutMapping
-	public ResponseEntity<?> save(@Valid @RequestBody RolePutDTO roleUpdateDTO) {
+	public ResponseEntity<?> save(@RequestBody @Valid RoleUpdateDTO roleUpdateDTO) {
 		roleService.save(roleUpdateDTO);
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping
-	public ResponseEntity<?> delete(@Valid @RequestBody RoleIdDTO roleIdDTO) {
-		roleService.delete(roleIdDTO);
+	@DeleteMapping("/{roleId}")
+	public ResponseEntity<?> delete(@Valid @PathVariable("roleId") String roleId) {
+		roleService.delete(roleId);
 		return ResponseEntity.noContent().build();
 	}
 
