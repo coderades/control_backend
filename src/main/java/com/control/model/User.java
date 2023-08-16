@@ -58,7 +58,7 @@ public class User implements UserDetails {
 	@Column(name = "user_email", length = 50, nullable = true, unique = true)
 	private String userEmail;
 
-	@Column(name = "user_password", length = 70, nullable = false, unique = false)
+	@Column(name = "user_password", length = 70, nullable = false, unique = false, updatable = false)
 	@JsonIgnore
 	@ToString.Exclude
 	private String userPassword;

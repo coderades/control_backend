@@ -39,16 +39,16 @@ public class userServiceTest {
 		user.setUserRememberToken(null);
 		user.setUserPinCode(null);
 				
-		userInsertDTO.setUserIsEnabled(user.getUserIsEnabled());
-		userInsertDTO.setUserIsAccountNonExpired(user.getUserIsAccountNonExpired());
-		userInsertDTO.setUserIsAccountNonLocked(true);
-		userInsertDTO.setUserIsCredentialsNonExpired(true);
-		userInsertDTO.setUserName("Test1");
-		userInsertDTO.setUserEmail("test1@test.com");
-		userInsertDTO.setUserPassword("123");
-		userInsertDTO.setUserPasswordToken(null);
-		userInsertDTO.setUserRememberToken(null);
-		userInsertDTO.setUserPinCode(null);
+//		userInsertDTO.setUserIsEnabled(user.getUserIsEnabled());
+//		userInsertDTO.setUserIsAccountNonExpired(user.getUserIsAccountNonExpired());
+//		userInsertDTO.setUserIsAccountNonLocked(true);
+//		userInsertDTO.setUserIsCredentialsNonExpired(true);
+//		userInsertDTO.setUserName("Test1");
+//		userInsertDTO.setUserEmail("test1@test.com");
+//		userInsertDTO.setUserPassword("123");
+//		userInsertDTO.setUserPasswordToken(null);
+//		userInsertDTO.setUserRememberToken(null);
+//		userInsertDTO.setUserPinCode(null);
 	}
 
 	@Test

@@ -62,8 +62,8 @@ public class UserService {
 	public String save(UserInsertDTO userInsertDTO) {
 		final var user = new User();
 
-		userInsertDTO.setUserPassword(new BCryptPasswordEncoder().encode(userInsertDTO.getUserPassword()));
-		BeanUtils.copyProperties(userInsertDTO, user);
+		BeanUtils.copyProperties(userInsertDTO, user);		
+		user.setUserPassword(new BCryptPasswordEncoder().encode(userInsertDTO.userPassword()));		
 		userRepository.save(user);
 
 		return user.getUserId();
