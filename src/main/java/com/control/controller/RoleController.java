@@ -33,7 +33,7 @@ public class RoleController {
 		return ResponseEntity.ok(roleService.findAll(pageable));
 	}
 
-	@GetMapping("/{roleId}")
+	@GetMapping("/findById/{roleId}")
 	public ResponseEntity<?> findById(@PathVariable("roleId") String roleId) {
 		return ResponseEntity.ok(roleService.findById(roleId));
 	}
@@ -54,12 +54,12 @@ public class RoleController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> save(@RequestBody @Valid RoleInsertDTO roleInsertDTO) {
+	public ResponseEntity<?> save(@Valid @RequestBody RoleInsertDTO roleInsertDTO) {
 		return ResponseEntity.ok(roleService.save(roleInsertDTO));
 	}
 
 	@PutMapping
-	public ResponseEntity<?> save(@RequestBody @Valid RoleUpdateDTO roleUpdateDTO) {
+	public ResponseEntity<?> save(@Valid @RequestBody RoleUpdateDTO roleUpdateDTO) {
 		roleService.save(roleUpdateDTO);
 		return ResponseEntity.ok().build();
 	}

@@ -1,6 +1,9 @@
 package com.control.model.dto;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -22,7 +25,14 @@ public record UserInsertDTO(@NotNull(message = "It cannot be null") Boolean user
 
 		String userRememberToken,
 
-		Long userPinCode
+		Long userPinCode,
+		
+		@NotBlank(message = "It cannot be blank") String userCreatedBy
+		
 ) {
 
+	public UserInsertDTO{
+		userPassword = new BCryptPasswordEncoder().encode(userPassword);
+	}
+	
 }

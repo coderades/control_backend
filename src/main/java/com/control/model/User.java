@@ -72,19 +72,21 @@ public class User implements UserDetails {
 	@Column(name = "user_pin_code", nullable = true)
 	private Long userPinCode;
 
-	@Column(name = "user_created", nullable = false, insertable = true, updatable = false)
+	@Column(name = "user_created_on", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat
 	@CreationTimestamp
-	private LocalDateTime userCreated;
+	private LocalDateTime userCreatedOn;
 
-	@Column(name = "user_updated", nullable = true, insertable = false, updatable = true)
+	@Column(name = "user_created_by", columnDefinition = "uuid", nullable = false, insertable = true, updatable = false)
+	private String userCreatedBy;
+
+	@Column(name = "user_updated_on", nullable = true, insertable = false, updatable = true)
 	@DateTimeFormat
 	@UpdateTimestamp
-	private LocalDateTime userUpdated;
+	private LocalDateTime userUpdatedOn;
 
-	@Column(name = "user_accessed", nullable = true, insertable = false, updatable = false)
-	@DateTimeFormat
-	private LocalDateTime userAccessed;
+	@Column(name = "user_updated_by", columnDefinition = "uuid", nullable = false, insertable = false, updatable = true)
+	private String userUpdatedBy;
 
 	@ManyToMany(cascade = { CascadeType.ALL })
 	@JoinTable(name = "user_roles", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {

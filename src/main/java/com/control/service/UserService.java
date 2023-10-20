@@ -7,11 +7,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.User;
+import com.control.model.dto.UserIdDTO;
 import com.control.model.dto.UserInsertDTO;
 import com.control.model.dto.UserUpdateDTO;
 import com.control.model.dto.UserUpdatePasswordDTO;
@@ -59,14 +59,13 @@ public class UserService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public String save(UserInsertDTO userInsertDTO) {
+	public UserIdDTO save(UserInsertDTO userInsertDTO) {
 		final var user = new User();
 
-		BeanUtils.copyProperties(userInsertDTO, user);		
-		user.setUserPassword(new BCryptPasswordEncoder().encode(userInsertDTO.userPassword()));		
+		BeanUtils.copyProperties(userInsertDTO, user);
 		userRepository.save(user);
 
-		return user.getUserId();
+		return new UserIdDTO(user.getUserId());
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -78,9 +77,8 @@ public class UserService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void save(UserUpdatePasswordDTO userUpdatePasswordDTO) {
-		userRepository.saveUserPassword(userUpdatePasswordDTO.userId(),
-				new BCryptPasswordEncoder().encode(userUpdatePasswordDTO.userPassword()));
+	public void save(UserUpdatePasswordDTO userUpdatePasswordDTO) {		
+		userRepository.saveUserPassword(userUpdatePasswordDTO.userId(), userUpdatePasswordDTO.userPassword());	
 	}
 
 	@Transactional(rollbackFor = Exception.class)

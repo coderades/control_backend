@@ -34,9 +34,12 @@ public class UserRoles implements Serializable  {
 	@Column(name = "role_id", columnDefinition = "uuid", nullable = false)
 	private String roleId;
 
-	@Column(name = "user_roles_created", nullable = false, insertable = true, updatable = false)
+	@Column(name = "user_roles_created_on", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat
 	@CreationTimestamp
-	private LocalDateTime userRolesCreated;
+	private LocalDateTime userRolesCreatedOn;
+	
+	@Column(name = "user_updated_by", nullable = false, insertable = true, updatable = false)
+	private String userUpdatedBy;	
 
 }

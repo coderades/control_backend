@@ -13,7 +13,7 @@ import com.control.model.User;
 public class TokenService {
 	public String create(User user) {
 		return JWT.create().withIssuer("control").withSubject(user.getUsername()).withClaim("id", user.getUserId())
-				.withExpiresAt(LocalDateTime.now().plusMinutes(getWithExpiresAt()).toInstant(ZoneOffset.of("-03:00")))
+				.withExpiresAt(LocalDateTime.now().plusSeconds(getWithExpiresAt()).toInstant(ZoneOffset.of("-03:00")))
 				.sign(Algorithm.HMAC512("r%FL<67Hzq7;p'}p}s%Y!>b|&ittk7'?K=T}AsJvcQc6Jg`/z`,LTeK4\"ao_cQ9"));
 	}
 
@@ -23,7 +23,7 @@ public class TokenService {
 	}
 
 	public int getWithExpiresAt() {
-		return 60;
+		return 3600;
 	}
 
 }

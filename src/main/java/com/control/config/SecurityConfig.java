@@ -24,17 +24,33 @@ import com.control.component.FilterTokenComponent;
 public class SecurityConfig {
 
 	@Autowired
-	private FilterTokenComponent filter;
+	private FilterTokenComponent filterTokenComponent;
 
+//	@Bean
+//	WebSecurityCustomizer ignoringCustomizer() {
+//		return (web) -> web.ignoring().requestMatchers("/api/user/**");
+//	}
+
+	private static final String[] AuthPostPermitAll = {
+			"/api/auth/*"
+	};
+	
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf(CsrfConfigurer::disable)
+	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+		return httpSecurity.csrf(CsrfConfigurer::disable)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/login").permitAll())
-				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/api/role").permitAll())
-				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/api/user").permitAll()
-						.anyRequest().authenticated())
-				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class).build();
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.GET, "").permitAll())
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, AuthPostPermitAll).permitAll())
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/api/role/*").permitAll())
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/api/userRoles/*").permitAll())
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/api/user/*").permitAll().anyRequest().authenticated())
+				.logout((logout) -> logout.logoutSuccessUrl("/").deleteCookies("JSESSIONID"))
+				.addFilterBefore(filterTokenComponent, UsernamePasswordAuthenticationFilter.class).build();
+		
+		
+//		roleRepository.findByHasAnyRole("f9a1da70-68a4-eb11-a3d3-6245b4ea43a3").forEach(method -> {	
+//		
+//		});
 	}
 
 	@Bean

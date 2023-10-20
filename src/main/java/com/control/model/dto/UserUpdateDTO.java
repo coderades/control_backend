@@ -32,7 +32,9 @@ public record UserUpdateDTO(
 
 		String userRememberToken,
 
-		Long userPinCode
+		Long userPinCode,
+
+		@NotBlank(message = "It cannot be blank") String userUpdatedBy
 
 ) {
 

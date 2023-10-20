@@ -1,98 +1,90 @@
 package com.control.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
-import com.control.controller.UserController;
-import com.control.model.User;
-import com.control.model.dto.UserInsertDTO;
-
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class userServiceTest {
 
-	@Mock
-	private User user;
-	
-	@Mock
-	private UserService userService;
-	
-	@Mock
-	private UserInsertDTO userInsertDTO;
+	@Autowired
+	MockMvc mockMvc;
 
-	@InjectMocks
-	private UserController userController;
-
-	@BeforeEach
-	void setUp() {
-		user.setUserIsEnabled(true);
-		user.setUserIsAccountNonExpired(true);
-		user.setUserIsAccountNonLocked(true);
-		user.setUserIsCredentialsNonExpired(true);
-		user.setUserName("Test1");
-		user.setUserEmail("test1@test.com");
-		user.setUserPassword("123");
-		user.setUserPasswordToken(null);
-		user.setUserRememberToken(null);
-		user.setUserPinCode(null);
-				
-//		userInsertDTO.setUserIsEnabled(user.getUserIsEnabled());
-//		userInsertDTO.setUserIsAccountNonExpired(user.getUserIsAccountNonExpired());
-//		userInsertDTO.setUserIsAccountNonLocked(true);
-//		userInsertDTO.setUserIsCredentialsNonExpired(true);
-//		userInsertDTO.setUserName("Test1");
-//		userInsertDTO.setUserEmail("test1@test.com");
-//		userInsertDTO.setUserPassword("123");
-//		userInsertDTO.setUserPasswordToken(null);
-//		userInsertDTO.setUserRememberToken(null);
-//		userInsertDTO.setUserPinCode(null);
-	}
-
-	@Test
-	void findById() {
-		userController.findById("2F52EB42-EEB0-974A-91AD-2F1309532733");
-	}
+//	@Autowired
+//	User user;
+//
+//	@BeforeEach
+//	void up() {
+//		user.setUserIsEnabled(true);
+//		user.setUserIsAccountNonExpired(true);
+//		user.setUserIsAccountNonLocked(true);
+//		user.setUserIsCredentialsNonExpired(true);
+//		user.setUserName("castros8");
+//		user.setUserEmail("castro@rar8.com");
+//		user.setUserPassword("1234");
+//		user.setUserPasswordToken(null);
+//		user.setUserRememberToken(null);
+//		user.setUserPinCode(null);
+//	}
 
 //	@Test
 //	@Order(1)
 //	@Rollback(value = true)
-//	@DisplayName("Test saveInsert Success")
-//	public void saveInsert() {
-//		userInsertDTO.setUserIsEnabled(true);
-//		userInsertDTO.setUserIsAccountNonExpired(true);
-//		userInsertDTO.setUserIsAccountNonLocked(true);
-//		userInsertDTO.setUserIsCredentialsNonExpired(true);
-//		userInsertDTO.setUserName("Test1");
-//		userInsertDTO.setUserEmail("test1@test.com");
-//		userInsertDTO.setUserPassword("123");
-//		userInsertDTO.setUserPasswordToken(null);
-//		userInsertDTO.setUserRememberToken(null);
-//		userInsertDTO.setUserPinCode(null);
+//	void saveInsert() throws Exception {
+////		user = new User();
+////		user.setUserId(userController
+////				.save(new UserInsertDTO(true, true, true, true, "Test1", "test1@test.com", "1234", null, null, null))
+////				.getBody().toString());
 //
-//		userId = userService.save(userInsertDTO);
+//		var userInsertDTO = new UserInsertDTO(true, true, true, true, "Test1", "test1@test.com", "1234", null, null,
+//				null);
+//
+//		mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
+//				.content(new ObjectMapper().writeValueAsString(userInsertDTO)).contentType(MediaType.APPLICATION_JSON))
+//				.andExpect(MockMvcResultMatchers.status().is(200));
 //	}
 
 //	@Test
-//	@Order(2)
-//	public void saveUpdate() {
-//		System.out.println("-->" + userId);
+//	@Order(1)
+//	public void nonexistentUserCannotGetToken() throws Exception {
+//	    final String username = "2";
+//	    final String password = "123";
+//	    final String body = "{\"userName\":\"" + username + "\", \"userPassword\":\"" + password + "\"}";
 //
-//		final var userUpdateDTO = new UserUpdateDTO();
-//		userUpdateDTO.setUserId(userId);
-//		userUpdateDTO.setUserIsEnabled(false);
-//		userUpdateDTO.setUserIsAccountNonExpired(false);
-//		userUpdateDTO.setUserIsAccountNonLocked(false);
-//		userUpdateDTO.setUserIsCredentialsNonExpired(false);
-//		userUpdateDTO.setUserName("Test2");
-//		userUpdateDTO.setUserEmail("test2@test.com");
-//		userUpdateDTO.setUserPasswordToken(null);
-//		userUpdateDTO.setUserRememberToken(null);
-//		userUpdateDTO.setUserPinCode(null);
+//	    System.out.println(body);
+//	    
+//	    mockMvc.perform(post("/api/auth/token")
+//	            .content(body))
+//	            .andExpect(status().isOk()).andReturn();
+//	}
+//	
+	
+//	@Test
+//	public void findAll() throws Exception {
+//		mockMvc.perform(get("/api/user")).andExpect(status().isForbidden());
+//	}
 //
-//		userService.save(userUpdateDTO);
+//	@Test
+//	public void findById() throws Exception {
+//		mockMvc.perform(get("/api/user/{userId}", "2f52eb42-eeb0-974a-91ad-2f1309532733"))
+//				.andExpect(status().isForbidden());
+//	}
+//
+//	@Test
+//	public void findByName() throws Exception {
+//		mockMvc.perform(get("/api/user/findByName/{userName}", "1")).andExpect(status().isOk());
+//	}
+
+//	@Test
+//	@Order(3)
+//	@Rollback(value = true)
+//	void saveUpdate() {
+//		userController.save(new UserUpdateDTO(user.getUserId(), true, true, true, true, "Test2", "test2@test.com", null,
+//				null, null));
+//
+//		System.out.println(user.getUserId());
 //	}
 
 }

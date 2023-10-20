@@ -34,7 +34,7 @@ public class UserController {
 		return ResponseEntity.ok(userService.findAll(pageable));
 	}
 
-	@GetMapping("/{userId}")
+	@GetMapping("/findById/{userId}")
 	public ResponseEntity<?> findById(@PathVariable("userId") String userId) {
 		return ResponseEntity.ok(userService.findById(userId));
 	}
@@ -65,18 +65,18 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> save(@RequestBody @Valid UserInsertDTO userInsertDTO) {
-		return ResponseEntity.ok(userService.save(userInsertDTO));
+	public ResponseEntity<?> save(@Valid @RequestBody UserInsertDTO userInsertDTO) {
+		return ResponseEntity.created(null).body(userService.save(userInsertDTO));
 	}
 
 	@PutMapping
-	public ResponseEntity<?> save(@RequestBody @Valid UserUpdateDTO userUpdateDTO) {
+	public ResponseEntity<?> save(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
 		userService.save(userUpdateDTO);
 		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping("/password")
-	public ResponseEntity<?> savePassword(@RequestBody @Valid UserUpdatePasswordDTO userUpdatePasswordDTO) {
+	public ResponseEntity<?> savePassword(@Valid @RequestBody UserUpdatePasswordDTO userUpdatePasswordDTO) {
 		userService.save(userUpdatePasswordDTO);
 		return ResponseEntity.ok().build();
 	}

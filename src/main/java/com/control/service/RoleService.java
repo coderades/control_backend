@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.control.model.Role;
+import com.control.model.dto.RoleIdDTO;
 import com.control.model.dto.RoleInsertDTO;
 import com.control.model.dto.RoleUpdateDTO;
 import com.control.repository.RoleRepository;
@@ -42,18 +43,18 @@ public class RoleService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public String save(RoleInsertDTO RoleInsertDTO) {
-		final var role = new Role();
-
+	public RoleIdDTO save(RoleInsertDTO RoleInsertDTO) {
+		final Role role = new Role();
+	
 		BeanUtils.copyProperties(RoleInsertDTO, role);
 		roleRepository.save(role);
 
-		return role.getRoleId();
+		return new RoleIdDTO(role.getRoleId());
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void save(RoleUpdateDTO RoleUpdateDTO) {
-		final var role = new Role();
+		final Role role = new Role();
 
 		BeanUtils.copyProperties(RoleUpdateDTO, role);
 		roleRepository.save(role);
