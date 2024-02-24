@@ -30,14 +30,17 @@ public class Application implements Serializable {
 	@Column(name = "application_is_enabled", nullable = false)
 	private Boolean applicationIsEnabled;
 
-	@Column(name = "applicationName", length = 50, nullable = false, unique = false)
-	private String application_name;
+	@Column(name = "application_Name", length = 50, nullable = false, unique = false)
+	private String applicationName;
 
 	@Column(name = "application_email", length = 50, nullable = false, unique = false)
 	private String applicationEmail;
 	
 	@Column(name = "application_access_token", columnDefinition = "uuid", nullable = false)
 	private String applicationAccessToken;
+	
+	@Column(name = "application_access_token_expires_time", nullable = false)
+	private Integer applicationAccessTokenExpiresTime;
 
 	@Column(name = "application_created_on", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat

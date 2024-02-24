@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.control_backend.repository.UserRepository;
-import com.control_backend.service.TokenService;
+import com.control_backend.service.AuthService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private TokenService tokenService;
+	private AuthService authService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -31,9 +31,9 @@ public class SecurityFilter extends OncePerRequestFilter {
 		final var token = request.getHeader("Authorization");
 
 		if (token != null) {
-			final var subject = tokenService.getSubject(token.replace("Bearer ", ""));
+			final var subject = authService.verifyJWTToken(token.replace("Bearer ", ""));
 			final var user = userRepository.findByUserName(subject);
-			final var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());			
+			final var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
 

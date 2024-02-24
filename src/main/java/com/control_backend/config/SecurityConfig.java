@@ -61,7 +61,7 @@ public class SecurityConfig {
 			}
 		}
 
-		httpSecurity.authorizeHttpRequests(authorize -> authorize.anyRequest().denyAll());
+		httpSecurity.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
 		return httpSecurity.addFilterAfter(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
 
@@ -77,24 +77,23 @@ public class SecurityConfig {
 	}
 
 	public String[] patterns(HttpMethod httpMethod, Boolean permissionIsPublic) {
-		var findResourcePath = resourceService.findByResourcePath(access, httpMethod, permissionIsPublic);
-
-		String[] path = new String[findResourcePath.size()];
+		final var findResourcePath = resourceService.findByResourcePath(access, httpMethod, permissionIsPublic);
+		final String[] path = new String[findResourcePath.size()];
+		
 		Integer i = 0;
 
 		for (ResourcePathDTO resourcePathDTO : findResourcePath) {
 			path[i++] = resourcePathDTO.resourcePath();
-			
-			System.out.println(httpMethod.name() + " / " + resourcePathDTO.resourcePath());
+			System.out.println("--> " + resourcePathDTO.resourcePath());
 		}
-
+		
 		return path;
 	}
 
 	public String[] roles(HttpMethod httpMethod, Boolean permissionIsPublic) {
-		var findByPremissionResourceRole = roleService.findByPremissionResourceRole(access, httpMethod);
-
-		String[] role = new String[findByPremissionResourceRole.size()];
+		final var findByPremissionResourceRole = roleService.findByPremissionResourceRole(access, httpMethod);
+		final String[] role = new String[findByPremissionResourceRole.size()];
+		
 		Integer i = 0;
 
 		for (RoleNameDTO roleNameDTO : findByPremissionResourceRole) {

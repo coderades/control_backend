@@ -1,6 +1,8 @@
 package com.control_backend.controller;
 
-import java.util.HashMap;
+import java.time.Instant;
+import java.util.LinkedHashMap;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.control_backend.model.User;
 import com.control_backend.model.dto.AuthDTO;
 import com.control_backend.service.AuthService;
-import com.control_backend.service.TokenService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -27,21 +30,31 @@ public class AuthController {
 	private AuthService authService;
 
 	@Autowired
-	private TokenService tokenService;
-
-	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody @Valid AuthDTO authDTO) {
+		final var json = new LinkedHashMap<String, Object>();
 		final var user = (User) authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(authDTO.userName(), authDTO.userPassword()))
 				.getPrincipal();
+		final var accessToken = authService.generateJWTToken(user, authDTO.applicationId());
 
-		final var json = new HashMap<String, String>();
-		json.put("access_token", tokenService.create(user));
-		json.put("token_type", "Bearer");
-		json.put("expired_in", tokenService.expiredIn().toString());
+		try {
+			final var timeZoneOffSet = TimeZone.getDefault().getOffset(0) / 1000L;
+			final var tokenHeader = new ObjectMapper().readTree(authService.decodingJWTTokenHeader(accessToken));
+			final var tokenPayload = new ObjectMapper().readTree(authService.decodingJWTTokenPayload(accessToken));
+		
+			json.put("access_token", accessToken);
+			json.put("access_type", tokenHeader.get("typ").asText());
+			json.put("access_auth", tokenPayload.get("aut").asText());
+			json.put("user_id", tokenPayload.get("uid").asText());
+			json.put("token_id", tokenPayload.get("jti").asText());
+			json.put("issued_at", Instant.ofEpochSecond(tokenPayload.get("iat").asLong() + timeZoneOffSet));
+			json.put("expired_at", Instant.ofEpochSecond(tokenPayload.get("exp").asLong() + timeZoneOffSet));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 
 		authService.saveLoggedOn(user.getUserId());
 
@@ -51,11 +64,12 @@ public class AuthController {
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
-		String remoteAddr = "";
-		
+
 		if (token != null && token.startsWith("Bearer ")) {
 			token = token.substring(7);
-			remoteAddr = request.getHeader("X-FORWARDED-FOR");
+
+			var remoteAddr = request.getHeader("X-FORWARDED-FOR");
+
 			if (remoteAddr == null || "".equals(remoteAddr)) {
 				remoteAddr = request.getRemoteAddr();
 			}

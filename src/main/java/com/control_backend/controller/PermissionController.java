@@ -39,7 +39,7 @@ public class PermissionController {
 		return ResponseEntity.ok(permissionService.findById(permissionId));
 	}
 
-	@GetMapping("/findByName/{permissionIsPublic}")
+	@GetMapping("/findByIsPublic/{permissionIsPublic}")
 	public ResponseEntity<?> findByIsPublic(@PathVariable("permissionIsPublic") Boolean permissionIsPublic) {
 		return ResponseEntity.ok(permissionService.findByIsPublic(permissionIsPublic));
 	}
