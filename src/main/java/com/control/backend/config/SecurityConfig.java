@@ -45,7 +45,7 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		httpSecurity.authorizeHttpRequests(
-				authorize -> authorize.requestMatchers("/swagger-ui/*", "/swagger-resources/*", "/v3/api-docs/**").permitAll());
+				authorize -> authorize.requestMatchers("/swagger-ui/*", "/swagger-resources/*", "/v3/api-docs/*").permitAll());
 
 		for (var i : HttpMethod.values()) {
 			final var patternsPupblic = patterns(HttpMethod.valueOf(i.toString()), true);

@@ -39,12 +39,12 @@ public class UserController {
 	public ResponseEntity<?> find(@PathVariable("find") String find) {
 		return ResponseEntity.ok(userService.find(find));
 	}
-	
+
 	@GetMapping("/findByEmail/{userEmail}")
 	public ResponseEntity<?> findByEmail(@PathVariable("userEmail") String userEmail) {
 		return ResponseEntity.ok(userService.findByEmail(userEmail));
 	}
-	
+
 	@GetMapping("/findById/{userId}")
 	public ResponseEntity<?> findById(@PathVariable("userId") String userId) {
 		return ResponseEntity.ok(userService.findById(userId));
@@ -54,12 +54,12 @@ public class UserController {
 	public ResponseEntity<?> findByName(@PathVariable("userName") String userName) {
 		return ResponseEntity.ok(userService.findByName(userName));
 	}
-	
+
 	@GetMapping("/findByNameContaining/{userName}")
 	public ResponseEntity<?> findByNameContaining(@PathVariable("userName") String userName) {
 		return ResponseEntity.ok(userService.findByNameContaining(userName));
 	}
-	
+
 	@GetMapping("/findByEmailContaining/{userEmail}")
 	public ResponseEntity<?> findByEmailContaining(@PathVariable("userEmail") String userEmail) {
 		return ResponseEntity.ok(userService.findByEmailContaining(userEmail));
