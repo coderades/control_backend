@@ -49,10 +49,10 @@ public class AuthService implements UserDetailsService {
 	public String generateJWTToken(User user, String applicationId) {
 		
 		try {
-			final var applicationAccessTokenExpiresTime = applicationService.findByApplicationAccessTokenExpiresTime(applicationId);
+			final var applicationTokenExpiration = applicationService.findByApplicationTokenExpiration(applicationId);
 			return JWT.create().withIssuer("control").withSubject(user.getUsername()).withClaim("uid", user.getUserId())
 					.withClaim("aut", "Bearer").withJWTId(UUID.randomUUID().toString()).withIssuedAt(Instant.now())
-					.withExpiresAt(Instant.now().plusSeconds(applicationAccessTokenExpiresTime)).sign(Algorithm.HMAC512(secret));
+					.withExpiresAt(Instant.now().plusSeconds(applicationTokenExpiration)).sign(Algorithm.HMAC512(secret));
 		} catch (JWTCreationException exception) {
 			throw new RuntimeException(exception);
 		}

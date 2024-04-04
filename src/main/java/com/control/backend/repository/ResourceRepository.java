@@ -14,9 +14,9 @@ public interface ResourceRepository extends JpaRepository<Permission, String> {
 			+ "FROM Application application INNER JOIN "
 			+ "Resource resource ON application.applicationId = resource.applicationId INNER JOIN "
 			+ "Permission permission ON resource.resourceId = permission.resourceId "
-			+ "WHERE (application.applicationIsEnabled = true) AND (resource.resourceIsEnabled = true) AND (permission.permissionIsPublic = ?3) AND permission.permissionMethod = ?2 AND (application.applicationAccessToken = ?1)"
+			+ "WHERE (application.applicationIsEnabled = true) AND (resource.resourceIsEnabled = true) AND (permission.permissionIsPublic = ?3) AND permission.permissionMethod = ?2 AND (application.applicationPublicKey = ?1)"
 			+ "GROUP BY resource.resourcePath")
-	List<ResourcePathDTO> findByResourcePath(String applicationAccessToken, String httpMethod,
+	List<ResourcePathDTO> findByResourcePath(String applicationPublicKey, String httpMethod,
 			Boolean permissionIsPublic);
 
 }

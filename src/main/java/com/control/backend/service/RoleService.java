@@ -49,8 +49,8 @@ public class RoleService {
 		return role;
 	}
 
-	public List<RoleNameDTO> findByPremissionResourceRole(String applicationAccessToken, HttpMethod httpMethod) {
-		final var permission = roleRepository.findByPremissionResourceRole(applicationAccessToken, httpMethod.name());
+	public List<RoleNameDTO> findByPremissionResourceRole(String applicationPublicKey, HttpMethod httpMethod) {
+		final var permission = roleRepository.findByPremissionResourceRole(applicationPublicKey, httpMethod.name());
 		return permission;
 	}
 

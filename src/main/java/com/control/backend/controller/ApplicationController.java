@@ -61,6 +61,7 @@ public class ApplicationController {
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ApplicationUpdateDTO applicationUpdateDTO) {
+		System.out.println(applicationUpdateDTO.toString());
 		applicationService.save(applicationUpdateDTO);
 		return ResponseEntity.ok().build();
 	}

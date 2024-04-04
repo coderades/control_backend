@@ -27,7 +27,7 @@ public interface RoleRepository extends JpaRepository<Role, String> {
 			+ "Permission permission ON resource.resourceId = permission.resourceId INNER JOIN "
 			+ "RolePermissions rolePermissions ON permission.permissionId = rolePermissions.permissionId INNER JOIN "
 			+ "Role role ON rolePermissions.roleId = role.roleId "
-			+ "WHERE (application.applicationIsEnabled = true) AND (resource.resourceIsEnabled = true) AND (permission.permissionIsPublic = false) AND permission.permissionMethod = ?2 AND (application.applicationAccessToken = ?1) AND (role.roleIsEnabled = true) "
+			+ "WHERE (application.applicationIsEnabled = true) AND (resource.resourceIsEnabled = true) AND (permission.permissionIsPublic = false) AND permission.permissionMethod = ?2 AND (application.applicationPublicKey = ?1) AND (role.roleIsEnabled = true) "
 			+ "GROUP BY role.roleName")
 	List<RoleNameDTO> findByPremissionResourceRole(String applicationAccessToken, String httpMethod);
 

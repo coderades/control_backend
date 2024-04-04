@@ -15,9 +15,13 @@ public record ApplicationUpdateDTO(
 
 		@Size(min = 2, max = 50, message = "Enter between 2 and 50 characters") String applicationEmail,
 
-		@NotBlank(message = "It cannot be blank") String applicationAccessToken,
+		@NotBlank(message = "It cannot be blank") String applicationPublicKey,
 		
-		@NotBlank(message = "It cannot be blank") Integer applicationAccessTokenExpiresTime
+		@NotBlank(message = "It cannot be blank") String applicationSecretKey,
+		
+		@NotBlank(message = "It cannot be blank") String applicationTokenPassPhrase,
+		
+		@NotNull(message = "It cannot be null") Integer applicationTokenExpiration
 		
 ) {
 

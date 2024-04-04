@@ -36,11 +36,17 @@ public class Application implements Serializable {
 	@Column(name = "application_email", length = 50, nullable = false, unique = false)
 	private String applicationEmail;
 	
-	@Column(name = "application_access_token", columnDefinition = "uuid", nullable = false)
-	private String applicationAccessToken;
+	@Column(name = "application_public_key", columnDefinition = "uuid", nullable = false)
+	private String applicationPublicKey;
+		
+	@Column(name = "application_secret_key", columnDefinition = "uuid", nullable = false)
+	private String applicationSecretKey;
 	
-	@Column(name = "application_access_token_expires_time", nullable = false)
-	private Integer applicationAccessTokenExpiresTime;
+	@Column(name = "application_token_pass_phrase", length = 50, nullable = false, unique = false)
+	private String applicationTokenPassPhrase;
+	
+	@Column(name = "application_token_expiration", nullable = false)
+	private Integer applicationTokenExpiration;
 
 	@Column(name = "application_created_on", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat

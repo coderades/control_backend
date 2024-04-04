@@ -16,7 +16,7 @@ public interface ApplicationRepository extends JpaRepository<Application, String
 	List<Application> findByApplicationNameIgnoreCaseContainingOrApplicationEmailIgnoreCaseContaining(
 			String applicationName, String applicationEmail);
 
-	@Query("SELECT applicationAccessTokenExpiresTime FROM Application application WHERE (applicationId = ?1) AND (applicationIsEnabled = true)")
-	Integer findByApplicationAccessTokenExpiresTime(String applicationId);
+	@Query("SELECT applicationTokenExpiration FROM Application application WHERE (applicationId = ?1) AND (applicationIsEnabled = true)")
+	Integer findByapplicationTokenExpiration(String applicationId);
 
 }

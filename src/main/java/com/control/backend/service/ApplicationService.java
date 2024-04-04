@@ -48,8 +48,8 @@ public class ApplicationService {
 		return application;
 	}
 
-	public Integer findByApplicationAccessTokenExpiresTime(String applicationId) {
-		final var application = applicationRepository.findByApplicationAccessTokenExpiresTime(applicationId);
+	public Integer findByApplicationTokenExpiration(String applicationId) {
+		final var application = applicationRepository.findByapplicationTokenExpiration(applicationId);
 		return application;
 	}
 	
