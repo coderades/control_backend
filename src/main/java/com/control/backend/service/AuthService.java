@@ -23,7 +23,7 @@ public class AuthService implements UserDetailsService {
 	// -------------------------------------------------------
 	// User
 	// -------------------------------------------------------
-		
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -41,18 +41,18 @@ public class AuthService implements UserDetailsService {
 	// -------------------------------------------------------
 
 	@Autowired
-	private ApplicationService applicationService;	
+	private ApplicationService applicationService;
 
 	@Value("${api.security.token.secret}")
 	private String secret;
 
 	public String generateJWTToken(User user, String applicationId) {
-		
 		try {
 			final var applicationTokenExpiration = applicationService.findByApplicationTokenExpiration(applicationId);
 			return JWT.create().withIssuer("control").withSubject(user.getUsername()).withClaim("uid", user.getUserId())
 					.withClaim("aut", "Bearer").withJWTId(UUID.randomUUID().toString()).withIssuedAt(Instant.now())
-					.withExpiresAt(Instant.now().plusSeconds(applicationTokenExpiration)).sign(Algorithm.HMAC512(secret));
+					.withExpiresAt(Instant.now().plusSeconds(applicationTokenExpiration.applicationTokenExpiration()))
+					.sign(Algorithm.HMAC512(secret));
 		} catch (JWTCreationException exception) {
 			throw new RuntimeException(exception);
 		}

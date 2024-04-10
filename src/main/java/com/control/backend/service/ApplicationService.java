@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.control.backend.model.Application;
 import com.control.backend.model.dto.ApplicationIdDTO;
 import com.control.backend.model.dto.ApplicationInsertDTO;
+import com.control.backend.model.dto.ApplicationTokenExpirationDTO;
 import com.control.backend.model.dto.ApplicationUpdateDTO;
 import com.control.backend.repository.ApplicationRepository;
 
@@ -48,17 +49,15 @@ public class ApplicationService {
 		return application;
 	}
 
-	public Integer findByApplicationTokenExpiration(String applicationId) {
-		final var application = applicationRepository.findByapplicationTokenExpiration(applicationId);
-		return application;
+	public ApplicationTokenExpirationDTO findByApplicationTokenExpiration(String applicationId) {
+		return new ApplicationTokenExpirationDTO(applicationRepository.findByapplicationTokenExpiration(applicationId));
 	}
-	
+
 	@Transactional(rollbackFor = Exception.class)
 	public ApplicationIdDTO save(ApplicationInsertDTO applicationInsertDTO) {
 		final var application = new Application();
 		BeanUtils.copyProperties(applicationInsertDTO, application);
-		applicationRepository.save(application);
-		return new ApplicationIdDTO(application.getApplicationId());
+		return new ApplicationIdDTO(applicationRepository.save(application).getApplicationId());
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -69,8 +68,8 @@ public class ApplicationService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(ApplicationIdDTO applicationIdDTO) {
-		applicationRepository.deleteById(applicationIdDTO.applicationId());
+	public void delete(String applicationId) {
+		applicationRepository.deleteById(applicationId);
 	}
 
 }

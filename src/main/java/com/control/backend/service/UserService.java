@@ -62,25 +62,24 @@ public class UserService {
 	public UserIdDTO save(UserInsertDTO userInsertDTO) {
 		final var user = new User();
 		BeanUtils.copyProperties(userInsertDTO, user);
-		userRepository.save(user);
-		return new UserIdDTO(user.getUserId());
+		return new UserIdDTO(userRepository.save(user).getUserId());
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void save(UserUpdateDTO userUpdateDTO) {
-		final var user = new User();		
+		final var user = new User();
 		BeanUtils.copyProperties(userUpdateDTO, user);
 		userRepository.save(user);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void save(UserUpdatePasswordDTO userUpdatePasswordDTO) {		
-		userRepository.saveUserPassword(userUpdatePasswordDTO.userId(), userUpdatePasswordDTO.userPassword());	
+	public void save(UserUpdatePasswordDTO userUpdatePasswordDTO) {
+		userRepository.saveUserPassword(userUpdatePasswordDTO.userId(), userUpdatePasswordDTO.userPassword());
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(UserIdDTO userIdDTO) {
-		userRepository.deleteById(userIdDTO.userId());
+	public void delete(String userId) {
+		userRepository.deleteById(userId);
 	}
 
 }

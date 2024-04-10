@@ -58,8 +58,7 @@ public class RoleService {
 	public RoleIdDTO save(RoleInsertDTO roleInsertDTO) {
 		final Role role = new Role();
 		BeanUtils.copyProperties(roleInsertDTO, role);
-		roleRepository.save(role);
-		return new RoleIdDTO(role.getRoleId());
+		return new RoleIdDTO(roleRepository.save(role).getRoleId());
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -70,8 +69,8 @@ public class RoleService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(RoleIdDTO roleIdDTO) {
-		roleRepository.deleteById(roleIdDTO.roleId());
+	public void delete(String roleId) {
+		roleRepository.deleteById(roleId);
 	}
 
 }

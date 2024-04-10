@@ -1,7 +1,6 @@
 package com.control.backend.model.dto;
 
 import com.control.backend.model.dto.validation.ExistsUserEmailForAnotherUserId;
-import com.control.backend.model.dto.validation.ExistsUserId;
 import com.control.backend.model.dto.validation.ExistsUserNameForAnotherUserId;
 
 import jakarta.persistence.Id;
@@ -14,7 +13,7 @@ import jakarta.validation.constraints.Size;
 @ExistsUserEmailForAnotherUserId(field = "userEmail", fieldMatch = "userId")
 public record UserUpdateDTO(
 
-		@Id @NotBlank(message = "It cannot be blank") @ExistsUserId String userId,
+		@Id @NotBlank(message = "It cannot be blank") String userId,
 
 		@NotNull(message = "It cannot be null") Boolean userIsEnabled,
 

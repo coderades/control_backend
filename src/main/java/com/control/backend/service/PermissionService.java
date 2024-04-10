@@ -46,8 +46,7 @@ public class PermissionService {
 	public PermissionIdDTO save(PermissionInsertDTO permissionInsertDTO) {
 		final Permission permission = new Permission();
 		BeanUtils.copyProperties(permissionInsertDTO, permission);
-		permissionRepository.save(permission);
-		return new PermissionIdDTO(permission.getPermissionId());
+		return new PermissionIdDTO(permissionRepository.save(permission).getPermissionId());
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -58,8 +57,8 @@ public class PermissionService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void delete(PermissionIdDTO permissionIdDTO) {
-		permissionRepository.deleteById(permissionIdDTO.permissionId());
+	public void delete(String permissionId) {
+		permissionRepository.deleteById(permissionId);
 	}
 
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.backend.model.dto.RoleIdDTO;
 import com.control.backend.model.dto.RoleInsertDTO;
 import com.control.backend.model.dto.RoleUpdateDTO;
 import com.control.backend.service.RoleService;
@@ -38,7 +37,7 @@ public class RoleController {
 	public ResponseEntity<?> find(@PathVariable("find") String find) {
 		return ResponseEntity.ok(roleService.findByNameContaining(find));
 	}
-	
+
 	@GetMapping("/findById/{roleId}")
 	public ResponseEntity<?> findById(@PathVariable("roleId") String roleId) {
 		return ResponseEntity.ok(roleService.findById(roleId));
@@ -65,8 +64,8 @@ public class RoleController {
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping()
-	public ResponseEntity<?> delete(@Valid @RequestBody RoleIdDTO roleIdDTO) {
+	@DeleteMapping("/{roleId}")
+	public ResponseEntity<?> delete(@PathVariable("roleId") String roleIdDTO) {
 		roleService.delete(roleIdDTO);
 		return ResponseEntity.noContent().build();
 	}

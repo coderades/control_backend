@@ -3,7 +3,6 @@ package com.control.backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.backend.model.dto.PermissionIdDTO;
 import com.control.backend.model.dto.PermissionInsertDTO;
 import com.control.backend.model.dto.PermissionUpdateDTO;
 import com.control.backend.service.PermissionService;
@@ -29,8 +27,7 @@ public class PermissionController {
 	private PermissionService permissionService;
 
 	@GetMapping
-	public ResponseEntity<?> findAll(
-			@SortDefault(sort = "permissionName") @PageableDefault(size = 100) final Pageable pageable) {
+	public ResponseEntity<?> findAll(@PageableDefault(size = 100) final Pageable pageable) {
 		return ResponseEntity.ok(permissionService.findAll(pageable));
 	}
 
@@ -60,9 +57,9 @@ public class PermissionController {
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping
-	public ResponseEntity<?> delete(@Valid @RequestBody PermissionIdDTO permissionIdDTO) {
-		permissionService.delete(permissionIdDTO);
+	@DeleteMapping("/{permissionId}")
+	public ResponseEntity<?> delete(@PathVariable("permissionId") String permissionId) {
+		permissionService.delete(permissionId);
 		return ResponseEntity.noContent().build();
 	}
 

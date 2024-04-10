@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.backend.model.dto.ApplicationIdDTO;
 import com.control.backend.model.dto.ApplicationInsertDTO;
 import com.control.backend.model.dto.ApplicationUpdateDTO;
 import com.control.backend.service.ApplicationService;
@@ -55,20 +54,19 @@ public class ApplicationController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> save(@Valid @RequestBody ApplicationInsertDTO applicationInsertDTO) {
+	public ResponseEntity<?> save(@Valid @RequestBody ApplicationInsertDTO applicationInsertDTO) {		
 		return ResponseEntity.created(null).body(applicationService.save(applicationInsertDTO));
 	}
 
 	@PutMapping
 	public ResponseEntity<?> save(@Valid @RequestBody ApplicationUpdateDTO applicationUpdateDTO) {
-		System.out.println(applicationUpdateDTO.toString());
 		applicationService.save(applicationUpdateDTO);
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping
-	public ResponseEntity<?> delete(@Valid @RequestBody ApplicationIdDTO applicationIdDTO) {
-		applicationService.delete(applicationIdDTO);
+	@DeleteMapping("/{applicationId}")
+	public ResponseEntity<?> delete(@PathVariable("applicationId") String applicationId) {
+		applicationService.delete(applicationId);
 		return ResponseEntity.noContent().build();
 	}
 

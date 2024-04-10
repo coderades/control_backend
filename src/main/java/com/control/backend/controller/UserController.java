@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.backend.model.dto.UserIdDTO;
 import com.control.backend.model.dto.UserInsertDTO;
 import com.control.backend.model.dto.UserUpdateDTO;
 import com.control.backend.model.dto.UserUpdatePasswordDTO;
@@ -82,9 +81,9 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping
-	public ResponseEntity<?> delete(@Valid @RequestBody UserIdDTO userIdDTO) {
-		userService.delete(userIdDTO);
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<?> delete(@PathVariable("userId") String userId) {
+		userService.delete(userId);
 		return ResponseEntity.noContent().build();
 	}
 

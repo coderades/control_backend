@@ -24,7 +24,6 @@ public class PostalCodeUtil {
 
 			final var objectMapper = new ObjectMapper();
 			final var jsonNode = objectMapper.readTree(httpResponse.body());
-
 			final var postalCode = new PostalCode();
 			postalCode.setPostalCode(jsonNode.get("cep").asText().replace("-", ""));
 			postalCode.setStateId(jsonNode.get("uf").asText());
@@ -32,7 +31,7 @@ public class PostalCodeUtil {
 			postalCode.setNeighborhood(jsonNode.get("bairro").asText());
 			postalCode.setAdress(jsonNode.get("logradouro").asText());
 			postalCode.setComplement(jsonNode.get("complemento").asText());
-
+			
 			return postalCode;
 		} catch (InterruptedException | IOException e) {
 			e.printStackTrace();
