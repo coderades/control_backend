@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record UserInsertDTO(@NotNull(message = "It cannot be null") Boolean userIsEnabled,
+public record UserInsertDTO(
+
+		@NotNull(message = "It cannot be null") Boolean userIsEnabled,
 
 		@NotNull(message = "It cannot be null") Boolean userIsAccountNonExpired,
 

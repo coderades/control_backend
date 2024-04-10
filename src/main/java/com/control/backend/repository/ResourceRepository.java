@@ -5,10 +5,15 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.control.backend.model.Permission;
+import com.control.backend.model.Resource;
 import com.control.backend.model.dto.ResourcePathDTO;
 
-public interface ResourceRepository extends JpaRepository<Permission, String> {
+public interface ResourceRepository extends JpaRepository<Resource, String> {
+
+	Resource findByResourceName(String resourceName);
+
+	List<Resource> findByResourceNameIgnoreCaseContainingOrResourcePathIgnoreCaseContaining(String resourceName,
+			String resourcePath);
 
 	@Query("SELECT NEW com.control.backend.model.dto.ResourcePathDTO(resource.resourcePath) "
 			+ "FROM Application application INNER JOIN "
