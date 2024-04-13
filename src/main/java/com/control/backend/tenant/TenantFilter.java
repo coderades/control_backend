@@ -19,12 +19,11 @@ class TenantFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
 			throws IOException, ServletException {
-
 		final var request = (HttpServletRequest) servletRequest;
-		final var tenantName = request.getHeader("TenantID");
-		TenantContext.setCurrentTenant(tenantName);
-
-		try {
+		final var tenantId = request.getHeader("TenantID");
+		
+		try {			
+			TenantContext.setCurrentTenant(tenantId);
 			filterChain.doFilter(servletRequest, servletResponse);
 		} finally {
 			TenantContext.setCurrentTenant("");

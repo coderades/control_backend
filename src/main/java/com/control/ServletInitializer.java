@@ -1,4 +1,4 @@
-package com.control.backend;
+package com.control;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
