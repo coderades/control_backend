@@ -12,11 +12,10 @@ import java.time.Duration;
 import com.control.backend.model.util.PostalCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class PostalCodeUtil {
+public class MailUtil {
 	private static final String API_BR_PT = "https://viacep.com.br/ws/";
 
 	public static PostalCode findPostalCode(String cep) {
-		// CEPUtils.validaCep(cepString);
 		try {
 			final var httpClient = HttpClient.newBuilder().connectTimeout(Duration.of(1, MINUTES)).build();
 			final var httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(API_BR_PT + cep + "/json")).build();

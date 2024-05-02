@@ -1,8 +1,10 @@
 package com.control.business.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -15,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "[human_resource_timesheet]")
@@ -22,6 +25,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@DynamicUpdate
 public class HumanResourceTimesheet implements Serializable {
 
 	private static final long serialVersionUID = 5564696185958520215L;
@@ -31,31 +36,35 @@ public class HumanResourceTimesheet implements Serializable {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String humanResourceTimesheetId;
 
-	@Column(name = "user_id", columnDefinition = "uuid", nullable = false)
+	@Column(name = "user_id", columnDefinition = "uuid", nullable = false, updatable = false)
 	private String userId;
 
-	@Column(name = "human_resource_timesheet_period_1_start", nullable = true)
+	@Column(name = "human_resource_timesheet_date", nullable = false)
 	@DateTimeFormat
-	private LocalDateTime humanResourceTimesheetPeriod1Start;
+	private LocalDate humanResourceTimesheetDate;
 
-	@Column(name = "human_resource_timesheet_period_1_end", nullable = true)
+	@Column(name = "human_resource_timesheet_period_1_in", nullable = true)
 	@DateTimeFormat
-	private LocalDateTime humanResourceTimesheetPeriod1End;
+	private LocalTime humanResourceTimesheetPeriod1In;
 
-	@Column(name = "human_resource_timesheet_period_2_start", nullable = true)
+	@Column(name = "human_resource_timesheet_period_1_out", nullable = true)
 	@DateTimeFormat
-	private LocalDateTime humanResourceTimesheetPeriod2Start;
+	private LocalTime humanResourceTimesheetPeriod1Out;
 
-	@Column(name = "human_resource_timesheet_period_2_end", nullable = true)
+	@Column(name = "human_resource_timesheet_period_2_in", nullable = true)
 	@DateTimeFormat
-	private LocalDateTime humanResourceTimesheetPeriod2End;
+	private LocalTime humanResourceTimesheetPeriod2In;
 
-	@Column(name = "human_resource_timesheet_period_3_start", nullable = true)
+	@Column(name = "human_resource_timesheet_period_2_out", nullable = true)
 	@DateTimeFormat
-	private LocalDateTime humanResourceTimesheetPeriod3Start;
+	private LocalTime humanResourceTimesheetPeriod2Out;
 
-	@Column(name = "human_resource_timesheet_period_3_end", nullable = true)
+	@Column(name = "human_resource_timesheet_period_3_in", nullable = true)
 	@DateTimeFormat
-	private LocalDateTime humanResourceTimesheetPeriod3End;
+	private LocalTime humanResourceTimesheetPeriod3In;
+
+	@Column(name = "human_resource_timesheet_period_3_out", nullable = true)
+	@DateTimeFormat
+	private LocalTime humanResourceTimesheetPeriod3Out;
 
 }

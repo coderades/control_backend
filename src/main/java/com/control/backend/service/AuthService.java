@@ -33,7 +33,7 @@ public class AuthService implements UserDetailsService {
 	}
 
 	public void saveLoggedOn(String userId) {
-		userRepository.saveLoggedOn(userId);
+		userRepository.updateLoggedOn(userId);
 	}
 
 	// -------------------------------------------------------

@@ -74,7 +74,7 @@ public class UserService {
 
 	@Transactional(rollbackFor = Exception.class)
 	public void save(UserUpdatePasswordDTO userUpdatePasswordDTO) {
-		userRepository.saveUserPassword(userUpdatePasswordDTO.userId(), userUpdatePasswordDTO.userPassword());
+		userRepository.updateUserPassword(userUpdatePasswordDTO.userId(), userUpdatePasswordDTO.userPassword());
 	}
 
 	@Transactional(rollbackFor = Exception.class)

@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.backend.util.PostalCodeUtil;
+import com.control.backend.util.MailUtil;
 
 @RestController
 @RequestMapping("/api/util")
 public class UtilController {
 	
-	@GetMapping("/findByPostalCode/{postalCode}")
-	public ResponseEntity<?> find(@PathVariable("postalCode") String postalCode) {
-		return ResponseEntity.ok(PostalCodeUtil.findPostalCode(postalCode));
+	@GetMapping("/mail/findByPostalcode/{postalcode}")
+	public ResponseEntity<?> find(@PathVariable("postalcode") String postalCode) {
+		return ResponseEntity.ok(MailUtil.findPostalCode(postalCode));
 	}
 }
