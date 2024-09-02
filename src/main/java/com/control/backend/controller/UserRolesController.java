@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.control.backend.service.UserRolesService;
 
 @RestController
-@RequestMapping("/api/userRoles")
+@RequestMapping("/api/userroles")
 public class UserRolesController {
 
 	@Autowired
@@ -25,18 +25,18 @@ public class UserRolesController {
 		return ResponseEntity.ok(userRolesService.findAll(pageable));
 	}
 
-	@GetMapping("/findById/{userRolesId}")
-	public ResponseEntity<?> findById(@PathVariable("userRoleaId") String userId) {
+	@GetMapping("/findbyIid/{userRolesId}")
+	public ResponseEntity<?> findById(@PathVariable String userId) {
 		return ResponseEntity.ok(userRolesService.findById(userId));
 	}
 	
-	@GetMapping("/findByRoleId/{roleId}")
-	public ResponseEntity<?> findByRoleId(@PathVariable("roleId") String roleId) {
+	@GetMapping("/findbyroleid/{roleId}")
+	public ResponseEntity<?> findByRoleId(@PathVariable String roleId) {
 		return ResponseEntity.ok(userRolesService.findByRoleId(roleId));
 	}
 	
-	@GetMapping("/findByUserId/{userId}")
-	public ResponseEntity<?> findByUserId(@PathVariable("userId") String userId) {
+	@GetMapping("/findbyuserid/{userId}")
+	public ResponseEntity<?> findByUserId(@PathVariable String userId) {
 		return ResponseEntity.ok(userRolesService.findByUserId(userId));
 	}
 

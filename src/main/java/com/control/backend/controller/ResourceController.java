@@ -35,24 +35,23 @@ public class ResourceController {
 	}
 
 	@GetMapping("/find/{find}")
-	public ResponseEntity<?> find(@PathVariable("find") String find) {
+	public ResponseEntity<?> find(@PathVariable String find) {
 		return ResponseEntity.ok(resourceService.find(find));
 	}
 
-	@GetMapping("/findById/{resourceId}")
-	public ResponseEntity<?> findById(@PathVariable("resourceId") String resourceId) {
+	@GetMapping("/findbyid/{resourceId}")
+	public ResponseEntity<?> findById(@PathVariable String resourceId) {
 		return ResponseEntity.ok(resourceService.findById(resourceId));
 	}
 
-	@GetMapping("/findByName/{resourceName}")
-	public ResponseEntity<?> findByName(@PathVariable("resourceName") String resourceName) {
+	@GetMapping("/findbyname/{resourceName}")
+	public ResponseEntity<?> findByName(@PathVariable String resourceName) {
 		return ResponseEntity.ok(resourceService.findByName(resourceName));
 	}
 
-	@GetMapping("/findByResourcePath/{applicationKeyAccess}/{httpMethod}/{permissionIsPublic}")
-	public ResponseEntity<?> findByResourcePath(@PathVariable("applicationKeyAccess") String applicationKeyAccess,
-			@PathVariable("httpMethod") HttpMethod httpMethod,
-			@PathVariable("permissionIsPublic") Boolean permissionIsPublic) {
+	@GetMapping("/findbyresourcepath/{applicationKeyAccess}/{httpMethod}/{permissionIsPublic}")
+	public ResponseEntity<?> findByResourcePath(@PathVariable String applicationKeyAccess,
+			@PathVariable HttpMethod httpMethod, @PathVariable Boolean permissionIsPublic) {
 		return ResponseEntity
 				.ok(resourceService.findByResourcePath(applicationKeyAccess, httpMethod, permissionIsPublic));
 	}
@@ -69,7 +68,7 @@ public class ResourceController {
 	}
 
 	@DeleteMapping("/{resourceId}")
-	public ResponseEntity<?> delete(@PathVariable("resourceId") String resourceId) {
+	public ResponseEntity<?> delete(@PathVariable String resourceId) {
 		resourceService.delete(resourceId);
 		return ResponseEntity.noContent().build();
 	}

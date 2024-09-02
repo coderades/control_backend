@@ -18,7 +18,7 @@ import com.control.backend.service.RolePermissionsService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/rolePermissions")
+@RequestMapping("/api/rolepermissions")
 public class RolePermissionsController {
 
 	@Autowired
@@ -29,8 +29,8 @@ public class RolePermissionsController {
 		return ResponseEntity.ok(rolePermissionsService.findAll(pageable));
 	}
 
-	@GetMapping("/findById/{rolePermissionsServiceId}")
-	public ResponseEntity<?> findById(@PathVariable("rolePermissionsServiceId") String rolePermissionsServiceId) {
+	@GetMapping("/findbyid/{rolePermissionsServiceId}")
+	public ResponseEntity<?> findById(@PathVariable String rolePermissionsServiceId) {
 		return ResponseEntity.ok(rolePermissionsService.findById(rolePermissionsServiceId));
 	}
 
@@ -40,7 +40,7 @@ public class RolePermissionsController {
 	}
 
 	@DeleteMapping("/{rolePermissionsServiceId}")
-	public ResponseEntity<?> delete(@PathVariable("rolePermissionsServiceId") String rolePermissionsServiceId) {
+	public ResponseEntity<?> delete(@PathVariable String rolePermissionsServiceId) {
 		rolePermissionsService.delete(rolePermissionsServiceId);
 		return ResponseEntity.noContent().build();
 	}

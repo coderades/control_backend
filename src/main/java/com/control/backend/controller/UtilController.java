@@ -12,7 +12,7 @@ import com.control.backend.util.MailUtil;
 @RequestMapping("/api/util")
 public class UtilController {
 	
-	@GetMapping("/mail/findByPostalcode/{postalcode}")
+	@GetMapping("/mail/findbypostalcode/{postalcode}")
 	public ResponseEntity<?> find(@PathVariable("postalcode") String postalCode) {
 		return ResponseEntity.ok(MailUtil.findPostalCode(postalCode));
 	}

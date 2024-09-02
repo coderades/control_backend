@@ -34,27 +34,27 @@ public class ApplicationController {
 	}
 
 	@GetMapping("/find/{find}")
-	public ResponseEntity<?> find(@PathVariable("find") String find) {
+	public ResponseEntity<?> find(@PathVariable String find) {
 		return ResponseEntity.ok(applicationService.find(find));
 	}
 
-	@GetMapping("/findById/{applicationId}")
-	public ResponseEntity<?> findById(@PathVariable("applicationId") String applicationId) {
+	@GetMapping("/findbyid/{applicationId}")
+	public ResponseEntity<?> findById(@PathVariable String applicationId) {
 		return ResponseEntity.ok(applicationService.findById(applicationId));
 	}
 
-	@GetMapping("/findByName/{applicationName}")
-	public ResponseEntity<?> findByName(@PathVariable("applicationName") String applicationName) {
+	@GetMapping("/findbyname/{applicationName}")
+	public ResponseEntity<?> findByName(@PathVariable String applicationName) {
 		return ResponseEntity.ok(applicationService.findByName(applicationName));
 	}
 
-	@GetMapping("/findByNameContaining/{applicationName}")
-	public ResponseEntity<?> findByNameContaining(@PathVariable("applicationName") String applicationName) {
+	@GetMapping("/findbynameContaining/{applicationName}")
+	public ResponseEntity<?> findByNameContaining(@PathVariable String applicationName) {
 		return ResponseEntity.ok(applicationService.findByNameContaining(applicationName));
 	}
 
 	@PostMapping
-	public ResponseEntity<?> save(@Valid @RequestBody ApplicationInsertDTO applicationInsertDTO) {		
+	public ResponseEntity<?> save(@Valid @RequestBody ApplicationInsertDTO applicationInsertDTO) {
 		return ResponseEntity.created(null).body(applicationService.save(applicationInsertDTO));
 	}
 
@@ -65,7 +65,7 @@ public class ApplicationController {
 	}
 
 	@DeleteMapping("/{applicationId}")
-	public ResponseEntity<?> delete(@PathVariable("applicationId") String applicationId) {
+	public ResponseEntity<?> delete(@PathVariable String applicationId) {
 		applicationService.delete(applicationId);
 		return ResponseEntity.noContent().build();
 	}

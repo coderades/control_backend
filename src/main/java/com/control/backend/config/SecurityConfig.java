@@ -44,8 +44,8 @@ public class SecurityConfig {
 		httpSecurity.csrf(CsrfConfigurer::disable)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-		httpSecurity.authorizeHttpRequests(
-				authorize -> authorize.requestMatchers("/swagger-ui/*", "/swagger-resources/*", "/v3/api-docs/*").permitAll());
+		httpSecurity.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers("/swagger-ui/*", "/swagger-resources/*", "/v3/api-docs/*").permitAll());
 
 		for (var i : HttpMethod.values()) {
 			final var patternsPupblic = patterns(HttpMethod.valueOf(i.toString()), true);
@@ -87,7 +87,7 @@ public class SecurityConfig {
 
 		for (ResourcePathDTO resourcePathDTO : findResourcePath) {
 			path[i++] = resourcePathDTO.resourcePath();
-			System.out.println("--> " + resourcePathDTO.resourcePath());
+			System.out.println("--> [" + permissionIsPublic + "]" + resourcePathDTO.resourcePath());
 		}
 
 		return path;
@@ -101,6 +101,7 @@ public class SecurityConfig {
 
 		for (RoleNameDTO roleNameDTO : findByPremissionResourceRole) {
 			role[i++] = roleNameDTO.roleName().toUpperCase();
+			System.out.println("--> " + roleNameDTO.roleName().toUpperCase());
 		}
 
 		return role;

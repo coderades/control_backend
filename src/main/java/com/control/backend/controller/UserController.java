@@ -35,32 +35,32 @@ public class UserController {
 	}
 
 	@GetMapping("/find/{find}")
-	public ResponseEntity<?> find(@PathVariable("find") String find) {
+	public ResponseEntity<?> find(@PathVariable String find) {
 		return ResponseEntity.ok(userService.find(find));
 	}
 
-	@GetMapping("/findByEmail/{userEmail}")
-	public ResponseEntity<?> findByEmail(@PathVariable("userEmail") String userEmail) {
+	@GetMapping("/findbyemail/{userEmail}")
+	public ResponseEntity<?> findByEmail(@PathVariable String userEmail) {
 		return ResponseEntity.ok(userService.findByEmail(userEmail));
 	}
 
-	@GetMapping("/findById/{userId}")
-	public ResponseEntity<?> findById(@PathVariable("userId") String userId) {
+	@GetMapping("/findbyid/{userId}")
+	public ResponseEntity<?> findById(@PathVariable String userId) {
 		return ResponseEntity.ok(userService.findById(userId));
 	}
 
-	@GetMapping("/findByName/{userName}")
-	public ResponseEntity<?> findByName(@PathVariable("userName") String userName) {
+	@GetMapping("/findbyname/{userName}")
+	public ResponseEntity<?> findByName(@PathVariable String userName) {
 		return ResponseEntity.ok(userService.findByName(userName));
 	}
 
-	@GetMapping("/findByNameContaining/{userName}")
-	public ResponseEntity<?> findByNameContaining(@PathVariable("userName") String userName) {
+	@GetMapping("/findbynamecontaining/{userName}")
+	public ResponseEntity<?> findByNameContaining(@PathVariable String userName) {
 		return ResponseEntity.ok(userService.findByNameContaining(userName));
 	}
 
-	@GetMapping("/findByEmailContaining/{userEmail}")
-	public ResponseEntity<?> findByEmailContaining(@PathVariable("userEmail") String userEmail) {
+	@GetMapping("/findbyemailcontaining/{userEmail}")
+	public ResponseEntity<?> findByEmailContaining(@PathVariable String userEmail) {
 		return ResponseEntity.ok(userService.findByEmailContaining(userEmail));
 	}
 
@@ -82,7 +82,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<?> delete(@PathVariable("userId") String userId) {
+	public ResponseEntity<?> delete(@PathVariable String userId) {
 		userService.delete(userId);
 		return ResponseEntity.noContent().build();
 	}

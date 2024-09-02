@@ -31,18 +31,18 @@ public class PermissionController {
 		return ResponseEntity.ok(permissionService.findAll(pageable));
 	}
 
-	@GetMapping("/findById/{permissionId}")
-	public ResponseEntity<?> findById(@PathVariable("permissionId") String permissionId) {
+	@GetMapping("/findbyid/{permissionId}")
+	public ResponseEntity<?> findById(@PathVariable String permissionId) {
 		return ResponseEntity.ok(permissionService.findById(permissionId));
 	}
 
-	@GetMapping("/findByIsPublic/{permissionIsPublic}")
-	public ResponseEntity<?> findByIsPublic(@PathVariable("permissionIsPublic") Boolean permissionIsPublic) {
+	@GetMapping("/findbyispublic/{permissionIsPublic}")
+	public ResponseEntity<?> findByIsPublic(@PathVariable Boolean permissionIsPublic) {
 		return ResponseEntity.ok(permissionService.findByIsPublic(permissionIsPublic));
 	}
 
-	@GetMapping("/findByMethod/{permissionMethod}")
-	public ResponseEntity<?> findByNameContaining(@PathVariable("permissionMethod") String permissionMethod) {
+	@GetMapping("/findbymethod/{permissionMethod}")
+	public ResponseEntity<?> findByNameContaining(@PathVariable String permissionMethod) {
 		return ResponseEntity.ok(permissionService.findByMethod(permissionMethod));
 	}
 
@@ -58,7 +58,7 @@ public class PermissionController {
 	}
 
 	@DeleteMapping("/{permissionId}")
-	public ResponseEntity<?> delete(@PathVariable("permissionId") String permissionId) {
+	public ResponseEntity<?> delete(@PathVariable String permissionId) {
 		permissionService.delete(permissionId);
 		return ResponseEntity.noContent().build();
 	}

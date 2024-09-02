@@ -34,22 +34,22 @@ public class RoleController {
 	}
 
 	@GetMapping("/find/{find}")
-	public ResponseEntity<?> find(@PathVariable("find") String find) {
+	public ResponseEntity<?> find(@PathVariable String find) {
 		return ResponseEntity.ok(roleService.findByNameContaining(find));
 	}
 
-	@GetMapping("/findById/{roleId}")
-	public ResponseEntity<?> findById(@PathVariable("roleId") String roleId) {
+	@GetMapping("/findbyid/{roleId}")
+	public ResponseEntity<?> findById(@PathVariable String roleId) {
 		return ResponseEntity.ok(roleService.findById(roleId));
 	}
 
-	@GetMapping("/findByName/{roleName}")
-	public ResponseEntity<?> findByName(@PathVariable("roleName") String roleName) {
+	@GetMapping("/findbyname/{roleName}")
+	public ResponseEntity<?> findByName(@PathVariable String roleName) {
 		return ResponseEntity.ok(roleService.findByName(roleName));
 	}
 
-	@GetMapping("/findByNameContaining/{roleName}")
-	public ResponseEntity<?> findByNameContaining(@PathVariable("roleName") String roleName) {
+	@GetMapping("/findbynamecontaining/{roleName}")
+	public ResponseEntity<?> findByNameContaining(@PathVariable String roleName) {
 		return ResponseEntity.ok(roleService.findByNameContaining(roleName));
 	}
 
@@ -65,7 +65,7 @@ public class RoleController {
 	}
 
 	@DeleteMapping("/{roleId}")
-	public ResponseEntity<?> delete(@PathVariable("roleId") String roleIdDTO) {
+	public ResponseEntity<?> delete(@PathVariable String roleIdDTO) {
 		roleService.delete(roleIdDTO);
 		return ResponseEntity.noContent().build();
 	}
