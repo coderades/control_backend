@@ -35,7 +35,7 @@ public class User implements UserDetails {
 	private static final long serialVersionUID = 2187761020055803199L;
 
 	@Id
-	@Column(name = "user_id", columnDefinition = "uuid", nullable = false, unique = true)
+	@Column(name = "user_id", columnDefinition = "uuid", nullable = false, unique = true, updatable = false)
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String userId;
 
@@ -71,20 +71,20 @@ public class User implements UserDetails {
 	@Column(name = "user_pin_code", nullable = true)
 	private Long userPinCode;
 
-	@Column(name = "user_Logged_on", nullable = true, insertable = false, updatable = true)
+	@Column(name = "user_Logged_At", nullable = true, insertable = false, updatable = true)
 	@DateTimeFormat
 	@UpdateTimestamp
-	private LocalDateTime userLoggedOn;	
-	
-	@Column(name = "user_created_on", nullable = false, insertable = true, updatable = false)
+	private LocalDateTime userLoggedAt;
+
+	@Column(name = "user_created_at", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat
 	@CreationTimestamp
-	private LocalDateTime userCreatedOn;
+	private LocalDateTime userCreatedAt;
 
-	@Column(name = "user_updated_on", nullable = true, insertable = false, updatable = true)
+	@Column(name = "user_updated_at", nullable = true, insertable = false, updatable = true)
 	@DateTimeFormat
 	@UpdateTimestamp
-	private LocalDateTime userUpdatedOn;
+	private LocalDateTime userUpdatedAt;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))

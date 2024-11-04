@@ -42,15 +42,15 @@ public class Resource implements Serializable {
 	@Column(name = "resource_path", length = 500, nullable = false, unique = false)
 	private String resourcePath;
 
-	@Column(name = "resource_created_on", nullable = false, insertable = true, updatable = false)
+	@Column(name = "resource_created_at", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat
 	@CreationTimestamp
-	private LocalDateTime resourceCreatedOn;
+	private LocalDateTime resourceCreatedAt;
 
-	@Column(name = "resource_updated_on", nullable = true, insertable = false, updatable = true)
+	@Column(name = "resource_updated_at", nullable = true, insertable = false, updatable = true)
 	@DateTimeFormat
 	@UpdateTimestamp
-	private LocalDateTime resourceUpdatedOn;
+	private LocalDateTime resourceUpdatedAt;
 	
     @OneToMany
     @JoinColumn(name="permission_id")

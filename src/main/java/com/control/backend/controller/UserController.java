@@ -32,6 +32,15 @@ public class UserController {
 	public ResponseEntity<?> findAll(
 			@SortDefault(sort = "userName") @PageableDefault(size = 100) final Pageable pageable) {
 		return ResponseEntity.ok(userService.findAll(pageable));
+
+//		try {
+//			final var restTemplate = new RestTemplate();
+//			final var result = restTemplate.getForObject("https://countriesnow.space/api/v0.1/countries", String.class);
+//			return new ResponseEntity<>(result, HttpStatus.OK);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return new ResponseEntity<>("Error!, Please try again", HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
 	}
 
 	@GetMapping("/find/{find}")

@@ -48,14 +48,14 @@ public class Application implements Serializable {
 	@Column(name = "application_token_expiration", nullable = false)
 	private Integer applicationTokenExpiration;
 
-	@Column(name = "application_created_on", nullable = false, insertable = true, updatable = false)
+	@Column(name = "application_created_at", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat
 	@CreationTimestamp
-	private LocalDateTime applicationCreatedOn;
+	private LocalDateTime applicationCreatedAt;
 
-	@Column(name = "application_updated_on", nullable = true, insertable = false, updatable = true)
+	@Column(name = "application_updated_at", nullable = true, insertable = false, updatable = true)
 	@DateTimeFormat
 	@UpdateTimestamp
-	private LocalDateTime applicationUpdatedOn;
+	private LocalDateTime applicationUpdatedAt;
 
 }

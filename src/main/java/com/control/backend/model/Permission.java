@@ -37,14 +37,14 @@ public class Permission implements Serializable {
 	// @Enumerated(EnumType.STRING)
 	private String permissionMethod;
 
-	@Column(name = "permission_created_on", nullable = false, insertable = true, updatable = false)
+	@Column(name = "permission_created_At", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat
 	@CreationTimestamp
-	private LocalDateTime permissionCreatedOn;
+	private LocalDateTime permissionCreatedAt;
 
-	@Column(name = "permission_updated_on", nullable = true, insertable = false, updatable = true)
+	@Column(name = "permission_updated_At", nullable = true, insertable = false, updatable = true)
 	@DateTimeFormat
 	@UpdateTimestamp
-	private LocalDateTime permissionUpdatedOn;
+	private LocalDateTime permissionUpdatedAt;
 
 }

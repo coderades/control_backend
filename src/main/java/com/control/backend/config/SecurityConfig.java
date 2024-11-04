@@ -9,7 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,11 +41,11 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf(CsrfConfigurer::disable)
+		httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		httpSecurity.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/swagger-ui/*", "/swagger-resources/*", "/v3/api-docs/*").permitAll());
+				.requestMatchers("/swagger-ui/*", "/swagger-resources/*", "/v3/api-docs/*", "/log/*").permitAll());
 
 		for (var i : HttpMethod.values()) {
 			final var patternsPupblic = patterns(HttpMethod.valueOf(i.toString()), true);
@@ -87,7 +87,8 @@ public class SecurityConfig {
 
 		for (ResourcePathDTO resourcePathDTO : findResourcePath) {
 			path[i++] = resourcePathDTO.resourcePath();
-			System.out.println("--> [" + permissionIsPublic + "]" + resourcePathDTO.resourcePath());
+			System.out.println("--> Method:" + httpMethod + " | IsPublic:" + permissionIsPublic + " | PATH:"
+					+ resourcePathDTO.resourcePath());
 		}
 
 		return path;
@@ -101,7 +102,8 @@ public class SecurityConfig {
 
 		for (RoleNameDTO roleNameDTO : findByPremissionResourceRole) {
 			role[i++] = roleNameDTO.roleName().toUpperCase();
-			System.out.println("--> " + roleNameDTO.roleName().toUpperCase());
+			System.out.println(
+					"--> Method:" + httpMethod + " | IsPublic:" + permissionIsPublic + " | ROLE:" + roleNameDTO);
 		}
 
 		return role;

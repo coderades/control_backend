@@ -1,5 +1,5 @@
 package com.control.corporate.model.enumerator;
 
-public enum HumanResourceTimeClockActionEnum {
+public enum EmployeeTimeClockEnum {
 	out, in;
 }

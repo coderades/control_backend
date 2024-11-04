@@ -41,7 +41,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
 	@Modifying
 	@Transactional
-	@Query("UPDATE User user SET userLoggedOn = CURRENT_TIMESTAMP WHERE (userId = ?1)")
+	@Query("UPDATE User user SET userLoggedAt = CURRENT_TIMESTAMP WHERE (userId = ?1)")
 	void updateLoggedOn(String userId);
 
 }

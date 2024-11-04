@@ -32,9 +32,9 @@ public class RolePermissions implements Serializable {
 	@Column(name = "permission_id", columnDefinition = "uuid", nullable = false)
 	private String permissionId;
 
-	@Column(name = "role_permissions_created_on", nullable = false, insertable = true, updatable = false)
+	@Column(name = "role_permissions_created_at", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat
 	@CreationTimestamp
-	private LocalDateTime rolePermissionsCreatedOn;
+	private LocalDateTime rolePermissionsCreatedAt;
 
 }

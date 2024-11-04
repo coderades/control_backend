@@ -36,14 +36,14 @@ public class Role implements Serializable {
 	@Column(name = "role_description", length = 400, nullable = false, unique = false)
 	private String roleDescription;
 
-	@Column(name = "role_created_on", nullable = false, insertable = true, updatable = false)
+	@Column(name = "role_created_at", nullable = false, insertable = true, updatable = false)
 	@DateTimeFormat
 	@CreationTimestamp
-	private LocalDateTime roleCreatedOn;
+	private LocalDateTime roleCreatedAt;
 
-	@Column(name = "role_updated_on", nullable = true, insertable = false, updatable = true)
+	@Column(name = "role_updated_at", nullable = true, insertable = false, updatable = true)
 	@DateTimeFormat
 	@UpdateTimestamp
-	private LocalDateTime roleUpdatedOn;
+	private LocalDateTime roleUpdatedAt;
 
 }

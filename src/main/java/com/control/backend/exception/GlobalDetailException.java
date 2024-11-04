@@ -18,9 +18,9 @@ public class GlobalDetailException {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 	
-    private int statusCode;
+    private int status;
     
-    private String message;
+    private String detail;
     
     private String instance;
     
