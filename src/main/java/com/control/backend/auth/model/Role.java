@@ -27,8 +27,8 @@ public class Role implements Serializable {
 	@Column(name = "role_id", nullable = false, unique = true)
 	private Long roleId;
 
-	@Column(name = "role_external_id", columnDefinition = "uuid", nullable = false, unique = true, updatable = false)
-	private String roleExternalId;
+	@Column(name = "role_public_id", columnDefinition = "uuid", nullable = false, unique = true, updatable = false)
+	private String rolePublicId;
 
 	@Column(name = "role_is_enabled", nullable = false)
 	private Boolean roleIsEnabled;

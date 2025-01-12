@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.control.backend.auth.model.User;
 import com.control.backend.auth.model.dto.UserDTO;
+import com.control.backend.auth.model.dto.UserPasswordDTO;
 import com.control.backend.auth.repository.UserRepository;
 
 @Service
@@ -35,7 +36,7 @@ public class UserService {
 	public List<User> findByNameContaining(String userName) {
 		return userRepository.findByUserNameIgnoreCaseContaining(userName);
 	}
-	
+
 	@Transactional(rollbackFor = Exception.class)
 	public Long save(UserDTO userDTO) {
 		final var user = new User();
@@ -43,12 +44,18 @@ public class UserService {
 		return userRepository.save(user).getUserId();
 	}
 
+	@Transactional(rollbackFor = Exception.class)
+	public void save(Long userId, UserDTO userDTO) {
+		final var user = new User();
+		BeanUtils.copyProperties(userDTO, user);
+		user.setUserId(userId);
+		userRepository.save(user);
+	}
 
-
-//	@Transactional(rollbackFor = Exception.class)
-//	public void save(UserUpdatePasswordDTO userUpdatePasswordDTO) {
-//		userRepository.updateUserPassword(userUpdatePasswordDTO.userId(), userUpdatePasswordDTO.userPassword());
-//	}
+	@Transactional(rollbackFor = Exception.class)
+	public void saveUserPassword(Long userId, UserPasswordDTO userPasswordDTO) {
+		userRepository.saveUserPassword(userId, userPasswordDTO.userPassword());
+	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(Long userId) {

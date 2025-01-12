@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.control.backend.auth.exception.UnauthorizedException;
 import com.control.backend.auth.model.dto.AuthDTO;
-import com.control.backend.auth.model.dto.RequestRefreshDTO;
+import com.control.backend.auth.model.dto.RefreshTokenDTO;
 import com.control.backend.auth.service.AuthService;
 
 @RestController
@@ -37,7 +37,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/refreshtoken")
-	public ResponseEntity<?> refreshToken(@RequestBody RequestRefreshDTO requestRefreshDTO) {
+	public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenDTO requestRefreshDTO) {
 		return ResponseEntity.ok(authService.getRefreshToken(requestRefreshDTO.refreshToken()));
 	}
 

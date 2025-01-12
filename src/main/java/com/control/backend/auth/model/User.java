@@ -36,8 +36,8 @@ public class User implements UserDetails, Serializable {
 	@Column(name = "user_id", nullable = false, unique = true, updatable = false)
 	private Long userId;
 
-	@Column(name = "user_external_id", columnDefinition = "uuid", nullable = false, unique = true, updatable = false)
-	private String userExternalId;
+	@Column(name = "user_public_id", columnDefinition = "uuid", nullable = false, unique = true, updatable = false)
+	private String userPublicId;
 
 	@Column(name = "user_is_enabled", nullable = false)
 	private Boolean userIsEnabled;
@@ -64,11 +64,6 @@ public class User implements UserDetails, Serializable {
 	private String userEmail;
 
 	@DateTimeFormat
-	@UpdateTimestamp
-	@Column(name = "user_Logged_at", nullable = true, insertable = false, updatable = true)
-	private LocalDateTime userLoggedAt;
-
-	@DateTimeFormat
 	@CreationTimestamp
 	@Column(name = "user_created_at", nullable = false, insertable = true, updatable = false)
 	private LocalDateTime userCreatedAt;
@@ -77,19 +72,23 @@ public class User implements UserDetails, Serializable {
 	@UpdateTimestamp
 	@Column(name = "user_updated_at", nullable = true, insertable = false, updatable = true)
 	private LocalDateTime userUpdatedAt;
+	
+	@DateTimeFormat
+	@UpdateTimestamp
+	@Column(name = "user_Logged_at", nullable = true, insertable = false, updatable = true)
+	private LocalDateTime userLoggedAt;	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
 	}
-
+	
 	@Override
 	public String getUsername() {
 		return this.userName;
 	}
-	
+
 	@Override
-	@JsonIgnore
 	public String getPassword() {
 		return this.userPassword;
 	}

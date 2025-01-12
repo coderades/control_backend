@@ -18,7 +18,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.control.backend.auth.model.User;
 import com.control.backend.auth.model.dto.AuthDTO;
-import com.control.backend.auth.model.dto.TokenResponseDTO;
+import com.control.backend.auth.model.dto.ResponseTokenDTO;
 import com.control.backend.auth.repository.UserRepository;
 
 @Service
@@ -44,21 +44,21 @@ public class AuthService implements UserDetailsService {
 		return userRepository.findByUserName(username);
 	}
 
-	public TokenResponseDTO getToken(AuthDTO authDTO) {
+	public ResponseTokenDTO getToken(AuthDTO authDTO) {
 		final var user = userRepository.findByUserName(authDTO.userName());
-		final var tokenResponseDTO = TokenResponseDTO.builder().accessToken(generateToken(user, accessTokenExpiration))
+		final var tokenResponseDTO = ResponseTokenDTO.builder().accessToken(generateToken(user, accessTokenExpiration))
 				.refreshToken(generateToken(user, refreshTokenExpiration))
 				.tokenId(generateIdToken(user, idTokenExpiration))
 				.tokenType("bearer").build();
-		userRepository.updateLoggedAt(user.getUserId());
+		userRepository.saveLoggedAt(user.getUserId());
 		return tokenResponseDTO;
 	}
 
-	public TokenResponseDTO getRefreshToken(String refreshToken) {
+	public ResponseTokenDTO getRefreshToken(String refreshToken) {
 		final var user = userRepository.findByUserName(validationToken(refreshToken));
 		SecurityContextHolder.getContext()
 				.setAuthentication(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
-		return TokenResponseDTO.builder().accessToken(generateToken(user, accessTokenExpiration))
+		return ResponseTokenDTO.builder().accessToken(generateToken(user, accessTokenExpiration))
 				.refreshToken(generateToken(user, refreshTokenExpiration)).build();
 	}
 
@@ -82,7 +82,7 @@ public class AuthService implements UserDetailsService {
 
 	private String generateIdToken(User user, Integer expiration) {
 		try {
-			return JWT.create().withClaim("userExternalId", user.getUserExternalId())
+			return JWT.create().withClaim("userExternalId", user.getUserPublicId())
 					.withClaim("userName", user.getUsername()).withClaim("userEmail", user.getUserEmail())
 					.withExpiresAt(generateExpirationDate(expiration)).sign(Algorithm.HMAC512(accessTokenSecret));
 		} catch (JWTCreationException exception) {

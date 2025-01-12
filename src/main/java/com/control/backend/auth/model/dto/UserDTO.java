@@ -3,14 +3,12 @@ package com.control.backend.auth.model.dto;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-//@Builder
 public record UserDTO(
 
-		@NotBlank(message = "It cannot be blank") String userExternalId,
+		@NotNull(message = "It cannot be null") String userPublicId,
 
 		@NotNull(message = "It cannot be null") Boolean userIsEnabled,
 
@@ -25,8 +23,6 @@ public record UserDTO(
 		@Size(min = 2, max = 70, message = "Enter between 2 and 70 characters") String userPassword,
 
 		@Size(min = 8, max = 50, message = "Enter between 8 and 50 characters") @Email(message = "Incorrect format") String userEmail
-
-//        RoleEnum role
 
 ) {
 

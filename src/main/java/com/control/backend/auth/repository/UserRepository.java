@@ -25,11 +25,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Modifying
 	@Transactional
 	@Query("UPDATE User user SET userPassword = ?2 WHERE userId = ?1")
-	void updateUserPassword(Long userId, String userPassword);
+	void saveUserPassword(Long userId, String userPassword);
 
 	@Modifying
 	@Transactional
 	@Query("UPDATE User user SET userLoggedAt = CURRENT_TIMESTAMP WHERE (userId = ?1)")
-	void updateLoggedAt(Long userId);
+	void saveLoggedAt(Long userId);
 
 }

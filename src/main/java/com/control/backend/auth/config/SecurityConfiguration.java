@@ -31,11 +31,12 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authoriza -> authoriza
                         .requestMatchers(HttpMethod.GET, "/api/user/admin").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/user/user").hasAnyRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/user/**").hasAnyRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/api/user/**").hasAnyRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/refreshtoken").permitAll()                    
-                        .anyRequest().authenticated()
+                        //.anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
