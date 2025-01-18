@@ -3,7 +3,6 @@ package com.control.backend.auth.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.backend.auth.model.User;
 import com.control.backend.auth.model.dto.UserDTO;
 import com.control.backend.auth.model.dto.UserPasswordDTO;
 import com.control.backend.auth.service.UserService;
@@ -33,7 +31,7 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping
-	public ResponseEntity<Page<User>> findAll(
+	public ResponseEntity<?> findAll(
 			@SortDefault(sort = "userId") @PageableDefault(size = 20) final Pageable pageable) {
 		return ResponseEntity.ok(userService.findAll(pageable));
 	}

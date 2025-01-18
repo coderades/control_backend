@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.uuid.Generators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +30,7 @@ public class Role implements Serializable {
 	private Long roleId;
 
 	@Column(name = "role_public_id", columnDefinition = "uuid", nullable = false, unique = true, updatable = false)
-	private String rolePublicId;
+	private String rolePublicId = Generators.timeBasedEpochGenerator().generate().toString();
 
 	@Column(name = "role_is_enabled", nullable = false)
 	private Boolean roleIsEnabled;

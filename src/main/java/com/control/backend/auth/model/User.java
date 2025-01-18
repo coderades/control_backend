@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.uuid.Generators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +38,7 @@ public class User implements UserDetails, Serializable {
 	private Long userId;
 
 	@Column(name = "user_public_id", columnDefinition = "uuid", nullable = false, unique = true, updatable = false)
-	private String userPublicId;
+	private String userPublicId = Generators.timeBasedEpochGenerator().generate().toString();
 
 	@Column(name = "user_is_enabled", nullable = false)
 	private Boolean userIsEnabled;
@@ -72,17 +73,17 @@ public class User implements UserDetails, Serializable {
 	@UpdateTimestamp
 	@Column(name = "user_updated_at", nullable = true, insertable = false, updatable = true)
 	private LocalDateTime userUpdatedAt;
-	
+
 	@DateTimeFormat
 	@UpdateTimestamp
 	@Column(name = "user_Logged_at", nullable = true, insertable = false, updatable = true)
-	private LocalDateTime userLoggedAt;	
+	private LocalDateTime userLoggedAt;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
 	}
-	
+
 	@Override
 	public String getUsername() {
 		return this.userName;

@@ -1,19 +1,28 @@
 package com.control.backend.auth.exception;
 
+import java.time.LocalDateTime;
+
 import javax.naming.AuthenticationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import jakarta.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class GlobalExcepitonHandler {
+
+	private static final Logger logger = LoggerFactory.getLogger(GlobalExcepitonHandler.class);
 
 	@ExceptionHandler({ AuthenticationException.class, ConstraintViolationException.class,
 			IllegalArgumentException.class, MethodArgumentNotValidException.class,
@@ -35,8 +44,20 @@ public class GlobalExcepitonHandler {
 	private ResponseEntity<?> exceptionTemplate(Exception exception, int httpStatusCode) {
 		final var httpStatus = HttpStatus.valueOf(httpStatusCode);
 		final var problemDetail = ProblemDetail.forStatusAndDetail(httpStatus, exception.getMessage());
+		final var jsonObject = new JSONObject();
+
 		problemDetail.setTitle(httpStatus.getReasonPhrase());
 		problemDetail.setDetail(exception.getMessage());
+
+		try {
+			jsonObject.put("title", httpStatus.getReasonPhrase());
+			jsonObject.put("message", exception.getMessage());
+			logger.warn("{} | HTTPSTATUS: {} | SESSION: {} | EXCEPTION: {}", LocalDateTime.now(), "INFO",
+					RequestContextHolder.currentRequestAttributes().getSessionId(), jsonObject);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 		return new ResponseEntity<>(problemDetail, httpStatus);
 	}
 

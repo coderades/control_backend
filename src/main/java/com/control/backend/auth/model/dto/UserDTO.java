@@ -8,8 +8,6 @@ import jakarta.validation.constraints.Size;
 
 public record UserDTO(
 
-		@NotNull(message = "It cannot be null") String userPublicId,
-
 		@NotNull(message = "It cannot be null") Boolean userIsEnabled,
 
 		@NotNull(message = "It cannot be null") Boolean userIsAccountNonExpired,

@@ -1,7 +1,10 @@
 package com.control.backend.auth.log;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class HttpLogFilter extends OncePerRequestFilter {
 
+	private static final Logger logger = LoggerFactory.getLogger(HttpLogFilter.class);
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -31,19 +36,21 @@ public class HttpLogFilter extends OncePerRequestFilter {
 	}
 
 	private void logRequest(HttpLogWrapper requestWrapper) throws IOException {
-		final var body = requestWrapper.readInputAndDuplicate();
+		var body = requestWrapper.readInputAndDuplicate();
 		if (!"".equals(body)) {
 			if (body.contains("userPassword")) {
-				System.out.println("REQUEST: " + String.valueOf(JsonUtil.jsonReplaceValue(body, "userPassword", "*****")));
-			} else {
-				System.out.println("REQUEST: " + body);
+				body = String.valueOf(JsonUtil.jsonReplaceValue(body, "userPassword", "*****"));
 			}
+			
+			logger.info("{} | HTTPSTATUS: {} | SESSION: {} | REQUEST: {}", LocalDateTime.now(), "INFO",
+					RequestContextHolder.currentRequestAttributes().getSessionId(), body);
 		}
 	}
 
 	private void logResponse(ContentCachingResponseWrapper responseWrapper) throws IOException {
-		System.out.println(RequestContextHolder.currentRequestAttributes().getSessionId());
-		System.out.println("REPONSE: " + new String(responseWrapper.getContentAsByteArray()));
+		logger.info("{} | HTTPSTATUS: {} | SESSION: {} | REPONSE: {}", LocalDateTime.now(), "INFO",
+				RequestContextHolder.currentRequestAttributes().getSessionId(),
+				new String(responseWrapper.getContentAsByteArray()));
 		responseWrapper.copyBodyToResponse();
 	}
 
