@@ -36,8 +36,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/api/user/**").hasAnyRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/refreshtoken").permitAll()                    
-                        //.anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/refreshtoken").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/log/**").permitAll()     
+                        .requestMatchers(HttpMethod.GET, "/api/pdf/**").permitAll()     
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

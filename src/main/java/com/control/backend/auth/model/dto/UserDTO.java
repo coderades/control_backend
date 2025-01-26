@@ -16,7 +16,7 @@ public record UserDTO(
 
 		@NotNull(message = "It cannot be null") Boolean userIsCredentialsNonExpired,
 
-		@Size(min = 2, max = 30, message = "Enter between 2 and 30 characters") String userName,
+		@Size(min = 2, max = 50, message = "Enter between 2 and 50 characters") String userName,
 
 		@Size(min = 2, max = 70, message = "Enter between 2 and 70 characters") String userPassword,
 

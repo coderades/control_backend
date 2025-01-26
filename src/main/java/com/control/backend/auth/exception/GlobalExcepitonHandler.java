@@ -52,7 +52,8 @@ public class GlobalExcepitonHandler {
 		try {
 			jsonObject.put("title", httpStatus.getReasonPhrase());
 			jsonObject.put("message", exception.getMessage());
-			logger.warn("{} | HTTPSTATUS: {} | SESSION: {} | EXCEPTION: {}", LocalDateTime.now(), "INFO",
+			logger.warn("{} | HTTPSTATUS: {} | SESSION: {} | EXCEPTION: {}", LocalDateTime.now(),
+					httpStatusCode >= 400 && httpStatusCode < 500 ? "WARN" : "ERROR",
 					RequestContextHolder.currentRequestAttributes().getSessionId(), jsonObject);
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -52,7 +52,7 @@ public class User implements UserDetails, Serializable {
 	@Column(name = "user_is_credentials_non_expired", nullable = false)
 	private Boolean userIsCredentialsNonExpired;
 
-	@Column(name = "user_name", length = 30, nullable = false, unique = true)
+	@Column(name = "user_name", length = 50, nullable = false, unique = true)
 	private String userName;
 
 	@JsonIgnore
