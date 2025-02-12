@@ -6,4 +6,6 @@ import com.control.backend.auth.model.Resource;
 
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
+	Resource findByResourceName(String resourceName);
+
 }

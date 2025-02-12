@@ -29,11 +29,11 @@ public class UserService {
 		return userRepository.findById(userId);
 	}
 
-	public User findByName(String userName) {
+	public User findByUserName(String userName) {
 		return userRepository.findByUserName(userName);
 	}
 
-	public List<User> findByNameContaining(String userName) {
+	public List<User> findByUserNameIgnoreCaseContaining(String userName) {
 		return userRepository.findByUserNameIgnoreCaseContaining(userName);
 	}
 

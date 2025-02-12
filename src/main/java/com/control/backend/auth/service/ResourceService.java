@@ -27,6 +27,10 @@ public class ResourceService {
 		return resourseRepository.findById(resourceId);
 	}
 
+	public Resource findByName(String resourseName) {
+		return resourseRepository.findByResourceName(resourseName);
+	}
+
 	@Transactional(rollbackFor = Exception.class)
 	public Long save(ResourceDTO resourceDTO) {
 		final var resource = new Resource();

@@ -48,8 +48,7 @@ public class AuthService implements UserDetailsService {
 		final var user = userRepository.findByUserName(authDTO.userName());
 		final var tokenResponseDTO = ResponseTokenDTO.builder().accessToken(generateToken(user, accessTokenExpiration))
 				.refreshToken(generateToken(user, refreshTokenExpiration))
-				.tokenId(generateIdToken(user, idTokenExpiration))
-				.tokenType("bearer").build();
+				.tokenId(generateIdToken(user, idTokenExpiration)).tokenType("bearer").build();
 		userRepository.saveLoggedAt(user.getUserId());
 		return tokenResponseDTO;
 	}

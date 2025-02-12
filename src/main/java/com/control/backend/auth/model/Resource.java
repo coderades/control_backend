@@ -29,26 +29,11 @@ public class Resource implements Serializable {
 	@Column(name = "resource_is_enabled", nullable = false)
 	private Boolean resourceIsEnabled;
 
-	@Column(name = "resource_is_public", nullable = false)
-	private Boolean resourceIsPublic;
-
 	@Column(name = "resource_name", length = 50, nullable = false, unique = true)
 	private String resourceName;
 
 	@Column(name = "resource_path", length = 800, nullable = false, unique = true)
 	private String resourcePath;
-
-	@Column(name = "resource_is_create", nullable = false)
-	private Boolean resourceIsCreate;
-
-	@Column(name = "resource_is_read", nullable = false)
-	private Boolean resourceIsRead;
-
-	@Column(name = "resource_is_update", nullable = false)
-	private Boolean resourceIsUpdate;
-
-	@Column(name = "resource_is_delete", nullable = false)
-	private Boolean resourceIsDelete;
 
 	@DateTimeFormat
 	@UpdateTimestamp

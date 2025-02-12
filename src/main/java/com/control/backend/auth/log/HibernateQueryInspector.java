@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import org.hibernate.resource.jdbc.spi.StatementInspector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -23,12 +22,13 @@ public class HibernateQueryInspector implements StatementInspector {
 		try {
 			jsonObject.put("query", query);
 			logger.info("{} | HTTPSTATUS: {} | SESSION: {} | DATABASE: {}", LocalDateTime.now(), "INFO",
-					RequestContextHolder.currentRequestAttributes().getSessionId(), jsonObject);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+					RequestContextHolder.getRequestAttributes() != null
+							? RequestContextHolder.currentRequestAttributes().getSessionId()
+							: "--------------------------------",
+					jsonObject);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 
 //			// String accessToken = "Bearer
 //			// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJJZCI6Niwic2NvcGUiOlsibWFy";
@@ -49,7 +49,6 @@ public class HibernateQueryInspector implements StatementInspector {
 //			final var restTemplate = new RestTemplate();
 //			restTemplate.postForObject("http://localhost:8080/api/log", entity, String.class);
 
-		
 		return SQL_COMMENT_PATTERN.matcher(query).replaceAll("");
 	}
 

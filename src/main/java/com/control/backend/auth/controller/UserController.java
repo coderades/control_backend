@@ -41,14 +41,14 @@ public class UserController {
 		return ResponseEntity.ok(userService.findById(userId));
 	}
 
-	@GetMapping("/findbyname/{userName}")
+	@GetMapping("/findbyusername/{userName}")
 	public ResponseEntity<?> findByName(@PathVariable String userName) {
-		return ResponseEntity.ok(userService.findByName(userName));
+		return ResponseEntity.ok(userService.findByUserName(userName));
 	}
 
-	@GetMapping("/findbynamecontaining/{userName}")
-	public ResponseEntity<?> findByNameContaining(@PathVariable String userName) {
-		return ResponseEntity.ok(userService.findByNameContaining(userName));
+	@GetMapping("/findbyusernameignorecasecontaining/{userName}")
+	public ResponseEntity<?> findByUserNameIgnoreCaseContaining(@PathVariable String userName) {
+		return ResponseEntity.ok(userService.findByUserNameIgnoreCaseContaining(userName));
 	}
 
 	@GetMapping("/admin")

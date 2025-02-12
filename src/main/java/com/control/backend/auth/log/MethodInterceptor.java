@@ -23,9 +23,12 @@ public class MethodInterceptor implements HandlerInterceptor {
 			throws Exception {
 		final var jsonObject = new JSONObject();
 		try {
-			jsonObject.put("method",request.getMethod());
-			jsonObject.put("link", request.getRequestURI());
-			logger.info("{} | HTTPSTATUS: {} | SESSION: {} | ACTION: {}", LocalDateTime.now(), "INFO", RequestContextHolder.currentRequestAttributes().getSessionId(), jsonObject.toString().replace("\\", ""));
+			jsonObject.put("method", request.getMethod());
+			jsonObject.put("link", request.getRequestURI());			
+			logger.info("{} | HTTPSTATUS: {} | SESSION: {} | REQUEST: {}", LocalDateTime.now(), "INFO", RequestContextHolder.getRequestAttributes().getSessionId(), jsonObject.toString().replace("\\", ""));
+			
+			// IMPORTANTE, NAO APAGAR
+			//System.out.println(SecurityContextHolder.getContext().getAuthentication());			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
