@@ -1,8 +1,8 @@
 package com.control.backend.auth.controller;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
@@ -47,13 +47,9 @@ public class ResourceController {
 
 	@PostMapping()
 	public ResponseEntity<?> save(@Valid @RequestBody ResourceDTO resourceDTO) {
-		final var jsonObject = new JSONObject();
-		try {
-			jsonObject.put("resourceId", resourceService.save(resourceDTO));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.created(null).body(jsonObject.toString());
+		final var hashMap = new HashMap<String, Long>();
+		hashMap.put("resourceId", resourceService.save(resourceDTO));
+		return ResponseEntity.created(null).body(hashMap);
 	}
 
 	@PutMapping("/{roleId}")

@@ -1,33 +1,32 @@
 package com.control.backend.auth.log;
 
-import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
 import org.hibernate.resource.jdbc.spi.StatementInspector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.web.context.request.RequestContextHolder;
+
+import com.control.backend.auth.model.dto.LogDTO;
+import com.control.backend.auth.service.LogService;
 
 //https://vladmihalcea.com/hibernate-statementinspector/
 public class HibernateQueryInspector implements StatementInspector {
 
 	private static final long serialVersionUID = -7501502597422388205L;
 	private static final Pattern SQL_COMMENT_PATTERN = Pattern.compile("\\/\\*.*?\\*\\/\\s*");
-	private static final Logger logger = LoggerFactory.getLogger(HibernateQueryInspector.class);
 
 	@Override
 	public String inspect(String query) {
 		final var jsonObject = new JSONObject();
+		final var session = RequestContextHolder.getRequestAttributes() != null
+				? RequestContextHolder.currentRequestAttributes().getSessionId()
+				: "--------------------------------";
+
 		try {
 			jsonObject.put("query", query);
-			logger.info("{} | HTTPSTATUS: {} | SESSION: {} | DATABASE: {}", LocalDateTime.now(), "INFO",
-					RequestContextHolder.getRequestAttributes() != null
-							? RequestContextHolder.currentRequestAttributes().getSessionId()
-							: "--------------------------------",
-					jsonObject);
+			new LogService().save(new LogDTO(null, "INFO", session, "DATABASE", jsonObject.toString()));
 		} catch (Exception e) {
-			e.printStackTrace();
+			new LogService().save(new LogDTO(null, "ERROR", session, "DATABASE", e.getMessage()));
 		}
 
 //			// String accessToken = "Bearer

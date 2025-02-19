@@ -9,7 +9,7 @@ public record ResponseTokenDTO(
 		
 		String refreshToken,
 		
-		String tokenId,
+		String idToken,
 		
 		String tokenType
 

@@ -3,10 +3,12 @@ package com.control.backend.auth.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,9 +19,13 @@ import com.fasterxml.uuid.Generators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -39,6 +45,12 @@ public class User implements UserDetails, Serializable {
 
 	@Column(name = "user_public_id", columnDefinition = "uuid", nullable = false, unique = true, updatable = false)
 	private String userPublicId = Generators.timeBasedEpochGenerator().generate().toString();
+
+	@CreatedBy
+	@JsonIgnore
+	@ToString.Exclude
+	@Column(name = "user_secret_id", columnDefinition = "uuid", nullable = false, unique = true, updatable = false)
+	private String userSecretId = Generators.timeBasedEpochGenerator().generate().toString();
 
 	@Column(name = "user_is_enabled", nullable = false)
 	private Boolean userIsEnabled;
@@ -79,9 +91,15 @@ public class User implements UserDetails, Serializable {
 	@Column(name = "user_Logged_at", nullable = true, insertable = false, updatable = true)
 	private LocalDateTime userLoggedAt;
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private List<Role> roles;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+		final var authorities = new HashSet<GrantedAuthority>(roles.size());
+		roles.forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName().toUpperCase())));
+		return authorities;
 	}
 
 	@Override

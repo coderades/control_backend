@@ -1,8 +1,8 @@
 package com.control.backend.auth.controller;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,13 +43,9 @@ public class UserRolesController {
 
 	@PostMapping()
 	public ResponseEntity<?> save(@Valid @RequestBody UserRolesDTO userRolesDTO) {
-		final var jsonObject = new JSONObject();
-		try {
-			jsonObject.put("roleId", userRolesService.save(userRolesDTO));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.created(null).body(jsonObject.toString());
+		final var hashMap = new HashMap<String, Long>();
+		hashMap.put("roleId", userRolesService.save(userRolesDTO));
+		return ResponseEntity.created(null).body(hashMap);
 	}
 
 	@PutMapping("/{userRolesId}")

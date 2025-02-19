@@ -20,6 +20,7 @@ import com.control.backend.auth.model.User;
 import com.control.backend.auth.model.dto.AuthDTO;
 import com.control.backend.auth.model.dto.ResponseTokenDTO;
 import com.control.backend.auth.repository.UserRepository;
+import com.control.backend.auth.util.StringUtil;
 
 @Service
 public class AuthService implements UserDetailsService {
@@ -46,9 +47,10 @@ public class AuthService implements UserDetailsService {
 
 	public ResponseTokenDTO getToken(AuthDTO authDTO) {
 		final var user = userRepository.findByUserName(authDTO.userName());
-		final var tokenResponseDTO = ResponseTokenDTO.builder().accessToken(generateToken(user, accessTokenExpiration))
+		final var tokenResponseDTO = ResponseTokenDTO.builder()
+				.accessToken(generateToken(user, accessTokenExpiration))
 				.refreshToken(generateToken(user, refreshTokenExpiration))
-				.tokenId(generateIdToken(user, idTokenExpiration)).tokenType("bearer").build();
+				.idToken(generateIdToken(user, idTokenExpiration)).tokenType("bearer").build();
 		userRepository.saveLoggedAt(user.getUserId());
 		return tokenResponseDTO;
 	}
@@ -70,10 +72,18 @@ public class AuthService implements UserDetailsService {
 		}
 	}
 
-	private String generateToken(User user, Integer expiration) {
+	private String generateToken(User user, Integer expiration) {	
 		try {
-			return JWT.create().withIssuer("auth-api").withSubject(user.getUsername())
-					.withExpiresAt(generateExpirationDate(expiration)).sign(Algorithm.HMAC512(accessTokenSecret));
+			return JWT.create()
+					.withIssuer("auth-api")
+					.withSubject(user.getUsername())
+					.withAudience("http://localhost:8080")
+					.withIssuedAt(generateExpirationDate(0))
+					.withExpiresAt(generateExpirationDate(expiration))
+					.withClaim("nbf", generateExpirationDate(0))
+					.withJWTId(StringUtil.stringRandomUtil(32))
+					.withClaim("uid", user.getUserId())					
+					.sign(Algorithm.HMAC512(accessTokenSecret));
 		} catch (JWTCreationException exception) {
 			throw new RuntimeException("Error trying to generate token! " + exception.getMessage());
 		}

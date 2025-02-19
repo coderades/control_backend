@@ -21,8 +21,9 @@ public class MethodInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		final var jsonObject = new JSONObject();
+
 		try {
+			final var jsonObject = new JSONObject();
 			jsonObject.put("method", request.getMethod());
 			jsonObject.put("link", request.getRequestURI());			
 			logger.info("{} | HTTPSTATUS: {} | SESSION: {} | REQUEST: {}", LocalDateTime.now(), "INFO", RequestContextHolder.getRequestAttributes().getSessionId(), jsonObject.toString().replace("\\", ""));

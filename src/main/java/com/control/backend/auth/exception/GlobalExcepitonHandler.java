@@ -44,12 +44,11 @@ public class GlobalExcepitonHandler {
 	private ResponseEntity<?> exceptionTemplate(Exception exception, int httpStatusCode) {
 		final var httpStatus = HttpStatus.valueOf(httpStatusCode);
 		final var problemDetail = ProblemDetail.forStatusAndDetail(httpStatus, exception.getMessage());
-		final var jsonObject = new JSONObject();
-
 		problemDetail.setTitle(httpStatus.getReasonPhrase());
 		problemDetail.setDetail(exception.getMessage());
 
 		try {
+			final var jsonObject = new JSONObject();
 			jsonObject.put("title", httpStatus.getReasonPhrase());
 			jsonObject.put("message", exception.getMessage());
 			logger.warn("{} | HTTPSTATUS: {} | SESSION: {} | EXCEPTION: {}", LocalDateTime.now(),
