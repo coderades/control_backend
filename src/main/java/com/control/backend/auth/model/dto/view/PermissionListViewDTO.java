@@ -5,7 +5,7 @@ public record PermissionListViewDTO(
 		String roleName,
 
 		String methodName,
-		
+
 		Boolean permissionIsWildcard,
 
 		String resourcePath

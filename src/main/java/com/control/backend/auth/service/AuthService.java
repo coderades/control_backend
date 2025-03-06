@@ -16,6 +16,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.control.backend.auth.exception.runtime.JWTCreationRuntimeException;
+import com.control.backend.auth.exception.runtime.JWTVerificationRuntimeException;
 import com.control.backend.auth.model.User;
 import com.control.backend.auth.model.dto.AuthDTO;
 import com.control.backend.auth.model.dto.ResponseTokenDTO;
@@ -45,17 +47,16 @@ public class AuthService implements UserDetailsService {
 		return userRepository.findByUserName(username);
 	}
 
-	public ResponseTokenDTO getToken(AuthDTO authDTO) {
+	public ResponseTokenDTO createToken(AuthDTO authDTO) {
 		final var user = userRepository.findByUserName(authDTO.userName());
-		final var tokenResponseDTO = ResponseTokenDTO.builder()
-				.accessToken(generateToken(user, accessTokenExpiration))
+		final var tokenResponseDTO = ResponseTokenDTO.builder().accessToken(generateToken(user, accessTokenExpiration))
 				.refreshToken(generateToken(user, refreshTokenExpiration))
 				.idToken(generateIdToken(user, idTokenExpiration)).tokenType("bearer").build();
 		userRepository.saveLoggedAt(user.getUserId());
 		return tokenResponseDTO;
 	}
 
-	public ResponseTokenDTO getRefreshToken(String refreshToken) {
+	public ResponseTokenDTO createRefreshToken(String refreshToken) {
 		final var user = userRepository.findByUserName(validationToken(refreshToken));
 		SecurityContextHolder.getContext()
 				.setAuthentication(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
@@ -67,40 +68,35 @@ public class AuthService implements UserDetailsService {
 		try {
 			return JWT.require(Algorithm.HMAC512(accessTokenSecret)).withIssuer("auth-api").build().verify(token)
 					.getSubject();
-		} catch (JWTVerificationException exception) {
-			throw new RuntimeException("Error validating token! " + exception.getMessage());
+		} catch (JWTVerificationException e) {
+			throw new JWTVerificationRuntimeException(e);
 		}
 	}
 
-	private String generateToken(User user, Integer expiration) {	
+	private String generateToken(User user, Integer addExpiration) {
 		try {
-			return JWT.create()
-					.withIssuer("auth-api")
-					.withSubject(user.getUsername())
-					.withAudience("http://localhost:8080")
-					.withIssuedAt(generateExpirationDate(0))
-					.withExpiresAt(generateExpirationDate(expiration))
-					.withClaim("nbf", generateExpirationDate(0))
-					.withJWTId(StringUtil.stringRandomUtil(32))
-					.withClaim("uid", user.getUserId())					
+			return JWT.create().withIssuer("auth-api").withSubject(user.getUsername())
+					.withAudience("http://localhost:8080").withIssuedAt(expirationTime(0))
+					.withExpiresAt(expirationTime(addExpiration)).withClaim("nbf", expirationTime(0))
+					.withJWTId(StringUtil.stringRandomUtil(32)).withClaim("uid", user.getUserId())
 					.sign(Algorithm.HMAC512(accessTokenSecret));
-		} catch (JWTCreationException exception) {
-			throw new RuntimeException("Error trying to generate token! " + exception.getMessage());
+		} catch (JWTCreationException e) {
+			throw new JWTCreationRuntimeException(e);
 		}
 	}
 
-	private String generateIdToken(User user, Integer expiration) {
+	private String generateIdToken(User user, Integer addExpiration) {
 		try {
-			return JWT.create().withClaim("userExternalId", user.getUserPublicId())
-					.withClaim("userName", user.getUsername()).withClaim("userEmail", user.getUserEmail())
-					.withExpiresAt(generateExpirationDate(expiration)).sign(Algorithm.HMAC512(accessTokenSecret));
-		} catch (JWTCreationException exception) {
-			throw new RuntimeException("Error trying to generate id token! " + exception.getMessage());
+			return JWT.create().withExpiresAt(expirationTime(addExpiration))
+					.withClaim("userExternalId", user.getUserPublicId()).withClaim("userName", user.getUsername())
+					.withClaim("userEmail", user.getUserEmail()).sign(Algorithm.HMAC512(accessTokenSecret));
+		} catch (JWTCreationException e) {
+			throw new JWTCreationRuntimeException(e);
 		}
 	}
 
-	private Instant generateExpirationDate(Integer expiration) {
-		return LocalDateTime.now().plusHours(expiration).toInstant(ZoneOffset.of("-03:00"));
+	private Instant expirationTime(Integer addExpiration) {
+		return LocalDateTime.now().plusHours(addExpiration).toInstant(ZoneOffset.of("-03:00"));
 	}
 
 }

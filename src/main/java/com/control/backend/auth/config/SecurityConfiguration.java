@@ -31,9 +31,9 @@ public class SecurityConfiguration {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 
-		for (var i : permissionService.permissionListView()) {
+		for (var i : permissionService.permissionListView()) {			
 			if (i.roleName() == null) {
 				httpSecurity
 						.authorizeHttpRequests(authorize -> authorize
@@ -41,6 +41,7 @@ public class SecurityConfiguration {
 										i.permissionIsWildcard() ? i.resourcePath() + "/**" : i.resourcePath())
 								.permitAll());
 			} else {
+				System.out.println(i.methodName() +" | " +i.resourcePath());
 				httpSecurity.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(HttpMethod.valueOf(i.methodName()),
 								i.permissionIsWildcard() ? i.resourcePath() + "/**" : i.resourcePath())

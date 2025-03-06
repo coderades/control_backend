@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control.backend.auth.exception.UnauthorizedException;
 import com.control.backend.auth.model.dto.AuthDTO;
 import com.control.backend.auth.model.dto.RefreshTokenDTO;
 import com.control.backend.auth.service.AuthService;
@@ -27,18 +26,14 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> auth(@RequestBody @Validated AuthDTO authDTO) {
-		try {
-			authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(authDTO.userName(), authDTO.userPassword()));
-			return ResponseEntity.ok(authService.getToken(authDTO));
-		} catch (Exception e) {
-			throw new UnauthorizedException(e);
-		}
+		authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(authDTO.userName(), authDTO.userPassword()));
+		return ResponseEntity.ok(authService.createToken(authDTO));
 	}
 
 	@PostMapping("/refreshtoken")
 	public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenDTO requestRefreshDTO) {
-		return ResponseEntity.ok(authService.getRefreshToken(requestRefreshDTO.refreshToken()));
+		return ResponseEntity.ok(authService.createRefreshToken(requestRefreshDTO.refreshToken()));
 	}
 
 }

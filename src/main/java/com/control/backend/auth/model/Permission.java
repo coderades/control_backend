@@ -25,7 +25,7 @@ public class Permission implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "permission_id", nullable = false, unique = true)
 	private Long permissionId;
-	
+
 	@Column(name = "permission_is_wildcard", nullable = false)
 	private Boolean permissionIsWildcard;
 
@@ -34,10 +34,10 @@ public class Permission implements Serializable {
 
 	@Column(name = "method_id", nullable = false, unique = true)
 	private Long methodId;
-	
+
 	@Column(name = "resource_id", nullable = false, unique = true)
-	private Long resourceId;	
-	
+	private Long resourceId;
+
 	@DateTimeFormat
 	@UpdateTimestamp
 	@Column(name = "permission_updated_at", nullable = true, insertable = false, updatable = true)

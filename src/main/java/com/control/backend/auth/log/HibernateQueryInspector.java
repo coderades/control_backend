@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import org.hibernate.resource.jdbc.spi.StatementInspector;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import com.control.backend.auth.model.dto.LogDTO;
@@ -17,17 +18,34 @@ public class HibernateQueryInspector implements StatementInspector {
 
 	@Override
 	public String inspect(String query) {
-		final var jsonObject = new JSONObject();
-		final var session = RequestContextHolder.getRequestAttributes() != null
-				? RequestContextHolder.currentRequestAttributes().getSessionId()
-				: "--------------------------------";
-
-		try {
-			jsonObject.put("query", query);
-			new LogService().save(new LogDTO(null, "INFO", session, "DATABASE", jsonObject.toString()));
-		} catch (Exception e) {
-			new LogService().save(new LogDTO(null, "ERROR", session, "DATABASE", e.getMessage()));
-		}
+//		final var session = RequestContextHolder.getRequestAttributes() != null
+//				? RequestContextHolder.currentRequestAttributes().getSessionId()
+//				: null;
+		
+//		final var userId = RequestContextHolder.getRequestAttributes() != null
+//				? SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+//				: null;
+//		
+//		
+//		if(RequestContextHolder.getRequestAttributes() != null) {
+//			var v = "userId";
+//			var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+//			var b = principal.substring(principal.indexOf(v) + (v.length() + 1), principal.length());
+//			var resulte = b.subSequence(0, b.indexOf(","));
+//		}
+//		
+//
+//		try {
+//			new LogService().save(
+//					new LogDTO(null, "INFO", session, "DATABASE", new JSONObject().put("query", query).toString()));
+//		} catch (Exception e) {
+//			new LogService().save(new LogDTO(null, "ERROR", session, "DATABASE", e.getMessage()));
+//		}
+//		
+		
+		
+		
+		
 
 //			// String accessToken = "Bearer
 //			// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJJZCI6Niwic2NvcGUiOlsibWFy";

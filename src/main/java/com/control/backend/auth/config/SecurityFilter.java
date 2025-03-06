@@ -3,10 +3,12 @@ package com.control.backend.auth.config;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.control.backend.auth.repository.UserRepository;
 import com.control.backend.auth.service.AuthService;
@@ -20,6 +22,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityFilter extends OncePerRequestFilter {
 
 	@Autowired
+	@Qualifier("handlerExceptionResolver")
+	private HandlerExceptionResolver exceptionResolver;
+
+	@Autowired
 	private AuthService autenticacaoService;
 
 	@Autowired
@@ -30,21 +36,27 @@ public class SecurityFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		final var tokenHeader = extractTokeHeader(request);
+		
+        try { 
+    		if (tokenHeader != null) {
+    			final var tokenValidation = autenticacaoService.validationToken(tokenHeader);
+    			final var user = usuarioRepository.findByUserName(tokenValidation);
+    			SecurityContextHolder.getContext()
+    					.setAuthentication(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
+    		}
 
-		if (tokenHeader != null) {
-			final var tokenValidation = autenticacaoService.validationToken(tokenHeader);
-			final var user = usuarioRepository.findByUserName(tokenValidation);
-			SecurityContextHolder.getContext()
-					.setAuthentication(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
-		}
+    		filterChain.doFilter(request, response);
+        } catch (RuntimeException e){ 
+            exceptionResolver.resolveException(request, response, null , e); 
+        } 		
 
-		filterChain.doFilter(request, response);
 	}
 
 	public String extractTokeHeader(HttpServletRequest request) {
 		final var authHeader = request.getHeader("Authorization");
 
 		if (authHeader == null) {
+			
 			return null;
 		}
 
